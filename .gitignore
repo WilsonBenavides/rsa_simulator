@@ -1,0 +1,6 @@
+**/results
+**/out
+
+*.exe
+*.cproject
+*.project
