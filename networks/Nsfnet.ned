@@ -22,7 +22,6 @@ network Nsfnet
         }
     submodules:
         controller: Controller {
-            
         }
         
         seattle: Node {
@@ -67,7 +66,7 @@ network Nsfnet
         ithaca: Node {
             @display("p=595,183");
         }
-    connections:
+    connections allowunconnected:
         seattle.port++ <--> Channel <--> palo_alto.port++;
         seattle.port++ <--> Channel <--> san_diego.port++;
         seattle.port++ <--> Channel <--> champaign.port++;

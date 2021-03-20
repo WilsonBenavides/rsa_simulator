@@ -9,9 +9,15 @@ package node;
 module Controller
 {
     @display("p=400,40;i=block/star");
-    
+
+    gates:
+        input in @directIn;
+
     submodules:
-        topology : TopologyManager;
-        spectrum : SpectrumManager;
-        display :  DisplayManager;
+        routing: TopologyManager;
+        spectrum: SpectrumManager;
+        display: DisplayManager;
+        rsa: DynamicRSA;
+    connections allowunconnected:
+	in --> rsa.in;
 }

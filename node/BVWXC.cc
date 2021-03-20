@@ -41,12 +41,16 @@ void BVWXC::handleMessage(cMessage *msg)
 
 void BVWXC::forwardMessage(cMessage *msg)
 {
-    int n = gateSize("line$o");
-    int k = intuniform(0, n - 1);
+//    int n = gateSize("line$o");
+//    int k = intuniform(0, n - 1);
 
-    EV << "forwarding message " << msg << " on port out[" << k << " ]\n";
-    EV << "getId " << getId() << endl;
-    EV << "getfullpath " << getFullPath() << endl;
-    send(msg, "line$o", k);
+//    EV << "forwarding message " << msg << " on port out[" << k << " ]\n";
+//    EV << "getId " << getId() << endl;
+//    EV << "getfullpath " << getFullPath() << endl;
+//    send(msg, "line$o", k);
+
+    EV << "msg send to controller : " << getParentModule()->getParentModule()->getSubmodule("controller")->getName() << endl;
+    cModule *control = getParentModule()->getParentModule()->getSubmodule("controller");
+    sendDirect(msg, control, "in");
 }
 

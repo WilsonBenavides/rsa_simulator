@@ -34,7 +34,7 @@ App::~App()
 
 void App::initialize()
 {
-    if (getId() == 62) {
+    if (getId() == 63) {
         // Boot the process scheduling the initial message as a self-message.
         EV << "only one message created, id :  " << getId() << endl;
         char msgname[20];
