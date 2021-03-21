@@ -17,7 +17,7 @@ module Controller
         routing: TopologyManager;
         spectrum: SpectrumManager;
         display: DisplayManager;
-        rsa: DynamicRSA;
+        rsa_control: DynamicRSA;
     connections allowunconnected:
-	in --> rsa.in;
+	in --> rsa_control.in;
 }

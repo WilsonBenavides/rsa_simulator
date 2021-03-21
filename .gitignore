@@ -1,6 +1,4 @@
-**/results
-**/out
+out/*
+results/
 
 *.exe
-*.cproject
-*.project

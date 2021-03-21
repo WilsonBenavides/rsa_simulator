@@ -1,27 +1,6 @@
 //
 //
-
-#include <vector>
-#include <string>
-#include <omnetpp.h>
-
-using namespace omnetpp;
-
-/**
- * Generates traffic for the network.
- */
-class TopologyManager : public cSimpleModule
-{
-public:
-    TopologyManager();
-    virtual ~TopologyManager();
-
-protected:
-    virtual void initialize(int stage) override;
-    virtual int numInitStages() const override; // NOTE THE const MODIFIER!!!
-
-    virtual void handleMessage(cMessage *msg) override;
-};
+#include "TopologyManager.h"
 
 Define_Module(TopologyManager);
 
@@ -32,6 +11,8 @@ int TopologyManager::numInitStages() const
 
 TopologyManager::TopologyManager()
 {
+    topo.extractByModulePath(cStringTokenizer("**.ann_arbor **.boulder **.champaign").asVector());
+    EV << "num of nodes : " << topo.getNumNodes() << endl;
 }
 
 TopologyManager::~TopologyManager()
@@ -41,11 +22,17 @@ TopologyManager::~TopologyManager()
 void TopologyManager::initialize(int stage)
 {
     if (stage == 1) {
-        EV << " Topology Manager, stage 2 " << endl;
+        EV << " Topology Manager, stage 1 " << endl;
     }
 }
 
 void TopologyManager::handleMessage(cMessage *msg)
 {
+        EV << " Topology Manager handleMessage  " << endl;
+}
+
+int TopologyManager::getNumNodes()
+{
+    return topo.getNumNodes();
 }
 

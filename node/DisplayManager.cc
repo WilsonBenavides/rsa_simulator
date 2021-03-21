@@ -101,7 +101,7 @@ cFigure::Color DisplayManager::generateRandomColor()
     unsigned char str[STR_LEN + 1] = { 0 };
     const char *hex_digits = "0123456789ABCDEF";
     for (int i = 0; i < STR_LEN; i++) {
-        str[i] = hex_digits[(rand() % 16)];
+        str[i] = hex_digits[intuniform(0, 15)];
     }
     str[0] = '#';
     return cFigure::Color((char*) str);

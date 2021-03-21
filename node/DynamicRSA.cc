@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <omnetpp.h>
+#include "TopologyManager.h"
 
 using namespace omnetpp;
 
@@ -17,18 +18,11 @@ public:
     virtual ~DynamicRSA();
 
 protected:
-    virtual void initialize(int stage) override;
-    virtual int numInitStages() const override; // NOTE THE const MODIFIER!!!
-
+    virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
 };
 
 Define_Module(DynamicRSA);
-
-int DynamicRSA::numInitStages() const
-{
-    return 3;
-}
 
 DynamicRSA::DynamicRSA()
 {
@@ -38,8 +32,10 @@ DynamicRSA::~DynamicRSA()
 {
 }
 
-void DynamicRSA::initialize(int stage)
+void DynamicRSA::initialize()
 {
+    TopologyManager *tm;
+    EV << "topology manager called, num of nodes " << tm->getNumNodes() << endl;
 }
 
 void DynamicRSA::handleMessage(cMessage *msg)
