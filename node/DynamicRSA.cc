@@ -40,9 +40,6 @@ DynamicRSA::~DynamicRSA()
 
 void DynamicRSA::initialize(int stage)
 {
-    if (stage == 2) {
-        EV << " Dynamic RSA, stage 2 " << endl;
-    }
 }
 
 void DynamicRSA::handleMessage(cMessage *msg)

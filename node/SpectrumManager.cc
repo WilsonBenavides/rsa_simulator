@@ -40,8 +40,8 @@ SpectrumManager::~SpectrumManager()
 
 void SpectrumManager::initialize(int stage)
 {
-    if (stage == 2) {
-        EV << " Spectrum Manager, stage 2 " << endl;
+    if (stage == 1) {
+        EV << " Spectrum Manager, stage 1 " << endl;
     }
 }
 

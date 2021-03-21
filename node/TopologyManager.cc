@@ -40,7 +40,7 @@ TopologyManager::~TopologyManager()
 
 void TopologyManager::initialize(int stage)
 {
-    if (stage == 2) {
+    if (stage == 1) {
         EV << " Topology Manager, stage 2 " << endl;
     }
 }
