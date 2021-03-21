@@ -11,8 +11,7 @@ int TopologyManager::numInitStages() const
 
 TopologyManager::TopologyManager()
 {
-    topo.extractByModulePath(cStringTokenizer("**.ann_arbor **.boulder **.champaign").asVector());
-    EV << "num of nodes : " << topo.getNumNodes() << endl;
+
 }
 
 TopologyManager::~TopologyManager()
@@ -31,8 +30,4 @@ void TopologyManager::handleMessage(cMessage *msg)
         EV << " Topology Manager handleMessage  " << endl;
 }
 
-int TopologyManager::getNumNodes()
-{
-    return topo.getNumNodes();
-}
 

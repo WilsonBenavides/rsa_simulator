@@ -24,7 +24,6 @@ class TopologyManager : public cSimpleModule
 public:
     TopologyManager();
     virtual ~TopologyManager();
-    int getNumNodes();
 
 protected:
     virtual void initialize(int stage) override;
@@ -32,7 +31,7 @@ protected:
     virtual void handleMessage(cMessage *msg) override;
 
 private:
-    cTopology topo;
+
 };
 
 

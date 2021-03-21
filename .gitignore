@@ -1,4 +1,4 @@
-out/*
-results/
+out/**/**/**/**
+results/**
 
 *.exe
