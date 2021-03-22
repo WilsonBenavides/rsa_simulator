@@ -17,9 +17,12 @@ simple BVWXC
     parameters:
         @display("i=block/switch");
     gates:
-        input in @directIn;
-        inout line[];
-        inout localLine;
+        input directIn @directIn;
+        input in[];
+        output out[];
+        
+        input localIn;
+        output localOut;
 }
 
 

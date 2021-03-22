@@ -19,7 +19,9 @@ simple BVT
     gates:
         input in;
         output out;
-        inout line;
+        
+        input localIn;
+        output localOut;
 }
 
 

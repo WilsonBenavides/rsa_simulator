@@ -11,15 +11,16 @@
 package node;
 
 //
-// A "Node" consists of a Routing plus an App module which represents the
-// aggregate traffic of the subnets connected to that router.
+// A "Node" 
 //
 module Node
 {
     parameters:
+        int address;
         @display("i=abstract/opticalswitch;is=s");
     gates:
-        inout port[];
+        input portIn[];
+        output portOut[];
     submodules:
         app: App {
             parameters:
@@ -29,7 +30,8 @@ module Node
             parameters:
                 @display("p=88,221");
             gates:
-                line[sizeof(port)];
+                in[sizeof(portIn)];
+                out[sizeof(portOut)];
         }
         bvt: BVT {
             parameters:
@@ -38,11 +40,15 @@ module Node
     connections:
         bvt.out --> app.in;
         bvt.in <-- app.out;
-        bvt.line <--> bvwxc.localLine;
         
-        for i=0..sizeof(port)-1 {
-            bvwxc.line[i] <--> port[i];
+        bvt.localOut --> bvwxc.localIn;
+        bvt.localIn <-- bvwxc.localOut;
+        
+        for i=0..sizeof(portIn)-1 {
+			portIn[i] --> bvwxc.in[i]; 
+			portOut[i] <-- bvwxc.out[i]; 
         }
-}
+        
 
+}
 

@@ -53,7 +53,7 @@ void BVT::startTransmitting(cMessage *msg)
 void BVT::handleMessage(cMessage *msg)
 {
     EV << "send out from BVT " << endl;
-    send(msg, "line$o");
+    send(msg, "localOut");
 }
 
 void BVT::refreshDisplay() const
