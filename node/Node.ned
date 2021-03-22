@@ -16,8 +16,11 @@ package node;
 module Node
 {
     parameters:
+//        xml profile; 
         int address;
-        @display("i=abstract/opticalswitch;is=s");
+        int xpos;
+        int ypos;
+        
     gates:
         input portIn[];
         output portOut[];

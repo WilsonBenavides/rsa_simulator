@@ -1,0 +1,10 @@
+<?xml>
+<root>
+    <profile id="gen1">
+          <param>3</param>
+          <param>5</param>
+    </profile>
+    <profile id="gen2">
+          <param>9</param>
+    </profile>
+</root>
