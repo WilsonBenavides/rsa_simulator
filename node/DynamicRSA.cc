@@ -49,13 +49,27 @@ void DynamicRSA::handleMessage(cMessage *msg)
     EV << "num of nodes : " << topo->getNumNodes() << endl;
 
     cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("seattle"));
+    cTopology::Node *srcNode2 = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("palo_alto"));
 
     EV << "getFullName nodo :  " << srcNode->getModule()->getFullName() << " \n";
     EV << "getIndex nodo:  " << srcNode->getModule()->getIndex() << " \n";
     EV << "gate size :  " << srcNode->getModule()->gateSize("port$o") << " \n";
 
-    cDisplayString &connDispStr = srcNode->getModule()->gate("port$o", 1)->getDisplayString();
-    connDispStr.parse("ls=#25BEB1, 3");
+    int k = srcNode->getModule()->gateSize("port$o");
+    int k2 = srcNode2->getModule()->gateSize("port$o");
 
+//    for (int i = 0; i < k; i++) {
+//        cGate *g = srcNode->getModule()->gate("port$o", i);
+//        g->getNextGate();
+//        g->getOtherHalf();
+//        cDisplayString &connDispStr = g->getDisplayString();
+//        connDispStr.parse("ls=#25BEB1, 5");
+//    }
+
+//    for (int i = 0; i < k2; i++) {
+//        cDisplayString &connDispStr = srcNode2->getModule()->gate("port$o", i)->getDisplayString();
+//        connDispStr.parse("ls=#25BEB1, 5");
+//    }
+    delete topo;
 }
 

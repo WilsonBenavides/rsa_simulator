@@ -1,4 +1,7 @@
-out/**/**/**/**
+out/**
 results/**
+
+out/clang-release/node/DisplayManager.o
+out/clang-release/rsa_simulator.exe
 
 *.exe
