@@ -34,11 +34,11 @@ App::~App()
 
 void App::initialize()
 {
-    if (getId() == 63) {
+    if (getId() == 59) {
         // Boot the process scheduling the initial message as a self-message.
         EV << "only one message created, id :  " << getId() << endl;
         char msgname[20];
-        sprintf(msgname, "msg-%i", getId());
+        sprintf(msgname, "msg-%i", getIndex());
         cMessage *msg = new cMessage(msgname);
         scheduleAt(0.0, msg);
     }

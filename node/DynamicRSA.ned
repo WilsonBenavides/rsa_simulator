@@ -10,4 +10,5 @@ simple DynamicRSA
 {
     gates:
         input in @directIn;
+        output directTopoOut @directOut;
 }

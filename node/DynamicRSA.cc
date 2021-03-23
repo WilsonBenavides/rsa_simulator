@@ -1,10 +1,10 @@
 //
 //
-
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <omnetpp.h>
-#include "TopologyManager.h"
 
 using namespace omnetpp;
 
@@ -38,34 +38,69 @@ void DynamicRSA::initialize()
 
 void DynamicRSA::handleMessage(cMessage *msg)
 {
+
     EV << "message arrived" << endl;
-    cModule *core = getParentModule()->getParentModule()->getSubmodule("seattle")->getSubmodule("bvwxc");
-    EV << "bvwxc ???    " << core->getName() << endl;
-    sendDirect(msg, core, "directIn");
+    cModule *node = getParentModule()->getParentModule()->getSubmodule("node", 0)->getSubmodule("bvwxc");
+    sendDirect(msg, node, "directIn");
 
     cTopology *topo = new cTopology("topo");
 
-    topo->extractByModulePath(cStringTokenizer("**.seattle **.palo_alto **.san_diego **.champaign **.salt_lake **.houston **.ann_arbor **.boulder **.lincoln **.atlanta **.college_pk **.pittsburg **.princeton **.ithaca").asVector());
-    EV << "num of nodes : " << topo->getNumNodes() << endl;
+    topo->extractByModulePath(cStringTokenizer("**.node[*]").asVector());
+//    EV << "num of nodes : " << topo->getNumNodes() << endl;
 
-    cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("seattle"));
+//    EV << "getFullName nodo :  " << srcNode->getModule()->getFullName() << " \n";
 
-    EV << "getFullName nodo :  " << srcNode->getModule()->getFullName() << " \n";
-    EV << "getIndex nodo:  " << srcNode->getModule()->getIndex() << " \n";
-    EV << "gate size :  " << srcNode->getModule()->gateSize("portOut") << " \n";
+//    FILE *GeneralRoutingTable;
+    std::string fileName = "./node/GeneralTableRouting.txt";
+    std::ofstream generalRoutingTable(fileName);
 
-    int k = srcNode->getModule()->gateSize("portOut");
+//    FILE *LocalRoutingTable[topo->getNumNodes()];
+//    char rtnames[] = "./node/LocalRouting0000.txt";
 
-    for (int i = 0; i < k; i++) {
-        cGate *g = srcNode->getModule()->gate("portOut", i);
-        cDisplayString &connDispStr = g->getDisplayString();
-        connDispStr.parse("ls=#25BEB1, 5");
+    for (int i = 0; i < 3; i++) {
+        std::ofstream localRoutingTable("./node/LocalRouting" + std::to_string(i) + ".txt");
+        cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", i));
+//        sprintf(rtnames, "./node/LocalRouting%i.txt");
+//        LocalRoutingTable[i] = fopen(rtnames, "a");
+
+        int srcAdd = srcNode->getModule()->par("address");
+        EV << "source address : " << srcAdd << endl;
+        for (int j = 0; j < topo->getNumNodes(); j++) {
+            if (topo->getNode(j) == srcNode)
+                continue;  // skip ourselves
+            topo->calculateUnweightedSingleShortestPathsTo(topo->getNode(j));
+
+            if (srcNode->getNumPaths() == 0)
+                continue;  // not connected
+
+            cGate *parentModuleGate = srcNode->getPath(0)->getLocalGate();
+
+            int srcAddress = srcNode->getModule()->par("address");
+            int dstAddress = topo->getNode(j)->getModule()->par("address");
+            int gateIndex = parentModuleGate->getIndex();
+
+//        rtable[address] = gateIndex;
+            generalRoutingTable << srcAddress <<","<< dstAddress <<","<< gateIndex << endl;
+            localRoutingTable << dstAddress << "," << gateIndex << endl;
+//            fprintf(generalRoutingTable, "%i,%i,%i\n", srcAddress, dstAddress, gateIndex);
+//            fprintf(LocalRoutingTable[i], "%i,%i\n", dstAddress, gateIndex);
+
+            EV << "  source address : " << srcAddress << " destination address : " << dstAddress << "  gate : " << gateIndex << endl;
+        }
+//        fclose(LocalRoutingTable[i]);
+        localRoutingTable.close();
     }
 
-//    for (int i = 0; i < k2; i++) {
-//        cDisplayString &connDispStr = srcNode2->getModule()->gate("port$o", i)->getDisplayString();
+//    int k = srcNode->getModule()->gateSize("portOut");
+//
+//    for (int i = 0; i < k; i++) {
+//        cGate *g = srcNode->getModule()->gate("portOut", i);
+//        cDisplayString &connDispStr = g->getDisplayString();
 //        connDispStr.parse("ls=#25BEB1, 5");
 //    }
+
+//    fclose(generalRoutingTable);
+    generalRoutingTable.close();
     delete topo;
 }
 

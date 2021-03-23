@@ -71,7 +71,7 @@ void DisplayManager::drawSlotGrid(int linkSize, int slotSize, cFigure::Color col
             int x = 800, y = 20;
             char name[15];
             sprintf(name, "%d,%d", lnk, slt);  //(link, slot) format
-            EV << name << endl;
+//            EV << name << endl;
             cRectangleFigure *rect = new cRectangleFigure(name);
             rect->setBounds(cFigure::Rectangle(x + (20 * slt), y + (25 * lnk), 20, 20));
             rect->setCornerRadius(1);

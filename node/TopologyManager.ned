@@ -8,4 +8,6 @@ package node;
 //
 simple TopologyManager
 {
+    gates:
+        input in @directIn;
 }

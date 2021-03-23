@@ -1,5 +1,5 @@
 E # 0 t 0 m 1 ce -1 msg -1
-SB v 1286 rid General-0-20210322-16:00:44-14120 b 1000
+SB v 1286 rid General-0-20210322-22:59:44-7564 b 1000
 KF p -1 c "" s ""
 MC id 1 c omnetpp::cModule t networks.Nsfnet n Nsfnet cm 1
 MS id 1 d bgb=786,562;bgi=maps/usa;bgu=km
@@ -34,626 +34,765 @@ MS id 15 d i=abstract/opticalswitch;p=$xpos,$ypos;is=s
 MC id 16 c omnetpp::cModule t node.Controller pid 1 n controller cm 1
 GC m 16 g 0 n in o 0
 MS id 16 d p=400,40;i=block/star
-MC id 17 c App t node.App pid 2 n app
-GC m 17 g 0 n in o 0
-GC m 17 g 3 n out o 1
-MS id 17 d p=185,43;i=block/browser
-MC id 18 c BVWXC t node.BVWXC pid 2 n bvwxc
-GC m 18 g 0 n directIn o 0
-GC m 18 g 6 n localIn o 0
-GC m 18 g 9 n localOut o 1
-MS id 18 d p=88,221;i=block/switch
-MC id 19 c BVT t node.BVT pid 2 n bvt
-GC m 19 g 0 n in o 0
-GC m 19 g 3 n out o 1
-GC m 19 g 4 n localIn o 0
-GC m 19 g 7 n localOut o 1
-MS id 19 d p=127,128,row;i=block/queue;q=queue
-CC sm 19 sg 3 dm 17 dg 0
-CC sm 17 sg 3 dm 19 dg 0
-CC sm 19 sg 7 dm 18 dg 6
-CC sm 18 sg 9 dm 19 dg 4
-MC id 20 c App t node.App pid 3 n app
-GC m 20 g 0 n in o 0
-GC m 20 g 3 n out o 1
-MS id 20 d p=185,43;i=block/browser
-MC id 21 c BVWXC t node.BVWXC pid 3 n bvwxc
-GC m 21 g 0 n directIn o 0
-GC m 21 g 6 n localIn o 0
-GC m 21 g 9 n localOut o 1
-MS id 21 d p=88,221;i=block/switch
-MC id 22 c BVT t node.BVT pid 3 n bvt
-GC m 22 g 0 n in o 0
-GC m 22 g 3 n out o 1
-GC m 22 g 4 n localIn o 0
-GC m 22 g 7 n localOut o 1
-MS id 22 d p=127,128,row;i=block/queue;q=queue
-CC sm 22 sg 3 dm 20 dg 0
-CC sm 20 sg 3 dm 22 dg 0
-CC sm 22 sg 7 dm 21 dg 6
-CC sm 21 sg 9 dm 22 dg 4
-MC id 23 c App t node.App pid 4 n app
-GC m 23 g 0 n in o 0
-GC m 23 g 3 n out o 1
-MS id 23 d p=185,43;i=block/browser
-MC id 24 c BVWXC t node.BVWXC pid 4 n bvwxc
-GC m 24 g 0 n directIn o 0
-GC m 24 g 6 n localIn o 0
-GC m 24 g 9 n localOut o 1
-MS id 24 d p=88,221;i=block/switch
-MC id 25 c BVT t node.BVT pid 4 n bvt
-GC m 25 g 0 n in o 0
-GC m 25 g 3 n out o 1
-GC m 25 g 4 n localIn o 0
-GC m 25 g 7 n localOut o 1
-MS id 25 d p=127,128,row;i=block/queue;q=queue
-CC sm 25 sg 3 dm 23 dg 0
-CC sm 23 sg 3 dm 25 dg 0
-CC sm 25 sg 7 dm 24 dg 6
-CC sm 24 sg 9 dm 25 dg 4
-MC id 26 c App t node.App pid 5 n app
-GC m 26 g 0 n in o 0
-GC m 26 g 3 n out o 1
-MS id 26 d p=185,43;i=block/browser
-MC id 27 c BVWXC t node.BVWXC pid 5 n bvwxc
-GC m 27 g 0 n directIn o 0
-GC m 27 g 6 n localIn o 0
-GC m 27 g 9 n localOut o 1
-MS id 27 d p=88,221;i=block/switch
-MC id 28 c BVT t node.BVT pid 5 n bvt
-GC m 28 g 0 n in o 0
-GC m 28 g 3 n out o 1
-GC m 28 g 4 n localIn o 0
-GC m 28 g 7 n localOut o 1
-MS id 28 d p=127,128,row;i=block/queue;q=queue
-CC sm 28 sg 3 dm 26 dg 0
-CC sm 26 sg 3 dm 28 dg 0
-CC sm 28 sg 7 dm 27 dg 6
-CC sm 27 sg 9 dm 28 dg 4
-MC id 29 c App t node.App pid 6 n app
-GC m 29 g 0 n in o 0
-GC m 29 g 3 n out o 1
-MS id 29 d p=185,43;i=block/browser
-MC id 30 c BVWXC t node.BVWXC pid 6 n bvwxc
-GC m 30 g 0 n directIn o 0
-GC m 30 g 6 n localIn o 0
-GC m 30 g 9 n localOut o 1
-MS id 30 d p=88,221;i=block/switch
-MC id 31 c BVT t node.BVT pid 6 n bvt
-GC m 31 g 0 n in o 0
-GC m 31 g 3 n out o 1
-GC m 31 g 4 n localIn o 0
-GC m 31 g 7 n localOut o 1
-MS id 31 d p=127,128,row;i=block/queue;q=queue
-CC sm 31 sg 3 dm 29 dg 0
-CC sm 29 sg 3 dm 31 dg 0
-CC sm 31 sg 7 dm 30 dg 6
-CC sm 30 sg 9 dm 31 dg 4
-MC id 32 c App t node.App pid 7 n app
-GC m 32 g 0 n in o 0
-GC m 32 g 3 n out o 1
-MS id 32 d p=185,43;i=block/browser
-MC id 33 c BVWXC t node.BVWXC pid 7 n bvwxc
-GC m 33 g 0 n directIn o 0
-GC m 33 g 6 n localIn o 0
-GC m 33 g 9 n localOut o 1
-MS id 33 d p=88,221;i=block/switch
-MC id 34 c BVT t node.BVT pid 7 n bvt
-GC m 34 g 0 n in o 0
-GC m 34 g 3 n out o 1
-GC m 34 g 4 n localIn o 0
-GC m 34 g 7 n localOut o 1
-MS id 34 d p=127,128,row;i=block/queue;q=queue
-CC sm 34 sg 3 dm 32 dg 0
-CC sm 32 sg 3 dm 34 dg 0
-CC sm 34 sg 7 dm 33 dg 6
-CC sm 33 sg 9 dm 34 dg 4
-MC id 35 c App t node.App pid 8 n app
-GC m 35 g 0 n in o 0
-GC m 35 g 3 n out o 1
-MS id 35 d p=185,43;i=block/browser
-MC id 36 c BVWXC t node.BVWXC pid 8 n bvwxc
-GC m 36 g 0 n directIn o 0
-GC m 36 g 6 n localIn o 0
-GC m 36 g 9 n localOut o 1
-MS id 36 d p=88,221;i=block/switch
-MC id 37 c BVT t node.BVT pid 8 n bvt
-GC m 37 g 0 n in o 0
-GC m 37 g 3 n out o 1
-GC m 37 g 4 n localIn o 0
-GC m 37 g 7 n localOut o 1
-MS id 37 d p=127,128,row;i=block/queue;q=queue
-CC sm 37 sg 3 dm 35 dg 0
-CC sm 35 sg 3 dm 37 dg 0
-CC sm 37 sg 7 dm 36 dg 6
-CC sm 36 sg 9 dm 37 dg 4
-MC id 38 c App t node.App pid 9 n app
-GC m 38 g 0 n in o 0
-GC m 38 g 3 n out o 1
-MS id 38 d p=185,43;i=block/browser
-MC id 39 c BVWXC t node.BVWXC pid 9 n bvwxc
-GC m 39 g 0 n directIn o 0
-GC m 39 g 6 n localIn o 0
-GC m 39 g 9 n localOut o 1
-MS id 39 d p=88,221;i=block/switch
-MC id 40 c BVT t node.BVT pid 9 n bvt
-GC m 40 g 0 n in o 0
-GC m 40 g 3 n out o 1
-GC m 40 g 4 n localIn o 0
-GC m 40 g 7 n localOut o 1
-MS id 40 d p=127,128,row;i=block/queue;q=queue
-CC sm 40 sg 3 dm 38 dg 0
-CC sm 38 sg 3 dm 40 dg 0
-CC sm 40 sg 7 dm 39 dg 6
-CC sm 39 sg 9 dm 40 dg 4
-MC id 41 c App t node.App pid 10 n app
-GC m 41 g 0 n in o 0
-GC m 41 g 3 n out o 1
-MS id 41 d p=185,43;i=block/browser
-MC id 42 c BVWXC t node.BVWXC pid 10 n bvwxc
-GC m 42 g 0 n directIn o 0
-GC m 42 g 6 n localIn o 0
-GC m 42 g 9 n localOut o 1
-MS id 42 d p=88,221;i=block/switch
-MC id 43 c BVT t node.BVT pid 10 n bvt
-GC m 43 g 0 n in o 0
-GC m 43 g 3 n out o 1
-GC m 43 g 4 n localIn o 0
-GC m 43 g 7 n localOut o 1
-MS id 43 d p=127,128,row;i=block/queue;q=queue
-CC sm 43 sg 3 dm 41 dg 0
-CC sm 41 sg 3 dm 43 dg 0
-CC sm 43 sg 7 dm 42 dg 6
-CC sm 42 sg 9 dm 43 dg 4
-MC id 44 c App t node.App pid 11 n app
-GC m 44 g 0 n in o 0
-GC m 44 g 3 n out o 1
-MS id 44 d p=185,43;i=block/browser
-MC id 45 c BVWXC t node.BVWXC pid 11 n bvwxc
-GC m 45 g 0 n directIn o 0
-GC m 45 g 6 n localIn o 0
-GC m 45 g 9 n localOut o 1
-MS id 45 d p=88,221;i=block/switch
-MC id 46 c BVT t node.BVT pid 11 n bvt
-GC m 46 g 0 n in o 0
-GC m 46 g 3 n out o 1
-GC m 46 g 4 n localIn o 0
-GC m 46 g 7 n localOut o 1
-MS id 46 d p=127,128,row;i=block/queue;q=queue
-CC sm 46 sg 3 dm 44 dg 0
-CC sm 44 sg 3 dm 46 dg 0
-CC sm 46 sg 7 dm 45 dg 6
-CC sm 45 sg 9 dm 46 dg 4
-MC id 47 c App t node.App pid 12 n app
-GC m 47 g 0 n in o 0
-GC m 47 g 3 n out o 1
-MS id 47 d p=185,43;i=block/browser
-MC id 48 c BVWXC t node.BVWXC pid 12 n bvwxc
-GC m 48 g 0 n directIn o 0
-GC m 48 g 6 n localIn o 0
-GC m 48 g 9 n localOut o 1
-MS id 48 d p=88,221;i=block/switch
-MC id 49 c BVT t node.BVT pid 12 n bvt
-GC m 49 g 0 n in o 0
-GC m 49 g 3 n out o 1
-GC m 49 g 4 n localIn o 0
-GC m 49 g 7 n localOut o 1
-MS id 49 d p=127,128,row;i=block/queue;q=queue
-CC sm 49 sg 3 dm 47 dg 0
-CC sm 47 sg 3 dm 49 dg 0
-CC sm 49 sg 7 dm 48 dg 6
-CC sm 48 sg 9 dm 49 dg 4
-MC id 50 c App t node.App pid 13 n app
-GC m 50 g 0 n in o 0
-GC m 50 g 3 n out o 1
-MS id 50 d p=185,43;i=block/browser
-MC id 51 c BVWXC t node.BVWXC pid 13 n bvwxc
-GC m 51 g 0 n directIn o 0
-GC m 51 g 6 n localIn o 0
-GC m 51 g 9 n localOut o 1
-MS id 51 d p=88,221;i=block/switch
-MC id 52 c BVT t node.BVT pid 13 n bvt
-GC m 52 g 0 n in o 0
-GC m 52 g 3 n out o 1
-GC m 52 g 4 n localIn o 0
-GC m 52 g 7 n localOut o 1
-MS id 52 d p=127,128,row;i=block/queue;q=queue
-CC sm 52 sg 3 dm 50 dg 0
-CC sm 50 sg 3 dm 52 dg 0
-CC sm 52 sg 7 dm 51 dg 6
-CC sm 51 sg 9 dm 52 dg 4
-MC id 53 c App t node.App pid 14 n app
-GC m 53 g 0 n in o 0
-GC m 53 g 3 n out o 1
-MS id 53 d p=185,43;i=block/browser
-MC id 54 c BVWXC t node.BVWXC pid 14 n bvwxc
-GC m 54 g 0 n directIn o 0
-GC m 54 g 6 n localIn o 0
-GC m 54 g 9 n localOut o 1
-MS id 54 d p=88,221;i=block/switch
-MC id 55 c BVT t node.BVT pid 14 n bvt
-GC m 55 g 0 n in o 0
-GC m 55 g 3 n out o 1
-GC m 55 g 4 n localIn o 0
-GC m 55 g 7 n localOut o 1
-MS id 55 d p=127,128,row;i=block/queue;q=queue
-CC sm 55 sg 3 dm 53 dg 0
-CC sm 53 sg 3 dm 55 dg 0
-CC sm 55 sg 7 dm 54 dg 6
-CC sm 54 sg 9 dm 55 dg 4
-MC id 56 c App t node.App pid 15 n app
-GC m 56 g 0 n in o 0
-GC m 56 g 3 n out o 1
-MS id 56 d p=185,43;i=block/browser
-MC id 57 c BVWXC t node.BVWXC pid 15 n bvwxc
-GC m 57 g 0 n directIn o 0
-GC m 57 g 6 n localIn o 0
-GC m 57 g 9 n localOut o 1
-MS id 57 d p=88,221;i=block/switch
-MC id 58 c BVT t node.BVT pid 15 n bvt
-GC m 58 g 0 n in o 0
-GC m 58 g 3 n out o 1
-GC m 58 g 4 n localIn o 0
-GC m 58 g 7 n localOut o 1
-MS id 58 d p=127,128,row;i=block/queue;q=queue
-CC sm 58 sg 3 dm 56 dg 0
-CC sm 56 sg 3 dm 58 dg 0
-CC sm 58 sg 7 dm 57 dg 6
-CC sm 57 sg 9 dm 58 dg 4
-MC id 59 c TopologyManager t node.TopologyManager pid 16 n routing
-MS id 59 d ""
-MC id 60 c SpectrumManager t node.SpectrumManager pid 16 n spectrum
-MS id 60 d ""
-MC id 61 c DisplayManager t node.DisplayManager pid 16 n display
-MS id 61 d ""
-MC id 62 c DynamicRSA t node.DynamicRSA pid 16 n rsa_control
+GC m 2 g 2621440 n portOut i 0 o 1
+GC m 3 g 1048576 n portIn i 0 o 0
+CC sm 2 sg 2621440 dm 3 dg 1048576
+CS sm 2 sg 2621440 d ""
+GC m 3 g 2621440 n portOut i 0 o 1
+GC m 2 g 1048576 n portIn i 0 o 0
+CC sm 3 sg 2621440 dm 2 dg 1048576
+CS sm 3 sg 2621440 d ""
+GC m 2 g 2621441 n portOut i 1 o 1
+GC m 4 g 1048576 n portIn i 0 o 0
+CC sm 2 sg 2621441 dm 4 dg 1048576
+CS sm 2 sg 2621441 d ""
+GC m 4 g 2621440 n portOut i 0 o 1
+GC m 2 g 1048577 n portIn i 1 o 0
+CC sm 4 sg 2621440 dm 2 dg 1048577
+CS sm 4 sg 2621440 d ""
+GC m 2 g 2621442 n portOut i 2 o 1
+GC m 5 g 1048576 n portIn i 0 o 0
+CC sm 2 sg 2621442 dm 5 dg 1048576
+CS sm 2 sg 2621442 d ""
+GC m 5 g 2621440 n portOut i 0 o 1
+GC m 2 g 1048578 n portIn i 2 o 0
+CC sm 5 sg 2621440 dm 2 dg 1048578
+CS sm 5 sg 2621440 d ""
+GC m 3 g 2621441 n portOut i 1 o 1
+GC m 8 g 1048576 n portIn i 0 o 0
+CC sm 3 sg 2621441 dm 8 dg 1048576
+CS sm 3 sg 2621441 d ""
+GC m 8 g 2621440 n portOut i 0 o 1
+GC m 3 g 1048577 n portIn i 1 o 0
+CC sm 8 sg 2621440 dm 3 dg 1048577
+CS sm 8 sg 2621440 d ""
+GC m 3 g 2621442 n portOut i 2 o 1
+GC m 4 g 1048577 n portIn i 1 o 0
+CC sm 3 sg 2621442 dm 4 dg 1048577
+CS sm 3 sg 2621442 d ""
+GC m 4 g 2621441 n portOut i 1 o 1
+GC m 3 g 1048578 n portIn i 2 o 0
+CC sm 4 sg 2621441 dm 3 dg 1048578
+CS sm 4 sg 2621441 d ""
+GC m 4 g 2621442 n portOut i 2 o 1
+GC m 9 g 1048576 n portIn i 0 o 0
+CC sm 4 sg 2621442 dm 9 dg 1048576
+CS sm 4 sg 2621442 d ""
+GC m 9 g 2621440 n portOut i 0 o 1
+GC m 4 g 1048578 n portIn i 2 o 0
+CC sm 9 sg 2621440 dm 4 dg 1048578
+CS sm 9 sg 2621440 d ""
+GC m 5 g 2621441 n portOut i 1 o 1
+GC m 6 g 1048576 n portIn i 0 o 0
+CC sm 5 sg 2621441 dm 6 dg 1048576
+CS sm 5 sg 2621441 d ""
+GC m 6 g 2621440 n portOut i 0 o 1
+GC m 5 g 1048577 n portIn i 1 o 0
+CC sm 6 sg 2621440 dm 5 dg 1048577
+CS sm 6 sg 2621440 d ""
+GC m 5 g 2621442 n portOut i 2 o 1
+GC m 10 g 1048576 n portIn i 0 o 0
+CC sm 5 sg 2621442 dm 10 dg 1048576
+CS sm 5 sg 2621442 d ""
+GC m 10 g 2621440 n portOut i 0 o 1
+GC m 5 g 1048578 n portIn i 2 o 0
+CC sm 10 sg 2621440 dm 5 dg 1048578
+CS sm 10 sg 2621440 d ""
+GC m 6 g 2621441 n portOut i 1 o 1
+GC m 9 g 1048577 n portIn i 1 o 0
+CC sm 6 sg 2621441 dm 9 dg 1048577
+CS sm 6 sg 2621441 d ""
+GC m 9 g 2621441 n portOut i 1 o 1
+GC m 6 g 1048577 n portIn i 1 o 0
+CC sm 9 sg 2621441 dm 6 dg 1048577
+CS sm 9 sg 2621441 d ""
+GC m 6 g 2621442 n portOut i 2 o 1
+GC m 7 g 1048576 n portIn i 0 o 0
+CC sm 6 sg 2621442 dm 7 dg 1048576
+CS sm 6 sg 2621442 d ""
+GC m 7 g 2621440 n portOut i 0 o 1
+GC m 6 g 1048578 n portIn i 2 o 0
+CC sm 7 sg 2621440 dm 6 dg 1048578
+CS sm 7 sg 2621440 d ""
+GC m 7 g 2621441 n portOut i 1 o 1
+GC m 8 g 1048577 n portIn i 1 o 0
+CC sm 7 sg 2621441 dm 8 dg 1048577
+CS sm 7 sg 2621441 d ""
+GC m 8 g 2621441 n portOut i 1 o 1
+GC m 7 g 1048577 n portIn i 1 o 0
+CC sm 8 sg 2621441 dm 7 dg 1048577
+CS sm 8 sg 2621441 d ""
+GC m 8 g 2621442 n portOut i 2 o 1
+GC m 11 g 1048576 n portIn i 0 o 0
+CC sm 8 sg 2621442 dm 11 dg 1048576
+CS sm 8 sg 2621442 d ""
+GC m 11 g 2621440 n portOut i 0 o 1
+GC m 8 g 1048578 n portIn i 2 o 0
+CC sm 11 sg 2621440 dm 8 dg 1048578
+CS sm 11 sg 2621440 d ""
+GC m 9 g 2621442 n portOut i 2 o 1
+GC m 14 g 1048576 n portIn i 0 o 0
+CC sm 9 sg 2621442 dm 14 dg 1048576
+CS sm 9 sg 2621442 d ""
+GC m 14 g 2621440 n portOut i 0 o 1
+GC m 9 g 1048578 n portIn i 2 o 0
+CC sm 14 sg 2621440 dm 9 dg 1048578
+CS sm 14 sg 2621440 d ""
+GC m 9 g 2621443 n portOut i 3 o 1
+GC m 13 g 1048576 n portIn i 0 o 0
+CC sm 9 sg 2621443 dm 13 dg 1048576
+CS sm 9 sg 2621443 d ""
+GC m 13 g 2621440 n portOut i 0 o 1
+GC m 9 g 1048579 n portIn i 3 o 0
+CC sm 13 sg 2621440 dm 9 dg 1048579
+CS sm 13 sg 2621440 d ""
+GC m 10 g 2621441 n portOut i 1 o 1
+GC m 12 g 1048576 n portIn i 0 o 0
+CC sm 10 sg 2621441 dm 12 dg 1048576
+CS sm 10 sg 2621441 d ""
+GC m 12 g 2621440 n portOut i 0 o 1
+GC m 10 g 1048577 n portIn i 1 o 0
+CC sm 12 sg 2621440 dm 10 dg 1048577
+CS sm 12 sg 2621440 d ""
+GC m 10 g 2621442 n portOut i 2 o 1
+GC m 15 g 1048576 n portIn i 0 o 0
+CC sm 10 sg 2621442 dm 15 dg 1048576
+CS sm 10 sg 2621442 d ""
+GC m 15 g 2621440 n portOut i 0 o 1
+GC m 10 g 1048578 n portIn i 2 o 0
+CC sm 15 sg 2621440 dm 10 dg 1048578
+CS sm 15 sg 2621440 d ""
+GC m 11 g 2621441 n portOut i 1 o 1
+GC m 12 g 1048577 n portIn i 1 o 0
+CC sm 11 sg 2621441 dm 12 dg 1048577
+CS sm 11 sg 2621441 d ""
+GC m 12 g 2621441 n portOut i 1 o 1
+GC m 11 g 1048577 n portIn i 1 o 0
+CC sm 12 sg 2621441 dm 11 dg 1048577
+CS sm 12 sg 2621441 d ""
+GC m 11 g 2621442 n portOut i 2 o 1
+GC m 15 g 1048577 n portIn i 1 o 0
+CC sm 11 sg 2621442 dm 15 dg 1048577
+CS sm 11 sg 2621442 d ""
+GC m 15 g 2621441 n portOut i 1 o 1
+GC m 11 g 1048578 n portIn i 2 o 0
+CC sm 15 sg 2621441 dm 11 dg 1048578
+CS sm 15 sg 2621441 d ""
+GC m 11 g 2621443 n portOut i 3 o 1
+GC m 13 g 1048577 n portIn i 1 o 0
+CC sm 11 sg 2621443 dm 13 dg 1048577
+CS sm 11 sg 2621443 d ""
+GC m 13 g 2621441 n portOut i 1 o 1
+GC m 11 g 1048579 n portIn i 3 o 0
+CC sm 13 sg 2621441 dm 11 dg 1048579
+CS sm 13 sg 2621441 d ""
+GC m 14 g 2621441 n portOut i 1 o 1
+GC m 15 g 1048578 n portIn i 2 o 0
+CC sm 14 sg 2621441 dm 15 dg 1048578
+CS sm 14 sg 2621441 d ""
+GC m 15 g 2621442 n portOut i 2 o 1
+GC m 14 g 1048577 n portIn i 1 o 0
+CC sm 15 sg 2621442 dm 14 dg 1048577
+CS sm 15 sg 2621442 d ""
+GC m 14 g 2621442 n portOut i 2 o 1
+GC m 12 g 1048578 n portIn i 2 o 0
+CC sm 14 sg 2621442 dm 12 dg 1048578
+CS sm 14 sg 2621442 d ""
+GC m 12 g 2621442 n portOut i 2 o 1
+GC m 14 g 1048578 n portIn i 2 o 0
+CC sm 12 sg 2621442 dm 14 dg 1048578
+CS sm 12 sg 2621442 d ""
+MC id 59 c App t node.App pid 2 n app
+GC m 59 g 0 n in o 0
+GC m 59 g 3 n out o 1
+MS id 59 d p=185,43;i=block/browser
+MC id 60 c BVWXC t node.BVWXC pid 2 n bvwxc
+GC m 60 g 0 n directIn o 0
+GC m 60 g 6 n localIn o 0
+GC m 60 g 9 n localOut o 1
+MS id 60 d p=88,221;i=block/switch
+GC m 60 g 2097152 n in i 0 o 0
+GC m 60 g 2097153 n in i 1 o 0
+GC m 60 g 2097154 n in i 2 o 0
+GC m 60 g 3670016 n out i 0 o 1
+GC m 60 g 3670017 n out i 1 o 1
+GC m 60 g 3670018 n out i 2 o 1
+MC id 61 c BVT t node.BVT pid 2 n bvt
+GC m 61 g 0 n in o 0
+GC m 61 g 3 n out o 1
+GC m 61 g 4 n localIn o 0
+GC m 61 g 7 n localOut o 1
+MS id 61 d p=127,128,row;i=block/queue;q=queue
+CC sm 61 sg 3 dm 59 dg 0
+CC sm 59 sg 3 dm 61 dg 0
+CC sm 61 sg 7 dm 60 dg 6
+CC sm 60 sg 9 dm 61 dg 4
+CC sm 2 sg 1048576 dm 60 dg 2097152
+CC sm 60 sg 3670016 dm 2 dg 2621440
+CC sm 2 sg 1048577 dm 60 dg 2097153
+CC sm 60 sg 3670017 dm 2 dg 2621441
+CC sm 2 sg 1048578 dm 60 dg 2097154
+CC sm 60 sg 3670018 dm 2 dg 2621442
+MC id 62 c App t node.App pid 3 n app
 GC m 62 g 0 n in o 0
-MS id 62 d ""
-CC sm 16 sg 0 dm 62 dg 0
+GC m 62 g 3 n out o 1
+MS id 62 d p=185,43;i=block/browser
+MC id 63 c BVWXC t node.BVWXC pid 3 n bvwxc
+GC m 63 g 0 n directIn o 0
+GC m 63 g 6 n localIn o 0
+GC m 63 g 9 n localOut o 1
+MS id 63 d p=88,221;i=block/switch
+GC m 63 g 2097152 n in i 0 o 0
+GC m 63 g 2097153 n in i 1 o 0
+GC m 63 g 2097154 n in i 2 o 0
+GC m 63 g 3670016 n out i 0 o 1
+GC m 63 g 3670017 n out i 1 o 1
+GC m 63 g 3670018 n out i 2 o 1
+MC id 64 c BVT t node.BVT pid 3 n bvt
+GC m 64 g 0 n in o 0
+GC m 64 g 3 n out o 1
+GC m 64 g 4 n localIn o 0
+GC m 64 g 7 n localOut o 1
+MS id 64 d p=127,128,row;i=block/queue;q=queue
+CC sm 64 sg 3 dm 62 dg 0
+CC sm 62 sg 3 dm 64 dg 0
+CC sm 64 sg 7 dm 63 dg 6
+CC sm 63 sg 9 dm 64 dg 4
+CC sm 3 sg 1048576 dm 63 dg 2097152
+CC sm 63 sg 3670016 dm 3 dg 2621440
+CC sm 3 sg 1048577 dm 63 dg 2097153
+CC sm 63 sg 3670017 dm 3 dg 2621441
+CC sm 3 sg 1048578 dm 63 dg 2097154
+CC sm 63 sg 3670018 dm 3 dg 2621442
+MC id 65 c App t node.App pid 4 n app
+GC m 65 g 0 n in o 0
+GC m 65 g 3 n out o 1
+MS id 65 d p=185,43;i=block/browser
+MC id 66 c BVWXC t node.BVWXC pid 4 n bvwxc
+GC m 66 g 0 n directIn o 0
+GC m 66 g 6 n localIn o 0
+GC m 66 g 9 n localOut o 1
+MS id 66 d p=88,221;i=block/switch
+GC m 66 g 2097152 n in i 0 o 0
+GC m 66 g 2097153 n in i 1 o 0
+GC m 66 g 2097154 n in i 2 o 0
+GC m 66 g 3670016 n out i 0 o 1
+GC m 66 g 3670017 n out i 1 o 1
+GC m 66 g 3670018 n out i 2 o 1
+MC id 67 c BVT t node.BVT pid 4 n bvt
+GC m 67 g 0 n in o 0
+GC m 67 g 3 n out o 1
+GC m 67 g 4 n localIn o 0
+GC m 67 g 7 n localOut o 1
+MS id 67 d p=127,128,row;i=block/queue;q=queue
+CC sm 67 sg 3 dm 65 dg 0
+CC sm 65 sg 3 dm 67 dg 0
+CC sm 67 sg 7 dm 66 dg 6
+CC sm 66 sg 9 dm 67 dg 4
+CC sm 4 sg 1048576 dm 66 dg 2097152
+CC sm 66 sg 3670016 dm 4 dg 2621440
+CC sm 4 sg 1048577 dm 66 dg 2097153
+CC sm 66 sg 3670017 dm 4 dg 2621441
+CC sm 4 sg 1048578 dm 66 dg 2097154
+CC sm 66 sg 3670018 dm 4 dg 2621442
+MC id 68 c App t node.App pid 5 n app
+GC m 68 g 0 n in o 0
+GC m 68 g 3 n out o 1
+MS id 68 d p=185,43;i=block/browser
+MC id 69 c BVWXC t node.BVWXC pid 5 n bvwxc
+GC m 69 g 0 n directIn o 0
+GC m 69 g 6 n localIn o 0
+GC m 69 g 9 n localOut o 1
+MS id 69 d p=88,221;i=block/switch
+GC m 69 g 2097152 n in i 0 o 0
+GC m 69 g 2097153 n in i 1 o 0
+GC m 69 g 2097154 n in i 2 o 0
+GC m 69 g 3670016 n out i 0 o 1
+GC m 69 g 3670017 n out i 1 o 1
+GC m 69 g 3670018 n out i 2 o 1
+MC id 70 c BVT t node.BVT pid 5 n bvt
+GC m 70 g 0 n in o 0
+GC m 70 g 3 n out o 1
+GC m 70 g 4 n localIn o 0
+GC m 70 g 7 n localOut o 1
+MS id 70 d p=127,128,row;i=block/queue;q=queue
+CC sm 70 sg 3 dm 68 dg 0
+CC sm 68 sg 3 dm 70 dg 0
+CC sm 70 sg 7 dm 69 dg 6
+CC sm 69 sg 9 dm 70 dg 4
+CC sm 5 sg 1048576 dm 69 dg 2097152
+CC sm 69 sg 3670016 dm 5 dg 2621440
+CC sm 5 sg 1048577 dm 69 dg 2097153
+CC sm 69 sg 3670017 dm 5 dg 2621441
+CC sm 5 sg 1048578 dm 69 dg 2097154
+CC sm 69 sg 3670018 dm 5 dg 2621442
+MC id 71 c App t node.App pid 6 n app
+GC m 71 g 0 n in o 0
+GC m 71 g 3 n out o 1
+MS id 71 d p=185,43;i=block/browser
+MC id 72 c BVWXC t node.BVWXC pid 6 n bvwxc
+GC m 72 g 0 n directIn o 0
+GC m 72 g 6 n localIn o 0
+GC m 72 g 9 n localOut o 1
+MS id 72 d p=88,221;i=block/switch
+GC m 72 g 2097152 n in i 0 o 0
+GC m 72 g 2097153 n in i 1 o 0
+GC m 72 g 2097154 n in i 2 o 0
+GC m 72 g 3670016 n out i 0 o 1
+GC m 72 g 3670017 n out i 1 o 1
+GC m 72 g 3670018 n out i 2 o 1
+MC id 73 c BVT t node.BVT pid 6 n bvt
+GC m 73 g 0 n in o 0
+GC m 73 g 3 n out o 1
+GC m 73 g 4 n localIn o 0
+GC m 73 g 7 n localOut o 1
+MS id 73 d p=127,128,row;i=block/queue;q=queue
+CC sm 73 sg 3 dm 71 dg 0
+CC sm 71 sg 3 dm 73 dg 0
+CC sm 73 sg 7 dm 72 dg 6
+CC sm 72 sg 9 dm 73 dg 4
+CC sm 6 sg 1048576 dm 72 dg 2097152
+CC sm 72 sg 3670016 dm 6 dg 2621440
+CC sm 6 sg 1048577 dm 72 dg 2097153
+CC sm 72 sg 3670017 dm 6 dg 2621441
+CC sm 6 sg 1048578 dm 72 dg 2097154
+CC sm 72 sg 3670018 dm 6 dg 2621442
+MC id 74 c App t node.App pid 7 n app
+GC m 74 g 0 n in o 0
+GC m 74 g 3 n out o 1
+MS id 74 d p=185,43;i=block/browser
+MC id 75 c BVWXC t node.BVWXC pid 7 n bvwxc
+GC m 75 g 0 n directIn o 0
+GC m 75 g 6 n localIn o 0
+GC m 75 g 9 n localOut o 1
+MS id 75 d p=88,221;i=block/switch
+GC m 75 g 2097152 n in i 0 o 0
+GC m 75 g 2097153 n in i 1 o 0
+GC m 75 g 3670016 n out i 0 o 1
+GC m 75 g 3670017 n out i 1 o 1
+MC id 76 c BVT t node.BVT pid 7 n bvt
+GC m 76 g 0 n in o 0
+GC m 76 g 3 n out o 1
+GC m 76 g 4 n localIn o 0
+GC m 76 g 7 n localOut o 1
+MS id 76 d p=127,128,row;i=block/queue;q=queue
+CC sm 76 sg 3 dm 74 dg 0
+CC sm 74 sg 3 dm 76 dg 0
+CC sm 76 sg 7 dm 75 dg 6
+CC sm 75 sg 9 dm 76 dg 4
+CC sm 7 sg 1048576 dm 75 dg 2097152
+CC sm 75 sg 3670016 dm 7 dg 2621440
+CC sm 7 sg 1048577 dm 75 dg 2097153
+CC sm 75 sg 3670017 dm 7 dg 2621441
+MC id 77 c App t node.App pid 8 n app
+GC m 77 g 0 n in o 0
+GC m 77 g 3 n out o 1
+MS id 77 d p=185,43;i=block/browser
+MC id 78 c BVWXC t node.BVWXC pid 8 n bvwxc
+GC m 78 g 0 n directIn o 0
+GC m 78 g 6 n localIn o 0
+GC m 78 g 9 n localOut o 1
+MS id 78 d p=88,221;i=block/switch
+GC m 78 g 2097152 n in i 0 o 0
+GC m 78 g 2097153 n in i 1 o 0
+GC m 78 g 2097154 n in i 2 o 0
+GC m 78 g 3670016 n out i 0 o 1
+GC m 78 g 3670017 n out i 1 o 1
+GC m 78 g 3670018 n out i 2 o 1
+MC id 79 c BVT t node.BVT pid 8 n bvt
+GC m 79 g 0 n in o 0
+GC m 79 g 3 n out o 1
+GC m 79 g 4 n localIn o 0
+GC m 79 g 7 n localOut o 1
+MS id 79 d p=127,128,row;i=block/queue;q=queue
+CC sm 79 sg 3 dm 77 dg 0
+CC sm 77 sg 3 dm 79 dg 0
+CC sm 79 sg 7 dm 78 dg 6
+CC sm 78 sg 9 dm 79 dg 4
+CC sm 8 sg 1048576 dm 78 dg 2097152
+CC sm 78 sg 3670016 dm 8 dg 2621440
+CC sm 8 sg 1048577 dm 78 dg 2097153
+CC sm 78 sg 3670017 dm 8 dg 2621441
+CC sm 8 sg 1048578 dm 78 dg 2097154
+CC sm 78 sg 3670018 dm 8 dg 2621442
+MC id 80 c App t node.App pid 9 n app
+GC m 80 g 0 n in o 0
+GC m 80 g 3 n out o 1
+MS id 80 d p=185,43;i=block/browser
+MC id 81 c BVWXC t node.BVWXC pid 9 n bvwxc
+GC m 81 g 0 n directIn o 0
+GC m 81 g 6 n localIn o 0
+GC m 81 g 9 n localOut o 1
+MS id 81 d p=88,221;i=block/switch
+GC m 81 g 2097152 n in i 0 o 0
+GC m 81 g 2097153 n in i 1 o 0
+GC m 81 g 2097154 n in i 2 o 0
+GC m 81 g 2097155 n in i 3 o 0
+GC m 81 g 3670016 n out i 0 o 1
+GC m 81 g 3670017 n out i 1 o 1
+GC m 81 g 3670018 n out i 2 o 1
+GC m 81 g 3670019 n out i 3 o 1
+MC id 82 c BVT t node.BVT pid 9 n bvt
+GC m 82 g 0 n in o 0
+GC m 82 g 3 n out o 1
+GC m 82 g 4 n localIn o 0
+GC m 82 g 7 n localOut o 1
+MS id 82 d p=127,128,row;i=block/queue;q=queue
+CC sm 82 sg 3 dm 80 dg 0
+CC sm 80 sg 3 dm 82 dg 0
+CC sm 82 sg 7 dm 81 dg 6
+CC sm 81 sg 9 dm 82 dg 4
+CC sm 9 sg 1048576 dm 81 dg 2097152
+CC sm 81 sg 3670016 dm 9 dg 2621440
+CC sm 9 sg 1048577 dm 81 dg 2097153
+CC sm 81 sg 3670017 dm 9 dg 2621441
+CC sm 9 sg 1048578 dm 81 dg 2097154
+CC sm 81 sg 3670018 dm 9 dg 2621442
+CC sm 9 sg 1048579 dm 81 dg 2097155
+CC sm 81 sg 3670019 dm 9 dg 2621443
+MC id 83 c App t node.App pid 10 n app
+GC m 83 g 0 n in o 0
+GC m 83 g 3 n out o 1
+MS id 83 d p=185,43;i=block/browser
+MC id 84 c BVWXC t node.BVWXC pid 10 n bvwxc
+GC m 84 g 0 n directIn o 0
+GC m 84 g 6 n localIn o 0
+GC m 84 g 9 n localOut o 1
+MS id 84 d p=88,221;i=block/switch
+GC m 84 g 2097152 n in i 0 o 0
+GC m 84 g 2097153 n in i 1 o 0
+GC m 84 g 2097154 n in i 2 o 0
+GC m 84 g 3670016 n out i 0 o 1
+GC m 84 g 3670017 n out i 1 o 1
+GC m 84 g 3670018 n out i 2 o 1
+MC id 85 c BVT t node.BVT pid 10 n bvt
+GC m 85 g 0 n in o 0
+GC m 85 g 3 n out o 1
+GC m 85 g 4 n localIn o 0
+GC m 85 g 7 n localOut o 1
+MS id 85 d p=127,128,row;i=block/queue;q=queue
+CC sm 85 sg 3 dm 83 dg 0
+CC sm 83 sg 3 dm 85 dg 0
+CC sm 85 sg 7 dm 84 dg 6
+CC sm 84 sg 9 dm 85 dg 4
+CC sm 10 sg 1048576 dm 84 dg 2097152
+CC sm 84 sg 3670016 dm 10 dg 2621440
+CC sm 10 sg 1048577 dm 84 dg 2097153
+CC sm 84 sg 3670017 dm 10 dg 2621441
+CC sm 10 sg 1048578 dm 84 dg 2097154
+CC sm 84 sg 3670018 dm 10 dg 2621442
+MC id 86 c App t node.App pid 11 n app
+GC m 86 g 0 n in o 0
+GC m 86 g 3 n out o 1
+MS id 86 d p=185,43;i=block/browser
+MC id 87 c BVWXC t node.BVWXC pid 11 n bvwxc
+GC m 87 g 0 n directIn o 0
+GC m 87 g 6 n localIn o 0
+GC m 87 g 9 n localOut o 1
+MS id 87 d p=88,221;i=block/switch
+GC m 87 g 2097152 n in i 0 o 0
+GC m 87 g 2097153 n in i 1 o 0
+GC m 87 g 2097154 n in i 2 o 0
+GC m 87 g 2097155 n in i 3 o 0
+GC m 87 g 3670016 n out i 0 o 1
+GC m 87 g 3670017 n out i 1 o 1
+GC m 87 g 3670018 n out i 2 o 1
+GC m 87 g 3670019 n out i 3 o 1
+MC id 88 c BVT t node.BVT pid 11 n bvt
+GC m 88 g 0 n in o 0
+GC m 88 g 3 n out o 1
+GC m 88 g 4 n localIn o 0
+GC m 88 g 7 n localOut o 1
+MS id 88 d p=127,128,row;i=block/queue;q=queue
+CC sm 88 sg 3 dm 86 dg 0
+CC sm 86 sg 3 dm 88 dg 0
+CC sm 88 sg 7 dm 87 dg 6
+CC sm 87 sg 9 dm 88 dg 4
+CC sm 11 sg 1048576 dm 87 dg 2097152
+CC sm 87 sg 3670016 dm 11 dg 2621440
+CC sm 11 sg 1048577 dm 87 dg 2097153
+CC sm 87 sg 3670017 dm 11 dg 2621441
+CC sm 11 sg 1048578 dm 87 dg 2097154
+CC sm 87 sg 3670018 dm 11 dg 2621442
+CC sm 11 sg 1048579 dm 87 dg 2097155
+CC sm 87 sg 3670019 dm 11 dg 2621443
+MC id 89 c App t node.App pid 12 n app
+GC m 89 g 0 n in o 0
+GC m 89 g 3 n out o 1
+MS id 89 d p=185,43;i=block/browser
+MC id 90 c BVWXC t node.BVWXC pid 12 n bvwxc
+GC m 90 g 0 n directIn o 0
+GC m 90 g 6 n localIn o 0
+GC m 90 g 9 n localOut o 1
+MS id 90 d p=88,221;i=block/switch
+GC m 90 g 2097152 n in i 0 o 0
+GC m 90 g 2097153 n in i 1 o 0
+GC m 90 g 2097154 n in i 2 o 0
+GC m 90 g 3670016 n out i 0 o 1
+GC m 90 g 3670017 n out i 1 o 1
+GC m 90 g 3670018 n out i 2 o 1
+MC id 91 c BVT t node.BVT pid 12 n bvt
+GC m 91 g 0 n in o 0
+GC m 91 g 3 n out o 1
+GC m 91 g 4 n localIn o 0
+GC m 91 g 7 n localOut o 1
+MS id 91 d p=127,128,row;i=block/queue;q=queue
+CC sm 91 sg 3 dm 89 dg 0
+CC sm 89 sg 3 dm 91 dg 0
+CC sm 91 sg 7 dm 90 dg 6
+CC sm 90 sg 9 dm 91 dg 4
+CC sm 12 sg 1048576 dm 90 dg 2097152
+CC sm 90 sg 3670016 dm 12 dg 2621440
+CC sm 12 sg 1048577 dm 90 dg 2097153
+CC sm 90 sg 3670017 dm 12 dg 2621441
+CC sm 12 sg 1048578 dm 90 dg 2097154
+CC sm 90 sg 3670018 dm 12 dg 2621442
+MC id 92 c App t node.App pid 13 n app
+GC m 92 g 0 n in o 0
+GC m 92 g 3 n out o 1
+MS id 92 d p=185,43;i=block/browser
+MC id 93 c BVWXC t node.BVWXC pid 13 n bvwxc
+GC m 93 g 0 n directIn o 0
+GC m 93 g 6 n localIn o 0
+GC m 93 g 9 n localOut o 1
+MS id 93 d p=88,221;i=block/switch
+GC m 93 g 2097152 n in i 0 o 0
+GC m 93 g 2097153 n in i 1 o 0
+GC m 93 g 3670016 n out i 0 o 1
+GC m 93 g 3670017 n out i 1 o 1
+MC id 94 c BVT t node.BVT pid 13 n bvt
+GC m 94 g 0 n in o 0
+GC m 94 g 3 n out o 1
+GC m 94 g 4 n localIn o 0
+GC m 94 g 7 n localOut o 1
+MS id 94 d p=127,128,row;i=block/queue;q=queue
+CC sm 94 sg 3 dm 92 dg 0
+CC sm 92 sg 3 dm 94 dg 0
+CC sm 94 sg 7 dm 93 dg 6
+CC sm 93 sg 9 dm 94 dg 4
+CC sm 13 sg 1048576 dm 93 dg 2097152
+CC sm 93 sg 3670016 dm 13 dg 2621440
+CC sm 13 sg 1048577 dm 93 dg 2097153
+CC sm 93 sg 3670017 dm 13 dg 2621441
+MC id 95 c App t node.App pid 14 n app
+GC m 95 g 0 n in o 0
+GC m 95 g 3 n out o 1
+MS id 95 d p=185,43;i=block/browser
+MC id 96 c BVWXC t node.BVWXC pid 14 n bvwxc
+GC m 96 g 0 n directIn o 0
+GC m 96 g 6 n localIn o 0
+GC m 96 g 9 n localOut o 1
+MS id 96 d p=88,221;i=block/switch
+GC m 96 g 2097152 n in i 0 o 0
+GC m 96 g 2097153 n in i 1 o 0
+GC m 96 g 2097154 n in i 2 o 0
+GC m 96 g 3670016 n out i 0 o 1
+GC m 96 g 3670017 n out i 1 o 1
+GC m 96 g 3670018 n out i 2 o 1
+MC id 97 c BVT t node.BVT pid 14 n bvt
+GC m 97 g 0 n in o 0
+GC m 97 g 3 n out o 1
+GC m 97 g 4 n localIn o 0
+GC m 97 g 7 n localOut o 1
+MS id 97 d p=127,128,row;i=block/queue;q=queue
+CC sm 97 sg 3 dm 95 dg 0
+CC sm 95 sg 3 dm 97 dg 0
+CC sm 97 sg 7 dm 96 dg 6
+CC sm 96 sg 9 dm 97 dg 4
+CC sm 14 sg 1048576 dm 96 dg 2097152
+CC sm 96 sg 3670016 dm 14 dg 2621440
+CC sm 14 sg 1048577 dm 96 dg 2097153
+CC sm 96 sg 3670017 dm 14 dg 2621441
+CC sm 14 sg 1048578 dm 96 dg 2097154
+CC sm 96 sg 3670018 dm 14 dg 2621442
+MC id 98 c App t node.App pid 15 n app
+GC m 98 g 0 n in o 0
+GC m 98 g 3 n out o 1
+MS id 98 d p=185,43;i=block/browser
+MC id 99 c BVWXC t node.BVWXC pid 15 n bvwxc
+GC m 99 g 0 n directIn o 0
+GC m 99 g 6 n localIn o 0
+GC m 99 g 9 n localOut o 1
+MS id 99 d p=88,221;i=block/switch
+GC m 99 g 2097152 n in i 0 o 0
+GC m 99 g 2097153 n in i 1 o 0
+GC m 99 g 2097154 n in i 2 o 0
+GC m 99 g 3670016 n out i 0 o 1
+GC m 99 g 3670017 n out i 1 o 1
+GC m 99 g 3670018 n out i 2 o 1
+MC id 100 c BVT t node.BVT pid 15 n bvt
+GC m 100 g 0 n in o 0
+GC m 100 g 3 n out o 1
+GC m 100 g 4 n localIn o 0
+GC m 100 g 7 n localOut o 1
+MS id 100 d p=127,128,row;i=block/queue;q=queue
+CC sm 100 sg 3 dm 98 dg 0
+CC sm 98 sg 3 dm 100 dg 0
+CC sm 100 sg 7 dm 99 dg 6
+CC sm 99 sg 9 dm 100 dg 4
+CC sm 15 sg 1048576 dm 99 dg 2097152
+CC sm 99 sg 3670016 dm 15 dg 2621440
+CC sm 15 sg 1048577 dm 99 dg 2097153
+CC sm 99 sg 3670017 dm 15 dg 2621441
+CC sm 15 sg 1048578 dm 99 dg 2097154
+CC sm 99 sg 3670018 dm 15 dg 2621442
+MC id 101 c SpectrumManager t node.SpectrumManager pid 16 n spectrum
+MS id 101 d ""
+MC id 102 c DisplayManager t node.DisplayManager pid 16 n display
+MS id 102 d ""
+MC id 103 c DynamicRSA t node.DynamicRSA pid 16 n rsa_control
+GC m 103 g 0 n in o 0
+GC m 103 g 3 n directTopoOut o 1
+MS id 103 d ""
+MC id 104 c TopologyManager t node.TopologyManager pid 16 n routing
+GC m 104 g 0 n in o 0
+MS id 104 d ""
+CC sm 16 sg 0 dm 103 dg 0
+CC sm 103 sg 3 dm 104 dg 0
 MB sm 1 tm 2 m initialize(0)
 ME
-MB sm 1 tm 17 m initialize(0)
-ME
-MB sm 1 tm 18 m initialize(0)
-ME
-MB sm 1 tm 19 m initialize(0)
-ME
-MB sm 1 tm 3 m initialize(0)
-ME
-MB sm 1 tm 20 m initialize(0)
-ME
-MB sm 1 tm 21 m initialize(0)
-ME
-MB sm 1 tm 22 m initialize(0)
-ME
-MB sm 1 tm 4 m initialize(0)
-ME
-MB sm 1 tm 23 m initialize(0)
-ME
-MB sm 1 tm 24 m initialize(0)
-ME
-MB sm 1 tm 25 m initialize(0)
-ME
-MB sm 1 tm 5 m initialize(0)
-ME
-MB sm 1 tm 26 m initialize(0)
-ME
-MB sm 1 tm 27 m initialize(0)
-ME
-MB sm 1 tm 28 m initialize(0)
-ME
-MB sm 1 tm 6 m initialize(0)
-ME
-MB sm 1 tm 29 m initialize(0)
-ME
-MB sm 1 tm 30 m initialize(0)
-ME
-MB sm 1 tm 31 m initialize(0)
-ME
-MB sm 1 tm 7 m initialize(0)
-ME
-MB sm 1 tm 32 m initialize(0)
-ME
-MB sm 1 tm 33 m initialize(0)
-ME
-MB sm 1 tm 34 m initialize(0)
-ME
-MB sm 1 tm 8 m initialize(0)
-ME
-MB sm 1 tm 35 m initialize(0)
-ME
-MB sm 1 tm 36 m initialize(0)
-ME
-MB sm 1 tm 37 m initialize(0)
-ME
-MB sm 1 tm 9 m initialize(0)
-ME
-MB sm 1 tm 38 m initialize(0)
-ME
-MB sm 1 tm 39 m initialize(0)
-ME
-MB sm 1 tm 40 m initialize(0)
-ME
-MB sm 1 tm 10 m initialize(0)
-ME
-MB sm 1 tm 41 m initialize(0)
-ME
-MB sm 1 tm 42 m initialize(0)
-ME
-MB sm 1 tm 43 m initialize(0)
-ME
-MB sm 1 tm 11 m initialize(0)
-ME
-MB sm 1 tm 44 m initialize(0)
-ME
-MB sm 1 tm 45 m initialize(0)
-ME
-MB sm 1 tm 46 m initialize(0)
-ME
-MB sm 1 tm 12 m initialize(0)
-ME
-MB sm 1 tm 47 m initialize(0)
-ME
-MB sm 1 tm 48 m initialize(0)
-ME
-MB sm 1 tm 49 m initialize(0)
-ME
-MB sm 1 tm 13 m initialize(0)
-ME
-MB sm 1 tm 50 m initialize(0)
-ME
-MB sm 1 tm 51 m initialize(0)
-ME
-MB sm 1 tm 52 m initialize(0)
-ME
-MB sm 1 tm 14 m initialize(0)
-ME
-MB sm 1 tm 53 m initialize(0)
-ME
-MB sm 1 tm 54 m initialize(0)
-ME
-MB sm 1 tm 55 m initialize(0)
-ME
-MB sm 1 tm 15 m initialize(0)
-ME
-MB sm 1 tm 56 m initialize(0)
-ME
-MB sm 1 tm 57 m initialize(0)
-ME
-MB sm 1 tm 58 m initialize(0)
-ME
-MB sm 1 tm 16 m initialize(0)
-ME
 MB sm 1 tm 59 m initialize(0)
+- INFO (App)Nsfnet.node[0].app:only one message created, id :  59
+CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n msg-0 pe -1
+BS id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n msg-0 pe 0
+ES t 0
 ME
 MB sm 1 tm 60 m initialize(0)
 ME
 MB sm 1 tm 61 m initialize(0)
 ME
+MB sm 1 tm 3 m initialize(0)
+ME
 MB sm 1 tm 62 m initialize(0)
 ME
-MB sm 1 tm 59 m initialize(1)
-- INFO (TopologyManager)Nsfnet.controller.routing: Topology Manager, stage 1 
+MB sm 1 tm 63 m initialize(0)
 ME
-MB sm 1 tm 60 m initialize(1)
+MB sm 1 tm 64 m initialize(0)
+ME
+MB sm 1 tm 4 m initialize(0)
+ME
+MB sm 1 tm 65 m initialize(0)
+ME
+MB sm 1 tm 66 m initialize(0)
+ME
+MB sm 1 tm 67 m initialize(0)
+ME
+MB sm 1 tm 5 m initialize(0)
+ME
+MB sm 1 tm 68 m initialize(0)
+ME
+MB sm 1 tm 69 m initialize(0)
+ME
+MB sm 1 tm 70 m initialize(0)
+ME
+MB sm 1 tm 6 m initialize(0)
+ME
+MB sm 1 tm 71 m initialize(0)
+ME
+MB sm 1 tm 72 m initialize(0)
+ME
+MB sm 1 tm 73 m initialize(0)
+ME
+MB sm 1 tm 7 m initialize(0)
+ME
+MB sm 1 tm 74 m initialize(0)
+ME
+MB sm 1 tm 75 m initialize(0)
+ME
+MB sm 1 tm 76 m initialize(0)
+ME
+MB sm 1 tm 8 m initialize(0)
+ME
+MB sm 1 tm 77 m initialize(0)
+ME
+MB sm 1 tm 78 m initialize(0)
+ME
+MB sm 1 tm 79 m initialize(0)
+ME
+MB sm 1 tm 9 m initialize(0)
+ME
+MB sm 1 tm 80 m initialize(0)
+ME
+MB sm 1 tm 81 m initialize(0)
+ME
+MB sm 1 tm 82 m initialize(0)
+ME
+MB sm 1 tm 10 m initialize(0)
+ME
+MB sm 1 tm 83 m initialize(0)
+ME
+MB sm 1 tm 84 m initialize(0)
+ME
+MB sm 1 tm 85 m initialize(0)
+ME
+MB sm 1 tm 11 m initialize(0)
+ME
+MB sm 1 tm 86 m initialize(0)
+ME
+MB sm 1 tm 87 m initialize(0)
+ME
+MB sm 1 tm 88 m initialize(0)
+ME
+MB sm 1 tm 12 m initialize(0)
+ME
+MB sm 1 tm 89 m initialize(0)
+ME
+MB sm 1 tm 90 m initialize(0)
+ME
+MB sm 1 tm 91 m initialize(0)
+ME
+MB sm 1 tm 13 m initialize(0)
+ME
+MB sm 1 tm 92 m initialize(0)
+ME
+MB sm 1 tm 93 m initialize(0)
+ME
+MB sm 1 tm 94 m initialize(0)
+ME
+MB sm 1 tm 14 m initialize(0)
+ME
+MB sm 1 tm 95 m initialize(0)
+ME
+MB sm 1 tm 96 m initialize(0)
+ME
+MB sm 1 tm 97 m initialize(0)
+ME
+MB sm 1 tm 15 m initialize(0)
+ME
+MB sm 1 tm 98 m initialize(0)
+ME
+MB sm 1 tm 99 m initialize(0)
+ME
+MB sm 1 tm 100 m initialize(0)
+ME
+MB sm 1 tm 16 m initialize(0)
+ME
+MB sm 1 tm 101 m initialize(0)
+ME
+MB sm 1 tm 102 m initialize(0)
+ME
+MB sm 1 tm 103 m initialize(0)
+ME
+MB sm 1 tm 104 m initialize(0)
+ME
+MB sm 1 tm 101 m initialize(1)
 - INFO (SpectrumManager)Nsfnet.controller.spectrum: Spectrum Manager, stage 1 
 ME
-MB sm 1 tm 61 m initialize(1)
+MB sm 1 tm 102 m initialize(1)
 - INFO (DisplayManager)Nsfnet.controller.display: Display Manager, stage 1 
-- INFO (DisplayManager)Nsfnet.controller.display:0,0
-- INFO (DisplayManager)Nsfnet.controller.display:0,1
-- INFO (DisplayManager)Nsfnet.controller.display:0,2
-- INFO (DisplayManager)Nsfnet.controller.display:0,3
-- INFO (DisplayManager)Nsfnet.controller.display:0,4
-- INFO (DisplayManager)Nsfnet.controller.display:0,5
-- INFO (DisplayManager)Nsfnet.controller.display:0,6
-- INFO (DisplayManager)Nsfnet.controller.display:0,7
-- INFO (DisplayManager)Nsfnet.controller.display:0,8
-- INFO (DisplayManager)Nsfnet.controller.display:0,9
-- INFO (DisplayManager)Nsfnet.controller.display:1,0
-- INFO (DisplayManager)Nsfnet.controller.display:1,1
-- INFO (DisplayManager)Nsfnet.controller.display:1,2
-- INFO (DisplayManager)Nsfnet.controller.display:1,3
-- INFO (DisplayManager)Nsfnet.controller.display:1,4
-- INFO (DisplayManager)Nsfnet.controller.display:1,5
-- INFO (DisplayManager)Nsfnet.controller.display:1,6
-- INFO (DisplayManager)Nsfnet.controller.display:1,7
-- INFO (DisplayManager)Nsfnet.controller.display:1,8
-- INFO (DisplayManager)Nsfnet.controller.display:1,9
-- INFO (DisplayManager)Nsfnet.controller.display:2,0
-- INFO (DisplayManager)Nsfnet.controller.display:2,1
-- INFO (DisplayManager)Nsfnet.controller.display:2,2
-- INFO (DisplayManager)Nsfnet.controller.display:2,3
-- INFO (DisplayManager)Nsfnet.controller.display:2,4
-- INFO (DisplayManager)Nsfnet.controller.display:2,5
-- INFO (DisplayManager)Nsfnet.controller.display:2,6
-- INFO (DisplayManager)Nsfnet.controller.display:2,7
-- INFO (DisplayManager)Nsfnet.controller.display:2,8
-- INFO (DisplayManager)Nsfnet.controller.display:2,9
-- INFO (DisplayManager)Nsfnet.controller.display:3,0
-- INFO (DisplayManager)Nsfnet.controller.display:3,1
-- INFO (DisplayManager)Nsfnet.controller.display:3,2
-- INFO (DisplayManager)Nsfnet.controller.display:3,3
-- INFO (DisplayManager)Nsfnet.controller.display:3,4
-- INFO (DisplayManager)Nsfnet.controller.display:3,5
-- INFO (DisplayManager)Nsfnet.controller.display:3,6
-- INFO (DisplayManager)Nsfnet.controller.display:3,7
-- INFO (DisplayManager)Nsfnet.controller.display:3,8
-- INFO (DisplayManager)Nsfnet.controller.display:3,9
-- INFO (DisplayManager)Nsfnet.controller.display:4,0
-- INFO (DisplayManager)Nsfnet.controller.display:4,1
-- INFO (DisplayManager)Nsfnet.controller.display:4,2
-- INFO (DisplayManager)Nsfnet.controller.display:4,3
-- INFO (DisplayManager)Nsfnet.controller.display:4,4
-- INFO (DisplayManager)Nsfnet.controller.display:4,5
-- INFO (DisplayManager)Nsfnet.controller.display:4,6
-- INFO (DisplayManager)Nsfnet.controller.display:4,7
-- INFO (DisplayManager)Nsfnet.controller.display:4,8
-- INFO (DisplayManager)Nsfnet.controller.display:4,9
-- INFO (DisplayManager)Nsfnet.controller.display:5,0
-- INFO (DisplayManager)Nsfnet.controller.display:5,1
-- INFO (DisplayManager)Nsfnet.controller.display:5,2
-- INFO (DisplayManager)Nsfnet.controller.display:5,3
-- INFO (DisplayManager)Nsfnet.controller.display:5,4
-- INFO (DisplayManager)Nsfnet.controller.display:5,5
-- INFO (DisplayManager)Nsfnet.controller.display:5,6
-- INFO (DisplayManager)Nsfnet.controller.display:5,7
-- INFO (DisplayManager)Nsfnet.controller.display:5,8
-- INFO (DisplayManager)Nsfnet.controller.display:5,9
-- INFO (DisplayManager)Nsfnet.controller.display:6,0
-- INFO (DisplayManager)Nsfnet.controller.display:6,1
-- INFO (DisplayManager)Nsfnet.controller.display:6,2
-- INFO (DisplayManager)Nsfnet.controller.display:6,3
-- INFO (DisplayManager)Nsfnet.controller.display:6,4
-- INFO (DisplayManager)Nsfnet.controller.display:6,5
-- INFO (DisplayManager)Nsfnet.controller.display:6,6
-- INFO (DisplayManager)Nsfnet.controller.display:6,7
-- INFO (DisplayManager)Nsfnet.controller.display:6,8
-- INFO (DisplayManager)Nsfnet.controller.display:6,9
-- INFO (DisplayManager)Nsfnet.controller.display:7,0
-- INFO (DisplayManager)Nsfnet.controller.display:7,1
-- INFO (DisplayManager)Nsfnet.controller.display:7,2
-- INFO (DisplayManager)Nsfnet.controller.display:7,3
-- INFO (DisplayManager)Nsfnet.controller.display:7,4
-- INFO (DisplayManager)Nsfnet.controller.display:7,5
-- INFO (DisplayManager)Nsfnet.controller.display:7,6
-- INFO (DisplayManager)Nsfnet.controller.display:7,7
-- INFO (DisplayManager)Nsfnet.controller.display:7,8
-- INFO (DisplayManager)Nsfnet.controller.display:7,9
-- INFO (DisplayManager)Nsfnet.controller.display:8,0
-- INFO (DisplayManager)Nsfnet.controller.display:8,1
-- INFO (DisplayManager)Nsfnet.controller.display:8,2
-- INFO (DisplayManager)Nsfnet.controller.display:8,3
-- INFO (DisplayManager)Nsfnet.controller.display:8,4
-- INFO (DisplayManager)Nsfnet.controller.display:8,5
-- INFO (DisplayManager)Nsfnet.controller.display:8,6
-- INFO (DisplayManager)Nsfnet.controller.display:8,7
-- INFO (DisplayManager)Nsfnet.controller.display:8,8
-- INFO (DisplayManager)Nsfnet.controller.display:8,9
-- INFO (DisplayManager)Nsfnet.controller.display:9,0
-- INFO (DisplayManager)Nsfnet.controller.display:9,1
-- INFO (DisplayManager)Nsfnet.controller.display:9,2
-- INFO (DisplayManager)Nsfnet.controller.display:9,3
-- INFO (DisplayManager)Nsfnet.controller.display:9,4
-- INFO (DisplayManager)Nsfnet.controller.display:9,5
-- INFO (DisplayManager)Nsfnet.controller.display:9,6
-- INFO (DisplayManager)Nsfnet.controller.display:9,7
-- INFO (DisplayManager)Nsfnet.controller.display:9,8
-- INFO (DisplayManager)Nsfnet.controller.display:9,9
-- INFO (DisplayManager)Nsfnet.controller.display:10,0
-- INFO (DisplayManager)Nsfnet.controller.display:10,1
-- INFO (DisplayManager)Nsfnet.controller.display:10,2
-- INFO (DisplayManager)Nsfnet.controller.display:10,3
-- INFO (DisplayManager)Nsfnet.controller.display:10,4
-- INFO (DisplayManager)Nsfnet.controller.display:10,5
-- INFO (DisplayManager)Nsfnet.controller.display:10,6
-- INFO (DisplayManager)Nsfnet.controller.display:10,7
-- INFO (DisplayManager)Nsfnet.controller.display:10,8
-- INFO (DisplayManager)Nsfnet.controller.display:10,9
-- INFO (DisplayManager)Nsfnet.controller.display:11,0
-- INFO (DisplayManager)Nsfnet.controller.display:11,1
-- INFO (DisplayManager)Nsfnet.controller.display:11,2
-- INFO (DisplayManager)Nsfnet.controller.display:11,3
-- INFO (DisplayManager)Nsfnet.controller.display:11,4
-- INFO (DisplayManager)Nsfnet.controller.display:11,5
-- INFO (DisplayManager)Nsfnet.controller.display:11,6
-- INFO (DisplayManager)Nsfnet.controller.display:11,7
-- INFO (DisplayManager)Nsfnet.controller.display:11,8
-- INFO (DisplayManager)Nsfnet.controller.display:11,9
-- INFO (DisplayManager)Nsfnet.controller.display:12,0
-- INFO (DisplayManager)Nsfnet.controller.display:12,1
-- INFO (DisplayManager)Nsfnet.controller.display:12,2
-- INFO (DisplayManager)Nsfnet.controller.display:12,3
-- INFO (DisplayManager)Nsfnet.controller.display:12,4
-- INFO (DisplayManager)Nsfnet.controller.display:12,5
-- INFO (DisplayManager)Nsfnet.controller.display:12,6
-- INFO (DisplayManager)Nsfnet.controller.display:12,7
-- INFO (DisplayManager)Nsfnet.controller.display:12,8
-- INFO (DisplayManager)Nsfnet.controller.display:12,9
-- INFO (DisplayManager)Nsfnet.controller.display:13,0
-- INFO (DisplayManager)Nsfnet.controller.display:13,1
-- INFO (DisplayManager)Nsfnet.controller.display:13,2
-- INFO (DisplayManager)Nsfnet.controller.display:13,3
-- INFO (DisplayManager)Nsfnet.controller.display:13,4
-- INFO (DisplayManager)Nsfnet.controller.display:13,5
-- INFO (DisplayManager)Nsfnet.controller.display:13,6
-- INFO (DisplayManager)Nsfnet.controller.display:13,7
-- INFO (DisplayManager)Nsfnet.controller.display:13,8
-- INFO (DisplayManager)Nsfnet.controller.display:13,9
-- INFO (DisplayManager)Nsfnet.controller.display:14,0
-- INFO (DisplayManager)Nsfnet.controller.display:14,1
-- INFO (DisplayManager)Nsfnet.controller.display:14,2
-- INFO (DisplayManager)Nsfnet.controller.display:14,3
-- INFO (DisplayManager)Nsfnet.controller.display:14,4
-- INFO (DisplayManager)Nsfnet.controller.display:14,5
-- INFO (DisplayManager)Nsfnet.controller.display:14,6
-- INFO (DisplayManager)Nsfnet.controller.display:14,7
-- INFO (DisplayManager)Nsfnet.controller.display:14,8
-- INFO (DisplayManager)Nsfnet.controller.display:14,9
-- INFO (DisplayManager)Nsfnet.controller.display:15,0
-- INFO (DisplayManager)Nsfnet.controller.display:15,1
-- INFO (DisplayManager)Nsfnet.controller.display:15,2
-- INFO (DisplayManager)Nsfnet.controller.display:15,3
-- INFO (DisplayManager)Nsfnet.controller.display:15,4
-- INFO (DisplayManager)Nsfnet.controller.display:15,5
-- INFO (DisplayManager)Nsfnet.controller.display:15,6
-- INFO (DisplayManager)Nsfnet.controller.display:15,7
-- INFO (DisplayManager)Nsfnet.controller.display:15,8
-- INFO (DisplayManager)Nsfnet.controller.display:15,9
-- INFO (DisplayManager)Nsfnet.controller.display:16,0
-- INFO (DisplayManager)Nsfnet.controller.display:16,1
-- INFO (DisplayManager)Nsfnet.controller.display:16,2
-- INFO (DisplayManager)Nsfnet.controller.display:16,3
-- INFO (DisplayManager)Nsfnet.controller.display:16,4
-- INFO (DisplayManager)Nsfnet.controller.display:16,5
-- INFO (DisplayManager)Nsfnet.controller.display:16,6
-- INFO (DisplayManager)Nsfnet.controller.display:16,7
-- INFO (DisplayManager)Nsfnet.controller.display:16,8
-- INFO (DisplayManager)Nsfnet.controller.display:16,9
-- INFO (DisplayManager)Nsfnet.controller.display:17,0
-- INFO (DisplayManager)Nsfnet.controller.display:17,1
-- INFO (DisplayManager)Nsfnet.controller.display:17,2
-- INFO (DisplayManager)Nsfnet.controller.display:17,3
-- INFO (DisplayManager)Nsfnet.controller.display:17,4
-- INFO (DisplayManager)Nsfnet.controller.display:17,5
-- INFO (DisplayManager)Nsfnet.controller.display:17,6
-- INFO (DisplayManager)Nsfnet.controller.display:17,7
-- INFO (DisplayManager)Nsfnet.controller.display:17,8
-- INFO (DisplayManager)Nsfnet.controller.display:17,9
-- INFO (DisplayManager)Nsfnet.controller.display:18,0
-- INFO (DisplayManager)Nsfnet.controller.display:18,1
-- INFO (DisplayManager)Nsfnet.controller.display:18,2
-- INFO (DisplayManager)Nsfnet.controller.display:18,3
-- INFO (DisplayManager)Nsfnet.controller.display:18,4
-- INFO (DisplayManager)Nsfnet.controller.display:18,5
-- INFO (DisplayManager)Nsfnet.controller.display:18,6
-- INFO (DisplayManager)Nsfnet.controller.display:18,7
-- INFO (DisplayManager)Nsfnet.controller.display:18,8
-- INFO (DisplayManager)Nsfnet.controller.display:18,9
-- INFO (DisplayManager)Nsfnet.controller.display:19,0
-- INFO (DisplayManager)Nsfnet.controller.display:19,1
-- INFO (DisplayManager)Nsfnet.controller.display:19,2
-- INFO (DisplayManager)Nsfnet.controller.display:19,3
-- INFO (DisplayManager)Nsfnet.controller.display:19,4
-- INFO (DisplayManager)Nsfnet.controller.display:19,5
-- INFO (DisplayManager)Nsfnet.controller.display:19,6
-- INFO (DisplayManager)Nsfnet.controller.display:19,7
-- INFO (DisplayManager)Nsfnet.controller.display:19,8
-- INFO (DisplayManager)Nsfnet.controller.display:19,9
-- INFO (DisplayManager)Nsfnet.controller.display:20,0
-- INFO (DisplayManager)Nsfnet.controller.display:20,1
-- INFO (DisplayManager)Nsfnet.controller.display:20,2
-- INFO (DisplayManager)Nsfnet.controller.display:20,3
-- INFO (DisplayManager)Nsfnet.controller.display:20,4
-- INFO (DisplayManager)Nsfnet.controller.display:20,5
-- INFO (DisplayManager)Nsfnet.controller.display:20,6
-- INFO (DisplayManager)Nsfnet.controller.display:20,7
-- INFO (DisplayManager)Nsfnet.controller.display:20,8
-- INFO (DisplayManager)Nsfnet.controller.display:20,9
 ME
-MB sm 1 tm 59 m initialize(2)
+MB sm 1 tm 104 m initialize(1)
+- INFO (TopologyManager)Nsfnet.controller.routing: Topology Manager, stage 1 
 ME
-MB sm 1 tm 60 m initialize(2)
+MB sm 1 tm 101 m initialize(2)
 ME
-MB sm 1 tm 61 m initialize(2)
+MB sm 1 tm 102 m initialize(2)
 ME
+MB sm 1 tm 104 m initialize(2)
+ME
+
+E # 1 t 0 m 59 ce 0 msg 0
+BS id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n msg-0 pe 1
+SH sm 59 sg 3
+ES t 0
+CL id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n msg-0 pe 1 cid 1
