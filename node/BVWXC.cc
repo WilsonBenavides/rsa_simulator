@@ -15,7 +15,8 @@ using namespace omnetpp;
 class BVWXC : public cSimpleModule
 {
 private:
-    std::pair<int, int> rtable;
+    typedef std::map<int, int> RoutingTable;  // destaddr -> gateindex
+    std::map<int, int> rtable;
 
 protected:
     virtual void forwardMessage(cMessage *msg);
@@ -34,8 +35,12 @@ void BVWXC::initialize()
 void BVWXC::handleMessage(cMessage *msg)
 {
     int index = getParentModule()->par("address");
-    if (index == 10) {
+    OpticalMsg *opmsg = check_and_cast<OpticalMsg*>(msg);
+    int ss = getParentModule()->par("address");
+    EV << "address : " << ss << endl;
+    if (opmsg->getDestAddr() == ss) {
         //Message arrived
+        bubble("message arrived!");
         EV << "Message : " << msg << "  arrived!\n";
         delete msg;
     }
@@ -61,42 +66,43 @@ void BVWXC::forwardMessage(cMessage *msg)
     OpticalMsg *opmsg = check_and_cast<OpticalMsg*>(msg);
     int srcAddress = opmsg->getSrcAddr();
     int dstAddress = opmsg->getDestAddr();
-    std::vector<std::string> dstGate;
     EV << "source address " << srcAddress << endl;
+    int num = getParentModule()->par("address");
+    std::string csvName = "./node/LocalRouting" + std::to_string(num) + ".csv";
+    std::vector<std::pair<std::string, std::vector<int>>> two_cols = read_csv(csvName);
 
-    std::string myText;
-    std::ifstream myReadFile("./node/LocalRouting0.txt");
+//    EV << "col 1 : " << two_cols.at(0).first << "  col 2 : " << two_cols.at(1).first << endl;
+//    EV << two_cols.at(0).second.at(0) << " :   ,   : " << two_cols.at(1).second.at(0) << endl;
+//    EV << two_cols.at(0).second.at(1) << " :   ,   : " << two_cols.at(1).second.at(1) << endl;
+//    EV << two_cols.at(0).second.at(2) << " :   ,   : " << two_cols.at(1).second.at(2) << endl;
+//    EV << two_cols.at(0).second.at(3) << " :   ,   : " << two_cols.at(1).second.at(3) << endl;
 
-    while (std::getline(myReadFile, myText)) {
-        EV << myText << endl;
-        std::stringstream ss(myText);
-        std::string tmp;
-        int dstaddr = 0;
-        int gate = 0;
-        while (std::getline(ss, tmp, ',')) {
-            dstGate.push_back(tmp);
-        }
-    }
-
-    std::vector<std::pair<std::string, std::vector<int>>> two_cols = read_csv("./node/LocalRouting0.csv");
-
-    EV << "col 1 : " << two_cols.at(0).first << "  col 2 : " << two_cols.at(1).first << endl;
-    EV << two_cols.at(0).second.at(0) << " :   ,   : " << two_cols.at(1).second.at(0) << endl;
-    EV << two_cols.at(0).second.at(1) << " :   ,   : " << two_cols.at(1).second.at(1) << endl;
-    EV << two_cols.at(0).second.at(2) << " :   ,   : " << two_cols.at(1).second.at(2) << endl;
-    EV << two_cols.at(0).second.at(3) << " :   ,   : " << two_cols.at(1).second.at(3) << endl;
+    std::vector<int> gates, dstAddr;
 
     int stop = 13;
     for (int j = 0; j < two_cols.size(); j++) {
         for (int i = 0; i < stop; i++) {
 
-            EV << "Second : " << two_cols.at(j).second.at(i) << endl;
+            if (j == 1) {
+//                EV << "Second : " << two_cols.at(j).second.at(i) << endl;
+                gates.push_back(two_cols.at(j).second.at(i));
+            }
+
+            if (j == 0) {
+//                EV << "Second : " << two_cols.at(j).second.at(i) << endl;
+                dstAddr.push_back(two_cols.at(j).second.at(i));
+            }
+
         }
     }
+    for (int i = 0; i < gates.size(); ++i)
+        rtable[dstAddr[i]] = gates[i];
 
+    RoutingTable::iterator it = rtable.find(dstAddress);
+    int outGateIndex = (*it).second;
 
-
-    myReadFile.close();
+    EV << "forwarding packet " << opmsg->getName() << " on gate index " << outGateIndex << endl;
+    send(opmsg, "out", outGateIndex);
 
 }
 

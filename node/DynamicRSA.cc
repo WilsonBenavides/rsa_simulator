@@ -46,11 +46,15 @@ void DynamicRSA::handleMessage(cMessage *msg)
     cTopology *topo = new cTopology("topo");
 
     topo->extractByModulePath(cStringTokenizer("**.node[*]").asVector());
-    std::string fileName = "./node/GeneralTableRouting.txt";
+    std::string fileName = "./node/GeneralTableRouting.csv";
     std::ofstream generalRoutingTable(fileName);
 
-    for (int i = 0; i < 3; i++) {
-        std::ofstream localRoutingTable("./node/LocalRouting" + std::to_string(i) + ".txt");
+    generalRoutingTable << "src" << "," << "dst" << "," << "gate" << endl;
+
+    for (int i = 0; i < topo->getNumNodes(); i++) {
+        std::ofstream localRoutingTable("./node/LocalRouting" + std::to_string(i) + ".csv");
+        localRoutingTable << "dst" << "," << "gate" << endl;
+
         cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", i));
 
         int srcAdd = srcNode->getModule()->par("address");
@@ -69,7 +73,7 @@ void DynamicRSA::handleMessage(cMessage *msg)
             int dstAddress = topo->getNode(j)->getModule()->par("address");
             int gateIndex = parentModuleGate->getIndex();
 
-            generalRoutingTable << srcAddress <<","<< dstAddress <<","<< gateIndex << endl;
+            generalRoutingTable << srcAddress << "," << dstAddress << "," << gateIndex << endl;
             localRoutingTable << dstAddress << "," << gateIndex << endl;
             EV << "  source address : " << srcAddress << " destination address : " << dstAddress << "  gate : " << gateIndex << endl;
         }
