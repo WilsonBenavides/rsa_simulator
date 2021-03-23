@@ -11,10 +11,11 @@
 //
 // Represents a packet in the network.
 //
-packet Packet
+packet OpticalMsg
 {
-    int srcAddr @packetData;
-    int destAddr @packetData;
-    int hopCount @packetData;
+    int srcAddr;
+    int destAddr;
+    int slotReq;
+    int hopCount = 0;
 }
 

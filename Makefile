@@ -38,11 +38,11 @@ OBJS = \
     $O/node/DynamicRSA.o \
     $O/node/SpectrumManager.o \
     $O/node/TopologyManager.o \
-    $O/node/Packet_m.o
+    $O/node/OpticalMsg_m.o
 
 # Message files
 MSGFILES = \
-    node/Packet.msg
+    node/OpticalMsg.msg
 
 # SM files
 SMFILES =

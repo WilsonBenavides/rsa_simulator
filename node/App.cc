@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <omnetpp.h>
-#include "Packet_m.h"
+#include "OpticalMsg_m.h"
 
 using namespace omnetpp;
 
@@ -37,9 +37,20 @@ void App::initialize()
     if (getId() == 59) {
         // Boot the process scheduling the initial message as a self-message.
         EV << "only one message created, id :  " << getId() << endl;
+
         char msgname[20];
-        sprintf(msgname, "msg-%i", getIndex());
-        cMessage *msg = new cMessage(msgname);
+        int src = getIndex();  // our module index
+        int size = getParentModule()->getVectorSize();
+        int dst = intuniform(0, size-2);
+        int slreq = intuniform(1, 3);
+
+        EV << "vector size : "<< getParentModule()->getVectorSize() << endl;
+        sprintf(msgname, "opt-%i-to-%i", src, dst);
+        OpticalMsg *msg = new OpticalMsg(msgname);
+        msg->setSrcAddr(src);
+        msg->setDestAddr(dst);
+        msg->setSlotReq(slreq);
+
         scheduleAt(0.0, msg);
     }
 }

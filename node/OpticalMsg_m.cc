@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from node/Packet.msg.
+// Generated file, do not edit! Created by nedtool 5.6 from node/OpticalMsg.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,7 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
-#include "Packet_m.h"
+#include "OpticalMsg_m.h"
 
 namespace omnetpp {
 
@@ -206,22 +206,22 @@ inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
     return out;
 }
 
-Register_Class(Packet)
+Register_Class(OpticalMsg)
 
-Packet::Packet(const char *name, short kind) : ::omnetpp::cPacket(name, kind)
+OpticalMsg::OpticalMsg(const char *name, short kind) : ::omnetpp::cPacket(name, kind)
 {
 }
 
-Packet::Packet(const Packet& other) : ::omnetpp::cPacket(other)
+OpticalMsg::OpticalMsg(const OpticalMsg& other) : ::omnetpp::cPacket(other)
 {
     copy(other);
 }
 
-Packet::~Packet()
+OpticalMsg::~OpticalMsg()
 {
 }
 
-Packet& Packet::operator=(const Packet& other)
+OpticalMsg& OpticalMsg::operator=(const OpticalMsg& other)
 {
     if (this == &other) return *this;
     ::omnetpp::cPacket::operator=(other);
@@ -229,71 +229,85 @@ Packet& Packet::operator=(const Packet& other)
     return *this;
 }
 
-void Packet::copy(const Packet& other)
+void OpticalMsg::copy(const OpticalMsg& other)
 {
     this->srcAddr = other.srcAddr;
     this->destAddr = other.destAddr;
+    this->slotReq = other.slotReq;
     this->hopCount = other.hopCount;
 }
 
-void Packet::parsimPack(omnetpp::cCommBuffer *b) const
+void OpticalMsg::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::omnetpp::cPacket::parsimPack(b);
     doParsimPacking(b,this->srcAddr);
     doParsimPacking(b,this->destAddr);
+    doParsimPacking(b,this->slotReq);
     doParsimPacking(b,this->hopCount);
 }
 
-void Packet::parsimUnpack(omnetpp::cCommBuffer *b)
+void OpticalMsg::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::omnetpp::cPacket::parsimUnpack(b);
     doParsimUnpacking(b,this->srcAddr);
     doParsimUnpacking(b,this->destAddr);
+    doParsimUnpacking(b,this->slotReq);
     doParsimUnpacking(b,this->hopCount);
 }
 
-int Packet::getSrcAddr() const
+int OpticalMsg::getSrcAddr() const
 {
     return this->srcAddr;
 }
 
-void Packet::setSrcAddr(int srcAddr)
+void OpticalMsg::setSrcAddr(int srcAddr)
 {
     this->srcAddr = srcAddr;
 }
 
-int Packet::getDestAddr() const
+int OpticalMsg::getDestAddr() const
 {
     return this->destAddr;
 }
 
-void Packet::setDestAddr(int destAddr)
+void OpticalMsg::setDestAddr(int destAddr)
 {
     this->destAddr = destAddr;
 }
 
-int Packet::getHopCount() const
+int OpticalMsg::getSlotReq() const
+{
+    return this->slotReq;
+}
+
+void OpticalMsg::setSlotReq(int slotReq)
+{
+    this->slotReq = slotReq;
+}
+
+int OpticalMsg::getHopCount() const
 {
     return this->hopCount;
 }
 
-void Packet::setHopCount(int hopCount)
+void OpticalMsg::setHopCount(int hopCount)
 {
     this->hopCount = hopCount;
 }
 
-class PacketDescriptor : public omnetpp::cClassDescriptor
+class OpticalMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
     mutable const char **propertynames;
     enum FieldConstants {
         FIELD_srcAddr,
         FIELD_destAddr,
+        FIELD_slotReq,
         FIELD_hopCount,
     };
   public:
-    PacketDescriptor();
-    virtual ~PacketDescriptor();
+    OpticalMsgDescriptor();
+    virtual ~OpticalMsgDescriptor();
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
@@ -315,24 +329,24 @@ class PacketDescriptor : public omnetpp::cClassDescriptor
     virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
 };
 
-Register_ClassDescriptor(PacketDescriptor)
+Register_ClassDescriptor(OpticalMsgDescriptor)
 
-PacketDescriptor::PacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(Packet)), "omnetpp::cPacket")
+OpticalMsgDescriptor::OpticalMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(OpticalMsg)), "omnetpp::cPacket")
 {
     propertynames = nullptr;
 }
 
-PacketDescriptor::~PacketDescriptor()
+OpticalMsgDescriptor::~OpticalMsgDescriptor()
 {
     delete[] propertynames;
 }
 
-bool PacketDescriptor::doesSupport(omnetpp::cObject *obj) const
+bool OpticalMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 {
-    return dynamic_cast<Packet *>(obj)!=nullptr;
+    return dynamic_cast<OpticalMsg *>(obj)!=nullptr;
 }
 
-const char **PacketDescriptor::getPropertyNames() const
+const char **OpticalMsgDescriptor::getPropertyNames() const
 {
     if (!propertynames) {
         static const char *names[] = {  nullptr };
@@ -343,19 +357,19 @@ const char **PacketDescriptor::getPropertyNames() const
     return propertynames;
 }
 
-const char *PacketDescriptor::getProperty(const char *propertyname) const
+const char *OpticalMsgDescriptor::getProperty(const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : nullptr;
 }
 
-int PacketDescriptor::getFieldCount() const
+int OpticalMsgDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    return basedesc ? 4+basedesc->getFieldCount() : 4;
 }
 
-unsigned int PacketDescriptor::getFieldTypeFlags(int field) const
+unsigned int OpticalMsgDescriptor::getFieldTypeFlags(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -366,12 +380,13 @@ unsigned int PacketDescriptor::getFieldTypeFlags(int field) const
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_srcAddr
         FD_ISEDITABLE,    // FIELD_destAddr
+        FD_ISEDITABLE,    // FIELD_slotReq
         FD_ISEDITABLE,    // FIELD_hopCount
     };
-    return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
+    return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
-const char *PacketDescriptor::getFieldName(int field) const
+const char *OpticalMsgDescriptor::getFieldName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -382,22 +397,24 @@ const char *PacketDescriptor::getFieldName(int field) const
     static const char *fieldNames[] = {
         "srcAddr",
         "destAddr",
+        "slotReq",
         "hopCount",
     };
-    return (field >= 0 && field < 3) ? fieldNames[field] : nullptr;
+    return (field >= 0 && field < 4) ? fieldNames[field] : nullptr;
 }
 
-int PacketDescriptor::findField(const char *fieldName) const
+int OpticalMsgDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount() : 0;
     if (fieldName[0] == 's' && strcmp(fieldName, "srcAddr") == 0) return base+0;
     if (fieldName[0] == 'd' && strcmp(fieldName, "destAddr") == 0) return base+1;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hopCount") == 0) return base+2;
+    if (fieldName[0] == 's' && strcmp(fieldName, "slotReq") == 0) return base+2;
+    if (fieldName[0] == 'h' && strcmp(fieldName, "hopCount") == 0) return base+3;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
-const char *PacketDescriptor::getFieldTypeString(int field) const
+const char *OpticalMsgDescriptor::getFieldTypeString(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -408,12 +425,13 @@ const char *PacketDescriptor::getFieldTypeString(int field) const
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_srcAddr
         "int",    // FIELD_destAddr
+        "int",    // FIELD_slotReq
         "int",    // FIELD_hopCount
     };
-    return (field >= 0 && field < 3) ? fieldTypeStrings[field] : nullptr;
+    return (field >= 0 && field < 4) ? fieldTypeStrings[field] : nullptr;
 }
 
-const char **PacketDescriptor::getFieldPropertyNames(int field) const
+const char **OpticalMsgDescriptor::getFieldPropertyNames(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -422,23 +440,11 @@ const char **PacketDescriptor::getFieldPropertyNames(int field) const
         field -= basedesc->getFieldCount();
     }
     switch (field) {
-        case FIELD_srcAddr: {
-            static const char *names[] = { "packetData",  nullptr };
-            return names;
-        }
-        case FIELD_destAddr: {
-            static const char *names[] = { "packetData",  nullptr };
-            return names;
-        }
-        case FIELD_hopCount: {
-            static const char *names[] = { "packetData",  nullptr };
-            return names;
-        }
         default: return nullptr;
     }
 }
 
-const char *PacketDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *OpticalMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -447,20 +453,11 @@ const char *PacketDescriptor::getFieldProperty(int field, const char *propertyna
         field -= basedesc->getFieldCount();
     }
     switch (field) {
-        case FIELD_srcAddr:
-            if (!strcmp(propertyname, "packetData")) return "";
-            return nullptr;
-        case FIELD_destAddr:
-            if (!strcmp(propertyname, "packetData")) return "";
-            return nullptr;
-        case FIELD_hopCount:
-            if (!strcmp(propertyname, "packetData")) return "";
-            return nullptr;
         default: return nullptr;
     }
 }
 
-int PacketDescriptor::getFieldArraySize(void *object, int field) const
+int OpticalMsgDescriptor::getFieldArraySize(void *object, int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -468,13 +465,13 @@ int PacketDescriptor::getFieldArraySize(void *object, int field) const
             return basedesc->getFieldArraySize(object, field);
         field -= basedesc->getFieldCount();
     }
-    Packet *pp = (Packet *)object; (void)pp;
+    OpticalMsg *pp = (OpticalMsg *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *PacketDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+const char *OpticalMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -482,13 +479,13 @@ const char *PacketDescriptor::getFieldDynamicTypeString(void *object, int field,
             return basedesc->getFieldDynamicTypeString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    Packet *pp = (Packet *)object; (void)pp;
+    OpticalMsg *pp = (OpticalMsg *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string PacketDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string OpticalMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -496,16 +493,17 @@ std::string PacketDescriptor::getFieldValueAsString(void *object, int field, int
             return basedesc->getFieldValueAsString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    Packet *pp = (Packet *)object; (void)pp;
+    OpticalMsg *pp = (OpticalMsg *)object; (void)pp;
     switch (field) {
         case FIELD_srcAddr: return long2string(pp->getSrcAddr());
         case FIELD_destAddr: return long2string(pp->getDestAddr());
+        case FIELD_slotReq: return long2string(pp->getSlotReq());
         case FIELD_hopCount: return long2string(pp->getHopCount());
         default: return "";
     }
 }
 
-bool PacketDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+bool OpticalMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -513,16 +511,17 @@ bool PacketDescriptor::setFieldValueAsString(void *object, int field, int i, con
             return basedesc->setFieldValueAsString(object,field,i,value);
         field -= basedesc->getFieldCount();
     }
-    Packet *pp = (Packet *)object; (void)pp;
+    OpticalMsg *pp = (OpticalMsg *)object; (void)pp;
     switch (field) {
         case FIELD_srcAddr: pp->setSrcAddr(string2long(value)); return true;
         case FIELD_destAddr: pp->setDestAddr(string2long(value)); return true;
+        case FIELD_slotReq: pp->setSlotReq(string2long(value)); return true;
         case FIELD_hopCount: pp->setHopCount(string2long(value)); return true;
         default: return false;
     }
 }
 
-const char *PacketDescriptor::getFieldStructName(int field) const
+const char *OpticalMsgDescriptor::getFieldStructName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -535,7 +534,7 @@ const char *PacketDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *PacketDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+void *OpticalMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -543,7 +542,7 @@ void *PacketDescriptor::getFieldStructValuePointer(void *object, int field, int 
             return basedesc->getFieldStructValuePointer(object, field, i);
         field -= basedesc->getFieldCount();
     }
-    Packet *pp = (Packet *)object; (void)pp;
+    OpticalMsg *pp = (OpticalMsg *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }

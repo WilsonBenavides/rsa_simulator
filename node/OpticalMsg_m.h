@@ -1,9 +1,9 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from node/Packet.msg.
+// Generated file, do not edit! Created by nedtool 5.6 from node/OpticalMsg.msg.
 //
 
-#ifndef __PACKET_M_H
-#define __PACKET_M_H
+#ifndef __OPTICALMSG_M_H
+#define __OPTICALMSG_M_H
 
 #if defined(__clang__)
 #  pragma clang diagnostic ignored "-Wreserved-id-macro"
@@ -18,41 +18,43 @@
 
 
 
-class Packet;
+class OpticalMsg;
 /**
- * Class generated from <tt>node/Packet.msg:15</tt> by nedtool.
+ * Class generated from <tt>node/OpticalMsg.msg:15</tt> by nedtool.
  * <pre>
  * //
  * // Represents a packet in the network.
  * //
- * packet Packet
+ * packet OpticalMsg
  * {
- *     int srcAddr \@packetData;
- *     int destAddr \@packetData;
- *     int hopCount \@packetData;
+ *     int srcAddr;
+ *     int destAddr;
+ *     int slotReq;
+ *     int hopCount = 0;
  * }
  * </pre>
  */
-class Packet : public ::omnetpp::cPacket
+class OpticalMsg : public ::omnetpp::cPacket
 {
   protected:
     int srcAddr = 0;
     int destAddr = 0;
+    int slotReq = 0;
     int hopCount = 0;
 
   private:
-    void copy(const Packet& other);
+    void copy(const OpticalMsg& other);
 
   protected:
     // protected and unimplemented operator==(), to prevent accidental usage
-    bool operator==(const Packet&);
+    bool operator==(const OpticalMsg&);
 
   public:
-    Packet(const char *name=nullptr, short kind=0);
-    Packet(const Packet& other);
-    virtual ~Packet();
-    Packet& operator=(const Packet& other);
-    virtual Packet *dup() const override {return new Packet(*this);}
+    OpticalMsg(const char *name=nullptr, short kind=0);
+    OpticalMsg(const OpticalMsg& other);
+    virtual ~OpticalMsg();
+    OpticalMsg& operator=(const OpticalMsg& other);
+    virtual OpticalMsg *dup() const override {return new OpticalMsg(*this);}
     virtual void parsimPack(omnetpp::cCommBuffer *b) const override;
     virtual void parsimUnpack(omnetpp::cCommBuffer *b) override;
 
@@ -61,12 +63,14 @@ class Packet : public ::omnetpp::cPacket
     virtual void setSrcAddr(int srcAddr);
     virtual int getDestAddr() const;
     virtual void setDestAddr(int destAddr);
+    virtual int getSlotReq() const;
+    virtual void setSlotReq(int slotReq);
     virtual int getHopCount() const;
     virtual void setHopCount(int hopCount);
 };
 
-inline void doParsimPacking(omnetpp::cCommBuffer *b, const Packet& obj) {obj.parsimPack(b);}
-inline void doParsimUnpacking(omnetpp::cCommBuffer *b, Packet& obj) {obj.parsimUnpack(b);}
+inline void doParsimPacking(omnetpp::cCommBuffer *b, const OpticalMsg& obj) {obj.parsimPack(b);}
+inline void doParsimUnpacking(omnetpp::cCommBuffer *b, OpticalMsg& obj) {obj.parsimUnpack(b);}
 
-#endif // ifndef __PACKET_M_H
+#endif // ifndef __OPTICALMSG_M_H
 
