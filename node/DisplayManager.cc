@@ -48,14 +48,16 @@ void DisplayManager::initialize(int stage)
 
 //      #2A7997,blue   #A0E0A0,transparent   #D1D1D1,gray  #0086C6,dark_blue
         drawSlotGrid(linkSize, slotSize, cFigure::Color("#ffffff"));
-        drawSlotsOnGrid(0, 0, 2, generateRandomColor());
-        drawSlotsOnGrid(0, 2, 4, generateRandomColor());
+        drawSlotsOnGrid(0, 0, 4, generateRandomColor());
+
+        drawSlotsOnGrid(3, 3, 5, generateRandomColor());
+//        drawSlotsOnGrid(0, 2, 4, generateRandomColor());
 //        drawSlotsOnGrid(0, 7, 4, generateRandomColor());
 //        drawSlotsOnGrid(0, 11, 4, generateRandomColor());
 //        drawSlotsOnGrid(0, 15, 4, generateRandomColor());
 //
-        drawSlotsOnGrid(1, 2, 4, generateRandomColor());
-        drawSlotsOnGrid(1, 6, 1, generateRandomColor());
+//        drawSlotsOnGrid(1, 2, 4, generateRandomColor());
+//        drawSlotsOnGrid(1, 6, 1, generateRandomColor());
 //        drawSlotsOnGrid(1, 7, 5, generateRandomColor());
     }
 }
