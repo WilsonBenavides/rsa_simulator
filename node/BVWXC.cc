@@ -34,10 +34,10 @@ void BVWXC::initialize()
 
 void BVWXC::handleMessage(cMessage *msg)
 {
-    int index = getParentModule()->par("address");
     OpticalMsg *opmsg = check_and_cast<OpticalMsg*>(msg);
     int ss = getParentModule()->par("address");
-    EV << "address : " << ss << endl;
+
+//    EV << "address : " << ss << endl;
     if (opmsg->getDestAddr() == ss) {
         //Message arrived
         bubble("message arrived!");
@@ -51,7 +51,7 @@ void BVWXC::handleMessage(cMessage *msg)
 
 void BVWXC::forwardMessage(cMessage *msg)
 {
-    EV << "msg send to controller : " << getParentModule()->getParentModule()->getSubmodule("controller")->getName() << endl;
+//    EV << "msg send to controller : " << getParentModule()->getParentModule()->getSubmodule("controller")->getName() << endl;
     cModule *control = getParentModule()->getParentModule()->getSubmodule("controller");
     sendDirect(msg, control, "in");
 

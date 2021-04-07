@@ -30,7 +30,7 @@ class OpticalMsg;
  *     int srcAddr;
  *     int destAddr;
  *     int slotReq;
- *     int hopCount = 0;
+ *     int msgState;
  * }
  * </pre>
  */
@@ -40,7 +40,7 @@ class OpticalMsg : public ::omnetpp::cPacket
     int srcAddr = 0;
     int destAddr = 0;
     int slotReq = 0;
-    int hopCount = 0;
+    int msgState = 0;
 
   private:
     void copy(const OpticalMsg& other);
@@ -65,8 +65,8 @@ class OpticalMsg : public ::omnetpp::cPacket
     virtual void setDestAddr(int destAddr);
     virtual int getSlotReq() const;
     virtual void setSlotReq(int slotReq);
-    virtual int getHopCount() const;
-    virtual void setHopCount(int hopCount);
+    virtual int getMsgState() const;
+    virtual void setMsgState(int msgState);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const OpticalMsg& obj) {obj.parsimPack(b);}

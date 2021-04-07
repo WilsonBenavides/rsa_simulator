@@ -17,10 +17,11 @@ module Controller
         spectrum: SpectrumManager;
         display: DisplayManager;
         rsa_control: DynamicRSA;
+        routing: TopologyManager {
 
-        routing: TopologyManager;
-            
+            @display("p=379,83");
+        }
     connections allowunconnected:
-	in --> rsa_control.in;
-	rsa_control.directTopoOut --> routing.in;
+        in --> rsa_control.in;
+        rsa_control.directTopoOut --> routing.in;
 }

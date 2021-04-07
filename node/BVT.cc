@@ -52,7 +52,7 @@ void BVT::startTransmitting(cMessage *msg)
 
 void BVT::handleMessage(cMessage *msg)
 {
-    EV << "send out from BVT " << endl;
+//    EV << "send out from BVT " << endl;
     send(msg, "localOut");
 }
 

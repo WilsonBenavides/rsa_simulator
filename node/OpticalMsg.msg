@@ -16,6 +16,6 @@ packet OpticalMsg
     int srcAddr;
     int destAddr;
     int slotReq;
-    int hopCount = 0;
+    int msgState;
 }
 

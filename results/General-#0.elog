@@ -1,5 +1,5 @@
 E # 0 t 0 m 1 ce -1 msg -1
-SB v 1286 rid General-0-20210330-21:20:48-15300 b 1000
+SB v 1286 rid General-0-20210407-00:08:26-7704 b 1000
 KF p -1 c "" s ""
 MC id 1 c omnetpp::cModule t networks.Nsfnet n Nsfnet cm 1
 MS id 1 d bgb=786,562;bgi=maps/usa;bgu=km
@@ -646,7 +646,7 @@ GC m 103 g 3 n directTopoOut o 1
 MS id 103 d ""
 MC id 104 c TopologyManager t node.TopologyManager pid 16 n routing
 GC m 104 g 0 n in o 0
-MS id 104 d ""
+MS id 104 d p=379,83
 CC sm 16 sg 0 dm 103 dg 0
 CC sm 103 sg 3 dm 104 dg 0
 MB sm 1 tm 2 m initialize(0)

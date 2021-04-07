@@ -23,7 +23,14 @@ public:
         int destination;
         int gate;
     };
+    int numPaths = 2;
+    struct Route
+    {
+        double length;
+        std::vector<cTopology::LinkOut*> path;
+    };
     std::vector<LinkData> LinkTable;
+    std::vector<Route> RouteList;
 
 protected:
     virtual void initialize() override;
@@ -47,80 +54,82 @@ void DynamicRSA::initialize()
 void DynamicRSA::handleMessage(cMessage *msg)
 {
 
-    EV << "message arrived" << endl;
-    cModule *node = getParentModule()->getParentModule()->getSubmodule("node", 0)->getSubmodule("bvwxc");
-    sendDirect(msg, node, "directIn");
-
     cTopology *topo = new cTopology("topo");
     topo->extractByModulePath(cStringTokenizer("**.node[*]").asVector());
 
-    int numLinks = 0;
-    for (int i = 0; i < topo->getNumNodes(); i++) {
-        cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", i));
-        int numOutLinks = srcNode->getNumOutLinks();
-        for (int j = 0; j < numOutLinks; j++) {
-            int src = srcNode->getModule()->par("address");
-            int dst = topo->getNode(i)->getLinkOut(j)->getRemoteNode()->getModule()->par("address");
-            int gate = srcNode->getLinkOut(j)->getLocalGate()->getIndex();
-            LinkData data = { numLinks, src, dst, gate };
-            LinkTable.push_back(data);
-//            EV << "num of links : " << numLinks << " data.src : " << data.source << " gate : " << data.gate << endl;
-            numLinks++;
-        }
-    }
-
-    for (LinkData tmp : LinkTable) {
-        EV << "index : " << tmp.index << " source : " << tmp.source << " destination : " << tmp.destination << " gate : " << tmp.gate << endl;
-
-    }
-
-    int ss = LinkTable.at(0).source;
-    int dd = LinkTable.at(0).destination;
-    int gg = LinkTable.at(0).gate;
-
     cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 0));
-    cDisplayString &connDispStr = srcNode->getLinkOut(0)->getLocalGate()->getDisplayString();
-    connDispStr.parse("ls=#25BEB1, 3");
+    cTopology::Node *targetNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 5));
 
-    cTopology::Node *srcNode1 = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 5));
-    cDisplayString &connDispStr2 = srcNode1->getLinkOut(0)->getLocalGate()->getDisplayString();
-    connDispStr2.parse("ls=#25BEB1, 3");
+    topo->calculateUnweightedSingleShortestPathsTo(targetNode);
+    Route routeOne;
+    routeOne.length = srcNode->getDistanceToTarget();
 
-
-    std::string fileName = "./node/GeneralTableRouting.csv";
-    std::ofstream generalRoutingTable(fileName);
-    generalRoutingTable << "src" << "," << "dst" << "," << "gate" << endl;
-
-    for (int i = 0; i < topo->getNumNodes(); i++) {
-        std::ofstream localRoutingTable("./node/LocalRouting" + std::to_string(i) + ".csv");
-        localRoutingTable << "dst" << "," << "gate" << endl;
-
-        cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", i));
-
-        int srcAdd = srcNode->getModule()->par("address");
-//        EV << "source address : " << srcAdd << endl;
-        for (int j = 0; j < topo->getNumNodes(); j++) {
-            if (topo->getNode(j) == srcNode)
-                continue;  // skip ourselves
-            topo->calculateUnweightedSingleShortestPathsTo(topo->getNode(j));
-
-            if (srcNode->getNumPaths() == 0)
-                continue;  // not connected
-
-            cGate *parentModuleGate = srcNode->getPath(0)->getLocalGate();
-
-            int srcAddress = srcNode->getModule()->par("address");
-            int dstAddress = topo->getNode(j)->getModule()->par("address");
-            int gateIndex = parentModuleGate->getIndex();
-
-            generalRoutingTable << srcAddress << "," << dstAddress << "," << gateIndex << endl;
-            localRoutingTable << dstAddress << "," << gateIndex << endl;
-//            EV << "  source address : " << srcAddress << " destination address : " << dstAddress << "  gate : " << gateIndex << endl;
-        }
-        localRoutingTable.close();
+    while (srcNode != topo->getTargetNode()) {
+        EV << "01 We are in " << srcNode->getModule()->getFullPath() << endl;
+        EV << srcNode->getDistanceToTarget() << " hops to go\n";
+        cTopology::LinkOut *path = srcNode->getPath(0);
+        routeOne.path.push_back(path);
+        EV << "Taking gate " << path->getLocalGate()->getFullName() << " we arrive in " << path->getRemoteNode()->getModule()->getFullPath() << " on its gate " << path->getRemoteGate()->getFullName() << endl;
+        srcNode = path->getRemoteNode();
     }
 
-    generalRoutingTable.close();
+    EV << "path lenght one : " << routeOne.length << endl;
+    for (cTopology::LinkOut *tmp : routeOne.path) {
+        EV << "Reading Links Route One : " << tmp->getLocalNode()->getModule()->getFullPath() << endl;
+        cDisplayString &dpStr = tmp->getLocalGate()->getDisplayString();
+        dpStr.parse("ls=#00FF00, 3");
+    }
+
+    Route routeTwo;
+    srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 0));
+    cTopology::Node *disableOne = routeOne.path.at(1)->getLocalNode();
+    EV << "02 disabled node one : " << disableOne->getModule()->getFullPath() << endl;
+    disableOne->disable();
+    topo->calculateUnweightedSingleShortestPathsTo(targetNode);
+    routeTwo.length = srcNode->getDistanceToTarget();
+
+    while (srcNode != topo->getTargetNode()) {
+        EV << "02 We are in " << srcNode->getModule()->getFullPath() << endl;
+        EV << srcNode->getDistanceToTarget() << " hops to go\n";
+        cTopology::LinkOut *path = srcNode->getPath(0);
+        routeTwo.path.push_back(path);
+        EV << "Taking gate " << path->getLocalGate()->getFullName() << " we arrive in " << path->getRemoteNode()->getModule()->getFullPath() << " on its gate " << path->getRemoteGate()->getFullName() << endl;
+        srcNode = path->getRemoteNode();
+    }
+
+    EV << "path lenght two : " << routeTwo.length << endl;
+    for (cTopology::LinkOut *tmp : routeTwo.path) {
+        EV << "02 Reading Links Route Two : " << tmp->getLocalNode()->getModule()->getFullPath() << endl;
+        cDisplayString &dpStr = tmp->getLocalGate()->getDisplayString();
+        dpStr.parse("ls=#FF0000, 3");
+    }
+
+    Route routeThree;
+    srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 0));
+    cTopology::Node *disableTwo = routeTwo.path.at(1)->getLocalNode();
+    EV << "03 disabled node two : " << disableTwo->getModule()->getFullPath() << endl;
+    disableTwo->disable();
+    topo->calculateUnweightedSingleShortestPathsTo(targetNode);
+    routeThree.length = srcNode->getDistanceToTarget();
+
+    while (srcNode != topo->getTargetNode()) {
+        EV << "03 We are in " << srcNode->getModule()->getFullPath() << endl;
+        EV << srcNode->getDistanceToTarget() << " hops to go\n";
+        cTopology::LinkOut *path = srcNode->getPath(0);
+        routeThree.path.push_back(path);
+        EV << "Taking gate " << path->getLocalGate()->getFullName() << " we arrive in " << path->getRemoteNode()->getModule()->getFullPath() << " on its gate " << path->getRemoteGate()->getFullName() << endl;
+        srcNode = path->getRemoteNode();
+    }
+
+    EV << "path lenght three : " << routeThree.length << endl;
+    for (cTopology::LinkOut *tmp : routeThree.path) {
+        EV << "03 Reading Links Route Three : " << tmp->getLocalNode()->getModule()->getFullPath() << endl;
+        cDisplayString &dpStr = tmp->getLocalGate()->getDisplayString();
+        dpStr.parse("ls=#0000FF, 3");
+    }
+
+    cModule *node = getParentModule()->getParentModule()->getSubmodule("node", 0)->getSubmodule("bvwxc");
+    sendDirect(msg, node, "directIn");
     delete topo;
 }
 

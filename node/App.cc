@@ -6,6 +6,10 @@
 #include <omnetpp.h>
 #include "OpticalMsg_m.h"
 
+#define LIGHTPATH_REQUEST 0
+#define LIGHTPATH_PROCESSING 1
+#define LIGHTPATH_ASSIGNMENT 2
+
 using namespace omnetpp;
 
 /**
@@ -50,6 +54,7 @@ void App::initialize()
         msg->setSrcAddr(src);
         msg->setDestAddr(dst);
         msg->setSlotReq(slreq);
+        msg->setMsgState(LIGHTPATH_REQUEST);
 
         scheduleAt(0.0, msg);
     }

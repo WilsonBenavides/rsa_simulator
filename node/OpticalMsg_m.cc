@@ -234,7 +234,7 @@ void OpticalMsg::copy(const OpticalMsg& other)
     this->srcAddr = other.srcAddr;
     this->destAddr = other.destAddr;
     this->slotReq = other.slotReq;
-    this->hopCount = other.hopCount;
+    this->msgState = other.msgState;
 }
 
 void OpticalMsg::parsimPack(omnetpp::cCommBuffer *b) const
@@ -243,7 +243,7 @@ void OpticalMsg::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->srcAddr);
     doParsimPacking(b,this->destAddr);
     doParsimPacking(b,this->slotReq);
-    doParsimPacking(b,this->hopCount);
+    doParsimPacking(b,this->msgState);
 }
 
 void OpticalMsg::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -252,7 +252,7 @@ void OpticalMsg::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->srcAddr);
     doParsimUnpacking(b,this->destAddr);
     doParsimUnpacking(b,this->slotReq);
-    doParsimUnpacking(b,this->hopCount);
+    doParsimUnpacking(b,this->msgState);
 }
 
 int OpticalMsg::getSrcAddr() const
@@ -285,14 +285,14 @@ void OpticalMsg::setSlotReq(int slotReq)
     this->slotReq = slotReq;
 }
 
-int OpticalMsg::getHopCount() const
+int OpticalMsg::getMsgState() const
 {
-    return this->hopCount;
+    return this->msgState;
 }
 
-void OpticalMsg::setHopCount(int hopCount)
+void OpticalMsg::setMsgState(int msgState)
 {
-    this->hopCount = hopCount;
+    this->msgState = msgState;
 }
 
 class OpticalMsgDescriptor : public omnetpp::cClassDescriptor
@@ -303,7 +303,7 @@ class OpticalMsgDescriptor : public omnetpp::cClassDescriptor
         FIELD_srcAddr,
         FIELD_destAddr,
         FIELD_slotReq,
-        FIELD_hopCount,
+        FIELD_msgState,
     };
   public:
     OpticalMsgDescriptor();
@@ -381,7 +381,7 @@ unsigned int OpticalMsgDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_srcAddr
         FD_ISEDITABLE,    // FIELD_destAddr
         FD_ISEDITABLE,    // FIELD_slotReq
-        FD_ISEDITABLE,    // FIELD_hopCount
+        FD_ISEDITABLE,    // FIELD_msgState
     };
     return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
@@ -398,7 +398,7 @@ const char *OpticalMsgDescriptor::getFieldName(int field) const
         "srcAddr",
         "destAddr",
         "slotReq",
-        "hopCount",
+        "msgState",
     };
     return (field >= 0 && field < 4) ? fieldNames[field] : nullptr;
 }
@@ -410,7 +410,7 @@ int OpticalMsgDescriptor::findField(const char *fieldName) const
     if (fieldName[0] == 's' && strcmp(fieldName, "srcAddr") == 0) return base+0;
     if (fieldName[0] == 'd' && strcmp(fieldName, "destAddr") == 0) return base+1;
     if (fieldName[0] == 's' && strcmp(fieldName, "slotReq") == 0) return base+2;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hopCount") == 0) return base+3;
+    if (fieldName[0] == 'm' && strcmp(fieldName, "msgState") == 0) return base+3;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -426,7 +426,7 @@ const char *OpticalMsgDescriptor::getFieldTypeString(int field) const
         "int",    // FIELD_srcAddr
         "int",    // FIELD_destAddr
         "int",    // FIELD_slotReq
-        "int",    // FIELD_hopCount
+        "int",    // FIELD_msgState
     };
     return (field >= 0 && field < 4) ? fieldTypeStrings[field] : nullptr;
 }
@@ -498,7 +498,7 @@ std::string OpticalMsgDescriptor::getFieldValueAsString(void *object, int field,
         case FIELD_srcAddr: return long2string(pp->getSrcAddr());
         case FIELD_destAddr: return long2string(pp->getDestAddr());
         case FIELD_slotReq: return long2string(pp->getSlotReq());
-        case FIELD_hopCount: return long2string(pp->getHopCount());
+        case FIELD_msgState: return long2string(pp->getMsgState());
         default: return "";
     }
 }
@@ -516,7 +516,7 @@ bool OpticalMsgDescriptor::setFieldValueAsString(void *object, int field, int i,
         case FIELD_srcAddr: pp->setSrcAddr(string2long(value)); return true;
         case FIELD_destAddr: pp->setDestAddr(string2long(value)); return true;
         case FIELD_slotReq: pp->setSlotReq(string2long(value)); return true;
-        case FIELD_hopCount: pp->setHopCount(string2long(value)); return true;
+        case FIELD_msgState: pp->setMsgState(string2long(value)); return true;
         default: return false;
     }
 }
