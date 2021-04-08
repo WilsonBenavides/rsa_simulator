@@ -35,11 +35,6 @@ public:
         std::vector<int> length;
         std::vector<cTopology::LinkIn*> path;
     };
-    struct NodeVisited
-    {
-        cTopology::Node *nodesVisited;
-        int numHops;
-    };
     std::vector<LinkData> LinkTable;
 
 protected:
@@ -70,7 +65,7 @@ void DynamicRSA::handleMessage(cMessage *msg)
     int state = rcvMsg->getMsgState();
 
     if (state == LIGHTPATH_REQUEST) {
-        EV << "msg request type " << endl;
+//        EV << "msg request type " << endl;
     }
 
     cTopology *topo = new cTopology("topo");
@@ -79,53 +74,53 @@ void DynamicRSA::handleMessage(cMessage *msg)
     cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", src));
     cTopology::Node *targetNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", dst));
 
-    std::deque<cTopology::Node*> q;
-    q.push_back(targetNode);
-
     int flag = 0;
     int numPaths = 1;
     int counter = 0;
     int pathFound = 0;
-    std::vector<NodeVisited> nodeVisited;
 
+    std::vector<cTopology::LinkIn*> routeOne;
+    std::vector<cTopology::LinkIn*> path;
+    std::vector<int> nodeDis;
+    for (int i = 0; i < topo->getNumNodes(); i++) {
+        nodeDis.push_back(MAXIMUM);
+        path.push_back(nullptr);
+    }
+    nodeDis.at(targetNode->getModule()->getIndex()) = 0;
+//    EV << "node target zero : " << nodeDis.at(targetNode->getModule()->getIndex()) << endl;
+    std::deque<cTopology::Node*> q;
+    q.push_back(targetNode);
     std::vector<LinksByLength> *dataLinks;
     while (!q.empty()) {
-//        EV << "nodes : " << counter++ << endl;
-
         cTopology::Node *v = q.front();
         q.pop_front();
-        if (v == srcNode || (v == targetNode && counter > 2)) {
-//            EV << "same to source.. better discard" << endl;
-            q.pop_front();
-            v = q.front();
-        }
-        NodeVisited nv;
-        nv.nodesVisited = v;
-        nv.numHops = counter;
-        nodeVisited.push_back(nv);
-
-        LinksByLength *lbl;
         counter++;
         for (int i = 0; i < v->getNumInLinks(); i++) {
             cTopology::Node *w;
             w = v->getLinkIn(i)->getRemoteNode();
-            cDisplayString& dispStr = v->getLinkIn(i)->getRemoteGate()->getDisplayString();
-            dispStr.parse("ls=#F00000, 6");
-
-//            lbl->path.push_back(v->getLinkIn(i));
-//            lbl->length.push_back(counter);
+//            cDisplayString &dispStr = v->getLinkIn(i)->getRemoteGate()->getDisplayString();
+//            dispStr.parse("ls=#F00000, 6");
 
             if (w == srcNode) {
                 pathFound++;
-                EV << " ::::::::::::::::::::::::::::::::::::::::::::..found!!!!!!:::::::::::::::::::::::" << endl;
+                nodeDis.at(w->getModule()->getIndex()) = 1 + nodeDis.at(v->getModule()->getIndex());
+                path.at(w->getModule()->getIndex()) = v->getLinkIn(i);
+//                EV << " ::::::::::::::::::::::::::::::::::::::::::::..found!!!!!!:::::::::::::::::::::::" << endl;
                 break;
             }
-            if (w == targetNode) {
-//                EV << "same the dest, best ignore" << endl;
-                break;
+            int dist = nodeDis.at(w->getModule()->getIndex());
+//            EV << "max : " << MAXIMUM << "  dist  :  " << dist << endl;
+            if (dist == MAXIMUM) {
+//                EV << "inside if dist == MAXIMUM .. " << endl;
+//                EV << "::V:: node : " << v->getModule()->getFullName() << "   ::W:: node : " << w->getModule()->getFullName() << endl;
+//                EV << "table...................." << endl;
+                for (int i : nodeDis) {
+//                    EV << "index : " << i << endl;
+                }
+                nodeDis.at(w->getModule()->getIndex()) = 1 + nodeDis.at(v->getModule()->getIndex());
+                path.at(w->getModule()->getIndex()) = v->getLinkIn(i);
+                q.push_back(w);
             }
-            q.push_back(w);
-//            EV << "push back v node : " << v->getModule()->getFullName() << "   ::   w node : " << w->getModule()->getFullName() << endl;
 
             if (pathFound == numPaths)
                 break;
@@ -134,11 +129,35 @@ void DynamicRSA::handleMessage(cMessage *msg)
         if (pathFound == numPaths)
             break;
     }
-
-    for (NodeVisited nv : nodeVisited) {
-//        EV << "Nodes in stack ::  " << nv.nodesVisited->getModule()->getFullName() << endl;
-//        EV << "dist  ::  " << nv.numHops << endl;
+    for (int i : nodeDis) {
+//        EV << "index : " << i << endl;
     }
+
+    while (srcNode != targetNode) {
+        for (int i = 0; i < topo->getNumNodes(); i++) {
+            if (path[i] != nullptr) {
+                if (srcNode == path[i]->getRemoteNode()) {
+                    routeOne.push_back(path[i]);
+//                    EV << "srcNode = path_i_getRemoteNode  :  " << path[i]->getRemoteNode()->getModule()->getFullName() << endl;
+                    srcNode = path[i]->getLocalNode();
+//                    EV << "getLocalNode  :  " << path[i]->getLocalNode()->getModule()->getFullName() << endl;
+                }
+//                EV << "i remoteNode : " << path[i]->getRemoteNode()->getModule()->getFullName() << "  : distance : " << nodeDis[i] << endl;
+            }
+        }
+    }
+    std::string fileName = "./node/TableRouting.csv";
+    std::ofstream routingTable(fileName);
+    for (cTopology::LinkIn *tmp : routeOne) {
+        cDisplayString &dispStr = tmp->getRemoteGate()->getDisplayString();
+        dispStr.parse("ls=#F00000, 6");
+        int gate = tmp->getRemoteGate()->getIndex();
+        int node = tmp->getRemoteNode()->getModule()->getIndex();
+//        EV << "node : " << node << "    gate  : " << gate << endl;
+        routingTable << node << "," << gate << endl;
+    }
+    routingTable.close();
+    rcvMsg->setMsgState(LIGHTPATH_ASSIGNMENT);
 
 //    for (int i = 0; i < dataLinks[0].path.size(); i++) {
 ////        EV << "links 1  :  " << dataLinks[0].length.at(i) << endl;
@@ -146,7 +165,7 @@ void DynamicRSA::handleMessage(cMessage *msg)
 ////        dispStr.parse("ls=#25BEB1, 6");
 //    }
     cModule *node = getParentModule()->getParentModule()->getSubmodule("node", 0)->getSubmodule("bvwxc");
-    sendDirect(msg, node, "directIn");
+    sendDirect(rcvMsg, node, "directIn");
     delete topo;
 }
 

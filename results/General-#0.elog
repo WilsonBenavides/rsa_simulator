@@ -1,5 +1,5 @@
 E # 0 t 0 m 1 ce -1 msg -1
-SB v 1286 rid General-0-20210407-22:15:28-6628 b 1000
+SB v 1286 rid General-0-20210408-04:55:43-9724 b 1000
 KF p -1 c "" s ""
 MC id 1 c omnetpp::cModule t networks.Nsfnet n Nsfnet cm 1
 MS id 1 d bgb=786,562;bgi=maps/usa;bgu=km
@@ -654,8 +654,8 @@ ME
 MB sm 1 tm 59 m initialize(0)
 - INFO (App)Nsfnet.node[0].app:only one message created, id :  59
 - INFO (App)Nsfnet.node[0].app:vector size : 14
-CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n opt-0-to-6 pe -1
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-6 pe 0
+CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n opt-0-to-9 pe -1
+BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-9 pe 0
 ES t 0
 ME
 MB sm 1 tm 60 m initialize(0)
@@ -793,7 +793,7 @@ MB sm 1 tm 104 m initialize(2)
 ME
 
 E # 1 t 0 m 59 ce 0 msg 0
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-6 pe 1
+BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-9 pe 1
 SH sm 59 sg 3
 ES t 0
-CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-6 pe 1 cid 1
+CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-9 pe 1 cid 1
