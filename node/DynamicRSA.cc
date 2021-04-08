@@ -4,7 +4,14 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <deque>
 #include <omnetpp.h>
+#include "OpticalMsg_m.h"
+
+#define LIGHTPATH_REQUEST 0
+#define LIGHTPATH_PROCESSING 1
+#define LIGHTPATH_ASSIGNMENT 2
+#define MAXIMUM 1000
 
 using namespace omnetpp;
 
@@ -23,14 +30,17 @@ public:
         int destination;
         int gate;
     };
-    int numPaths = 2;
-    struct Route
+    struct LinksByLength
     {
-        double length;
-        std::vector<cTopology::LinkOut*> path;
+        std::vector<int> length;
+        std::vector<cTopology::LinkIn*> path;
+    };
+    struct NodeVisited
+    {
+        cTopology::Node *nodesVisited;
+        int numHops;
     };
     std::vector<LinkData> LinkTable;
-    std::vector<Route> RouteList;
 
 protected:
     virtual void initialize() override;
@@ -54,80 +64,87 @@ void DynamicRSA::initialize()
 void DynamicRSA::handleMessage(cMessage *msg)
 {
 
+    OpticalMsg *rcvMsg = check_and_cast<OpticalMsg*>(msg);
+    int src = rcvMsg->getSrcAddr();
+    int dst = rcvMsg->getDestAddr();
+    int state = rcvMsg->getMsgState();
+
+    if (state == LIGHTPATH_REQUEST) {
+        EV << "msg request type " << endl;
+    }
+
     cTopology *topo = new cTopology("topo");
     topo->extractByModulePath(cStringTokenizer("**.node[*]").asVector());
 
-    cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 0));
-    cTopology::Node *targetNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 5));
+    cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", src));
+    cTopology::Node *targetNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", dst));
 
-    topo->calculateUnweightedSingleShortestPathsTo(targetNode);
-    Route routeOne;
-    routeOne.length = srcNode->getDistanceToTarget();
+    std::deque<cTopology::Node*> q;
+    q.push_back(targetNode);
 
-    while (srcNode != topo->getTargetNode()) {
-        EV << "01 We are in " << srcNode->getModule()->getFullPath() << endl;
-        EV << srcNode->getDistanceToTarget() << " hops to go\n";
-        cTopology::LinkOut *path = srcNode->getPath(0);
-        routeOne.path.push_back(path);
-        EV << "Taking gate " << path->getLocalGate()->getFullName() << " we arrive in " << path->getRemoteNode()->getModule()->getFullPath() << " on its gate " << path->getRemoteGate()->getFullName() << endl;
-        srcNode = path->getRemoteNode();
+    int flag = 0;
+    int numPaths = 1;
+    int counter = 0;
+    int pathFound = 0;
+    std::vector<NodeVisited> nodeVisited;
+
+    std::vector<LinksByLength> *dataLinks;
+    while (!q.empty()) {
+//        EV << "nodes : " << counter++ << endl;
+
+        cTopology::Node *v = q.front();
+        q.pop_front();
+        if (v == srcNode || (v == targetNode && counter > 2)) {
+//            EV << "same to source.. better discard" << endl;
+            q.pop_front();
+            v = q.front();
+        }
+        NodeVisited nv;
+        nv.nodesVisited = v;
+        nv.numHops = counter;
+        nodeVisited.push_back(nv);
+
+        LinksByLength *lbl;
+        counter++;
+        for (int i = 0; i < v->getNumInLinks(); i++) {
+            cTopology::Node *w;
+            w = v->getLinkIn(i)->getRemoteNode();
+            cDisplayString& dispStr = v->getLinkIn(i)->getRemoteGate()->getDisplayString();
+            dispStr.parse("ls=#F00000, 6");
+
+//            lbl->path.push_back(v->getLinkIn(i));
+//            lbl->length.push_back(counter);
+
+            if (w == srcNode) {
+                pathFound++;
+                EV << " ::::::::::::::::::::::::::::::::::::::::::::..found!!!!!!:::::::::::::::::::::::" << endl;
+                break;
+            }
+            if (w == targetNode) {
+//                EV << "same the dest, best ignore" << endl;
+                break;
+            }
+            q.push_back(w);
+//            EV << "push back v node : " << v->getModule()->getFullName() << "   ::   w node : " << w->getModule()->getFullName() << endl;
+
+            if (pathFound == numPaths)
+                break;
+        }
+//        dataLinks->push_back(lbl);
+        if (pathFound == numPaths)
+            break;
     }
 
-    EV << "path lenght one : " << routeOne.length << endl;
-    for (cTopology::LinkOut *tmp : routeOne.path) {
-        EV << "Reading Links Route One : " << tmp->getLocalNode()->getModule()->getFullPath() << endl;
-        cDisplayString &dpStr = tmp->getLocalGate()->getDisplayString();
-        dpStr.parse("ls=#00FF00, 3");
+    for (NodeVisited nv : nodeVisited) {
+//        EV << "Nodes in stack ::  " << nv.nodesVisited->getModule()->getFullName() << endl;
+//        EV << "dist  ::  " << nv.numHops << endl;
     }
 
-    Route routeTwo;
-    srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 0));
-    cTopology::Node *disableOne = routeOne.path.at(1)->getLocalNode();
-    EV << "02 disabled node one : " << disableOne->getModule()->getFullPath() << endl;
-    disableOne->disable();
-    topo->calculateUnweightedSingleShortestPathsTo(targetNode);
-    routeTwo.length = srcNode->getDistanceToTarget();
-
-    while (srcNode != topo->getTargetNode()) {
-        EV << "02 We are in " << srcNode->getModule()->getFullPath() << endl;
-        EV << srcNode->getDistanceToTarget() << " hops to go\n";
-        cTopology::LinkOut *path = srcNode->getPath(0);
-        routeTwo.path.push_back(path);
-        EV << "Taking gate " << path->getLocalGate()->getFullName() << " we arrive in " << path->getRemoteNode()->getModule()->getFullPath() << " on its gate " << path->getRemoteGate()->getFullName() << endl;
-        srcNode = path->getRemoteNode();
-    }
-
-    EV << "path lenght two : " << routeTwo.length << endl;
-    for (cTopology::LinkOut *tmp : routeTwo.path) {
-        EV << "02 Reading Links Route Two : " << tmp->getLocalNode()->getModule()->getFullPath() << endl;
-        cDisplayString &dpStr = tmp->getLocalGate()->getDisplayString();
-        dpStr.parse("ls=#FF0000, 3");
-    }
-
-    Route routeThree;
-    srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", 0));
-    cTopology::Node *disableTwo = routeTwo.path.at(1)->getLocalNode();
-    EV << "03 disabled node two : " << disableTwo->getModule()->getFullPath() << endl;
-    disableTwo->disable();
-    topo->calculateUnweightedSingleShortestPathsTo(targetNode);
-    routeThree.length = srcNode->getDistanceToTarget();
-
-    while (srcNode != topo->getTargetNode()) {
-        EV << "03 We are in " << srcNode->getModule()->getFullPath() << endl;
-        EV << srcNode->getDistanceToTarget() << " hops to go\n";
-        cTopology::LinkOut *path = srcNode->getPath(0);
-        routeThree.path.push_back(path);
-        EV << "Taking gate " << path->getLocalGate()->getFullName() << " we arrive in " << path->getRemoteNode()->getModule()->getFullPath() << " on its gate " << path->getRemoteGate()->getFullName() << endl;
-        srcNode = path->getRemoteNode();
-    }
-
-    EV << "path lenght three : " << routeThree.length << endl;
-    for (cTopology::LinkOut *tmp : routeThree.path) {
-        EV << "03 Reading Links Route Three : " << tmp->getLocalNode()->getModule()->getFullPath() << endl;
-        cDisplayString &dpStr = tmp->getLocalGate()->getDisplayString();
-        dpStr.parse("ls=#0000FF, 3");
-    }
-
+//    for (int i = 0; i < dataLinks[0].path.size(); i++) {
+////        EV << "links 1  :  " << dataLinks[0].length.at(i) << endl;
+//        cDisplayString &dispStr = dataLinks[0].path.at(i)->getLocalGate()->getDisplayString();
+////        dispStr.parse("ls=#25BEB1, 6");
+//    }
     cModule *node = getParentModule()->getParentModule()->getSubmodule("node", 0)->getSubmodule("bvwxc");
     sendDirect(msg, node, "directIn");
     delete topo;
