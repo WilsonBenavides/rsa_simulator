@@ -1,5 +1,5 @@
 E # 0 t 0 m 1 ce -1 msg -1
-SB v 1286 rid General-0-20210408-04:55:43-9724 b 1000
+SB v 1286 rid General-0-20210413-00:07:43-2316 b 1000
 KF p -1 c "" s ""
 MC id 1 c omnetpp::cModule t networks.Nsfnet n Nsfnet cm 1
 MS id 1 d bgb=786,562;bgi=maps/usa;bgu=km
@@ -636,26 +636,23 @@ CC sm 15 sg 1048577 dm 99 dg 2097153
 CC sm 99 sg 3670017 dm 15 dg 2621441
 CC sm 15 sg 1048578 dm 99 dg 2097154
 CC sm 99 sg 3670018 dm 15 dg 2621442
-MC id 101 c SpectrumManager t node.SpectrumManager pid 16 n spectrum
+MC id 101 c DisplayManager t node.DisplayManager pid 16 n display
 MS id 101 d ""
-MC id 102 c DisplayManager t node.DisplayManager pid 16 n display
+MC id 102 c TopologyManager t node.TopologyManager pid 16 n topology
+GC m 102 g 0 n in o 0
+GC m 102 g 3 n directTopoOut o 1
 MS id 102 d ""
-MC id 103 c DynamicRSA t node.DynamicRSA pid 16 n rsa_control
+MC id 103 c SpectrumManager t node.SpectrumManager pid 16 n spectrum
 GC m 103 g 0 n in o 0
-GC m 103 g 3 n directTopoOut o 1
-MS id 103 d ""
-MC id 104 c TopologyManager t node.TopologyManager pid 16 n routing
-GC m 104 g 0 n in o 0
-MS id 104 d p=379,83
-CC sm 16 sg 0 dm 103 dg 0
-CC sm 103 sg 3 dm 104 dg 0
+MS id 103 d p=379,83
+CC sm 16 sg 0 dm 102 dg 0
+CC sm 102 sg 3 dm 103 dg 0
 MB sm 1 tm 2 m initialize(0)
 ME
 MB sm 1 tm 59 m initialize(0)
 - INFO (App)Nsfnet.node[0].app:only one message created, id :  59
-- INFO (App)Nsfnet.node[0].app:vector size : 14
-CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n opt-0-to-9 pe -1
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-9 pe 0
+CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n opt-0-to-7-numSlot-3 pe -1
+BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 0
 ES t 0
 ME
 MB sm 1 tm 60 m initialize(0)
@@ -774,26 +771,92 @@ MB sm 1 tm 102 m initialize(0)
 ME
 MB sm 1 tm 103 m initialize(0)
 ME
-MB sm 1 tm 104 m initialize(0)
-ME
 MB sm 1 tm 101 m initialize(1)
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: Spectrum Manager, stage 1 
 ME
-MB sm 1 tm 102 m initialize(1)
-- INFO (DisplayManager)Nsfnet.controller.display: Display Manager, stage 1 
-ME
-MB sm 1 tm 104 m initialize(1)
-- INFO (TopologyManager)Nsfnet.controller.routing: Topology Manager, stage 1 
+MB sm 1 tm 103 m initialize(1)
 ME
 MB sm 1 tm 101 m initialize(2)
 ME
-MB sm 1 tm 102 m initialize(2)
+MB sm 1 tm 103 m initialize(2)
 ME
-MB sm 1 tm 104 m initialize(2)
-ME
+- INFO: : 0 : 0 : 0 : 0 : 0 : 0 : 0 : 0 : 0 : 0
 
 E # 1 t 0 m 59 ce 0 msg 0
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-9 pe 1
+BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 1
 SH sm 59 sg 3
 ES t 0
-CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-9 pe 1 cid 1
+CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 1 cid 1
+
+E # 2 t 0 m 61 ce 1 msg 0
+BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 2
+SH sm 61 sg 7
+ES t 0
+CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 2 cid 1
+
+E # 3 t 0 m 60 ce 2 msg 0
+BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 3
+SD sm 60 dm 16 dg 0
+SH sm 16 sg 0
+ES t 0
+CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 3 cid 1
+
+E # 4 t 0 m 102 ce 3 msg 0
+CM id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n "Optical Message Path" pe -1
+CS sm 2 sg 2621441 d ls=#ea1769,8
+CS sm 4 sg 2621442 d ls=#ea1769,8
+DM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n opt-0-to-7-numSlot-3 pe 4
+BS id 1 tid 1 eid 1 etid 1 c OpticalMsgPath n "Optical Message Path" pe 4
+SD sm 102 dm 102 dg 3
+SH sm 102 sg 3
+ES t 0
+CL id 1 tid 1 eid 1 etid 1 c OpticalMsgPath n "Optical Message Path" pe 4 cid 2
+
+E # 5 t 0 m 103 ce 4 msg 1
+CM id 2 tid 2 eid 2 etid 2 c omnetpp::cMessage n opt-0-to-7-ns-3 pe -1
+- INFO: slots :  0000011100 i:  0 value: 0
+- INFO: i:  1 value: 0
+- INFO: i:  2 value: 0
+- INFO: i:  3 value: 0
+- INFO: i:  4 value: 0
+- INFO: i__:  5 value: 1
+- INFO: i:  8 value: 0
+- INFO: i:  9 value: 0
+- INFO: slots :  0000011100 i:  0 value: 0
+- INFO: i:  1 value: 0
+- INFO: i:  2 value: 0
+- INFO: i:  3 value: 0
+- INFO: i:  4 value: 0
+- INFO: i__:  5 value: 1
+- INFO: i:  8 value: 0
+- INFO: i:  9 value: 0
+DM id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n "Optical Message Path" pe 5
+BS id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 5
+SD sm 103 dm 60 dg 0
+ES t 0
+CL id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 5 cid 3
+
+E # 6 t 0 m 60 ce 5 msg 2
+- INFO:0,1
+BS id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 6
+SH sm 60 sg 3670017
+SH sm 2 sg 2621441 pd 0.000533512953
+SH sm 4 sg 1048576
+ES t 0.000533512953
+CL id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 6 cid 3
+- INFO:2,2
+
+E # 7 t 0.000533512953 m 66 ce 6 msg 2
+- INFO:0,1
+- INFO:2,2
+BS id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 7
+SH sm 66 sg 3670018
+SH sm 4 sg 2621442 pd 0.000404977565
+SH sm 9 sg 1048576
+ES t 0.000938490518
+CL id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 7 cid 3
+
+E # 8 t 0.000938490518 m 81 ce 7 msg 2
+BU id 81 txt "message arrived!"
+- INFO:Message : (OpticalMsg)opt-0-to-7-ns-3  arrived!
+DM id 2 tid 2 eid 2 etid 2 c omnetpp::cMessage n opt-0-to-7-ns-3 pe 8
+SE e 0 c 13 m "No more events, simulation completed -- at t=0.000938490518s, event #8"

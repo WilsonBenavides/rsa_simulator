@@ -6,11 +6,7 @@
 #include <fstream>
 #include <omnetpp.h>
 #include "OpticalMsg_m.h"
-
-#define LIGHTPATH_REQUEST 0
-#define LIGHTPATH_PROCESSING 1
-#define LIGHTPATH_ASSIGNMENT 2
-#define MAXIMUM 1000
+#include "Utils.h"
 
 using namespace omnetpp;
 
@@ -62,12 +58,12 @@ void BVWXC::forwardMessage(cMessage *msg)
     int state = rcvMsg->getMsgState();
 
     if (state == LIGHTPATH_REQUEST) {
-        EV << "LIGHTPATH_REQUEST " << endl;
+//        EV << "LIGHTPATH_REQUEST " << endl;
         cModule *control = getParentModule()->getParentModule()->getSubmodule("controller");
         sendDirect(msg, control, "in");
     }
     if (state == LIGHTPATH_ASSIGNMENT) {
-        EV << "LIGHTPATH_ASSIGNMENT " << endl;
+//        EV << "LIGHTPATH_ASSIGNMENT " << endl;
         std::string line;
         std::ifstream ifs("./node/TableRouting.csv");
         if (ifs.is_open()) {
@@ -79,7 +75,7 @@ void BVWXC::forwardMessage(cMessage *msg)
 
                 if (getParentModule()->getIndex() == node) {
                     send(msg, "out", gate);
-                    EV << "message sent.." << endl;
+//                    EV << "message sent.." << endl;
                 }
             }
             ifs.close();

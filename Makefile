@@ -35,7 +35,6 @@ OBJS = \
     $O/node/BVT.o \
     $O/node/BVWXC.o \
     $O/node/DisplayManager.o \
-    $O/node/DynamicRSA.o \
     $O/node/SpectrumManager.o \
     $O/node/TopologyManager.o \
     $O/node/OpticalMsg_m.o

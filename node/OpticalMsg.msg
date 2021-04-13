@@ -11,11 +11,27 @@
 //
 // Represents a packet in the network.
 //
+
 packet OpticalMsg
 {
     int srcAddr;
     int destAddr;
     int slotReq;
     int msgState;
+    int red;
+    int green;
+    int blue;
+}
+
+packet OpticalMsgPath
+{
+    int srcAddr;
+    int destAddr;
+    int slotReq;
+    int msgState;
+    int opticalPath[];
+    int red;
+    int green;
+    int blue;
 }
 

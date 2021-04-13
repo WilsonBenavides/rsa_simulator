@@ -8,5 +8,9 @@ package node;
 //
 simple SpectrumManager
 {
+    parameters:
+        double slotBandwidth;
+        double channelBandwidth;
+    gates:
+        input in @directIn;
 }
-

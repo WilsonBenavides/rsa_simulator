@@ -14,14 +14,13 @@ module Controller
         input in @directIn;
 
     submodules:
-        spectrum: SpectrumManager;
         display: DisplayManager;
-        rsa_control: DynamicRSA;
-        routing: TopologyManager {
+        topology: TopologyManager;
+        spectrum: SpectrumManager {
 
             @display("p=379,83");
         }
     connections allowunconnected:
-        in --> rsa_control.in;
-        rsa_control.directTopoOut --> routing.in;
+        in --> topology.in;
+        topology.directTopoOut --> spectrum.in;
 }
