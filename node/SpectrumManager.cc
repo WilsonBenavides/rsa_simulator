@@ -24,7 +24,7 @@ public:
     struct SlotItem
     {
         int index;
-        int value;
+        int slt_right;
     };
     struct SlotBox
     {
@@ -39,7 +39,8 @@ public:
         bool availability;
         int available_slots;
         int used_slots;
-        std::vector<int> slots;
+        std::vector<int> slots_availability;
+        std::vector<int> slots_right;
         std::vector<SlotBox> vec_box;
     };
     std::vector<LinkData> LinkTable;
@@ -72,19 +73,21 @@ void SpectrumManager::initialize(int stage)
     slotSize = (channelBandwidth / slotBandwidth);
     std::vector<SlotBox> vec_box;
     SlotBox box;
-    std::vector<int> tmp(slotSize, 0);
-
-    for (int i = 0; i < tmp.size(); i++) {
-        SlotItem si = { i, tmp.at(i) };
-        box.slot_box.push_back(si);
-    }
-    vec_box.push_back(box);
-
-    for (SlotItem sb : vec_box.at(0).slot_box) {
-//        EV << " index : " << sb.index << "  :  value  : " << sb.value << endl;
-    }
+    std::vector<int> sl_rg(slotSize, 0);
+    std::vector<int> sl_av(slotSize, 0);
 
     if (stage == 1) {
+        for (int i = 0; i < sl_rg.size(); i++) {
+            int sl_right = static_cast<int>(sl_rg.size() - i - 1);
+            SlotItem si = { i, sl_right };
+            sl_rg.at(i) = sl_right;
+            box.slot_box.push_back(si);
+        }
+        vec_box.push_back(box);
+
+        for (SlotItem sb : vec_box.back().slot_box) {
+            EV << " index : " << sb.index << "  :  value  : " << sb.slt_right << endl;
+        }
 
         cTopology *topo = new cTopology("topo");
         topo->extractByModulePath(cStringTokenizer("**.node[*]").asVector());
@@ -97,13 +100,13 @@ void SpectrumManager::initialize(int stage)
                 int dst = topo->getNode(i)->getLinkOut(j)->getRemoteNode()->getModule()->par("address");
                 int gate = srcNode->getLinkOut(j)->getLocalGate()->getIndex();
                 int linkId = srcNode->getLinkOut(j)->getLocalGate()->getConnectionId();
-                LinkData data = { linkId, src, dst, gate, true, slotSize, 0, tmp, vec_box };
+                LinkData data = { linkId, src, dst, gate, true, slotSize, 0, sl_av, sl_rg, vec_box };
                 LinkTable.push_back(data);
                 numLinks++;
             }
         }
 
-        for (int it : tmp) {
+        for (int it : sl_rg) {
             EV << " : " << it;
         }
         drawSlotGrid(numLinks, slotSize, cFigure::Color("#ffffff"));
@@ -131,30 +134,72 @@ void SpectrumManager::handleMessage(cMessage *msg)
     msgNode->setSlotReq(slreq);
     msgNode->setMsgState(LIGHTPATH_ASSIGNMENT);
 
-
     for (int id = 0; id < msgPath->getOpticalPathArraySize(); id++) {
-        std::vector<int> usedId;
+        std::vector<std::vector<int>> result;
+
         int lnkId = msgPath->getOpticalPath(id);
         for (LinkData lnk : LinkTable) {
             if (lnk.id == lnkId) {
-                EV << " slots :  ";
-                lnk.slots.at(5) = 1;
-                lnk.slots.at(6) = 1;
-                lnk.slots.at(7) = 1;
+                result.clear();
+                lnk.vec_box.clear();
+                EV << " slots :  " << lnk.vec_box.size();
+                int sl_as = 1;
+                lnk.slots_right.at(sl_as) = -1;
+                lnk.slots_availability.at(sl_as) = 1;
 
-                for (int tile : lnk.slots) {
-                    EV << tile;
-                }
+                result.resize(1);
+                lnk.vec_box.resize(1);
 
-                for (int i = 0; i < lnk.slots.size(); i++) {
-                    if (lnk.slots.at(i) == 0) {
-                        EV << " i:  " << i << " value: " << lnk.slots.at(i) << endl;
-                    } else if(usedId.size() == 0){
-                        EV << " i__:  " << i << " value: " << lnk.slots.at(i) << endl;
-                        usedId.push_back(i);
+                result.back().push_back(lnk.slots_right.at(0));
+                SlotItem slit = {0, lnk.slots_right.at(0)};
+                lnk.vec_box.back().slot_box.push_back(slit);
+//                lnk.vec_box.back().slot_box.push_back(lnk.slots_right.at(0));
+//                lnk.vec_box.back().slot_box.at(0).slt_right;
 
+                for (int i = 1; i < lnk.slots_right.size(); i++) {
+
+                    int i_bef = lnk.slots_right.at(i);
+                    int i_lat = lnk.slots_right.at(i - 1) - 1;
+//                    int i_bef = lnk.vec_box.back().slot_box.at(i).slt_right;
+//                    int i_lat = lnk.vec_box.back().slot_box.at(i - 1).slt_right - 1;
+                    EV << "i_bef: " << i_bef << "  i_lat " << i_lat << endl;
+                    if (i_bef != i_lat) {
+                        EV << "non consecutive..::::::::::::::::::::::::::::::::" << endl;
+                        result.push_back(std::vector<int>());
+                        lnk.vec_box.push_back(SlotBox());
+//                        lnk.vec_box.push_back(std::vector<SlotBox>());
                     }
+                    result.back().push_back(i_bef);
+                    SlotItem slt_it = {i, i_bef};
+                    lnk.vec_box.back().slot_box.push_back(slt_it);
                 }
+
+                EV << "vec box split size : " << lnk.vec_box.size() << endl;
+
+                for (int ii = 0; ii < lnk.vec_box.size(); ii++) {
+                    EV << "ii : " << ii;
+                    for (int jj = 0; jj < result.at(ii).size(); jj++) {
+//                        EV << " nums: " << result.at(ii).at(jj);
+                        EV << " nums: " << lnk.vec_box.at(ii).slot_box.at(jj).slt_right;
+                    }
+                    EV << endl;
+                }
+
+                for (int tile : lnk.slots_right)
+                    EV << tile;
+//                for (SlotItem si : lnk.vec_box.back().slot_box) {
+//                    EV << " i:  " << si.index << " sl_right: " << si.slt_right << endl;
+//                }
+
+//                for (int i = 0; i < lnk.slots.size(); i++) {
+//                    if (lnk.slots.at(i) == 0) {
+//                        EV << " i:  " << i << " value: " << lnk.slots.at(i) << endl;
+//                    } else if(usedId.size() == 0){
+//                        EV << " i__:  " << i << " value: " << lnk.slots.at(i) << endl;
+//                        usedId.push_back(i);
+//
+//                    }
+//                }
             }
         }
 //        drawSlotsOnGrid(gateId, 0, slreq, cFigure::Color(col));

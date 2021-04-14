@@ -1,5 +1,5 @@
 E # 0 t 0 m 1 ce -1 msg -1
-SB v 1286 rid General-0-20210413-00:07:43-2316 b 1000
+SB v 1286 rid General-0-20210413-14:11:44-3316 b 1000
 KF p -1 c "" s ""
 MC id 1 c omnetpp::cModule t networks.Nsfnet n Nsfnet cm 1
 MS id 1 d bgb=786,562;bgi=maps/usa;bgu=km
@@ -774,12 +774,22 @@ ME
 MB sm 1 tm 101 m initialize(1)
 ME
 MB sm 1 tm 103 m initialize(1)
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 0  :  value  : 9
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 1  :  value  : 8
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 2  :  value  : 7
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 3  :  value  : 6
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 4  :  value  : 5
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 5  :  value  : 4
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 6  :  value  : 3
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 7  :  value  : 2
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 8  :  value  : 1
+- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 9  :  value  : 0
 ME
 MB sm 1 tm 101 m initialize(2)
 ME
 MB sm 1 tm 103 m initialize(2)
 ME
-- INFO: : 0 : 0 : 0 : 0 : 0 : 0 : 0 : 0 : 0 : 0
+- INFO: : 9 : 8 : 7 : 6 : 5 : 4 : 3 : 2 : 1 : 0
 
 E # 1 t 0 m 59 ce 0 msg 0
 BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 1
@@ -813,27 +823,42 @@ CL id 1 tid 1 eid 1 etid 1 c OpticalMsgPath n "Optical Message Path" pe 4 cid 2
 
 E # 5 t 0 m 103 ce 4 msg 1
 CM id 2 tid 2 eid 2 etid 2 c omnetpp::cMessage n opt-0-to-7-ns-3 pe -1
-- INFO: slots :  0000011100 i:  0 value: 0
-- INFO: i:  1 value: 0
-- INFO: i:  2 value: 0
-- INFO: i:  3 value: 0
-- INFO: i:  4 value: 0
-- INFO: i__:  5 value: 1
-- INFO: i:  8 value: 0
-- INFO: i:  9 value: 0
-- INFO: slots :  0000011100 i:  0 value: 0
-- INFO: i:  1 value: 0
-- INFO: i:  2 value: 0
-- INFO: i:  3 value: 0
-- INFO: i:  4 value: 0
-- INFO: i__:  5 value: 1
-- INFO: i:  8 value: 0
-- INFO: i:  9 value: 0
+- INFO: slots :  0i_bef: -1  i_lat 8
+- INFO:non consecutive..::::::::::::::::::::::::::::::::
+- INFO:i_bef: 7  i_lat -2
+- INFO:non consecutive..::::::::::::::::::::::::::::::::
+- INFO:i_bef: 6  i_lat 6
+- INFO:i_bef: 5  i_lat 5
+- INFO:i_bef: 4  i_lat 4
+- INFO:i_bef: 3  i_lat 3
+- INFO:i_bef: 2  i_lat 2
+- INFO:i_bef: 1  i_lat 1
+- INFO:i_bef: 0  i_lat 0
+- INFO:vec box split size : 3
+- INFO:ii : 0 nums: 9
+- INFO:ii : 1 nums: -1
+- INFO:ii : 2 nums: 7 nums: 6 nums: 5 nums: 4 nums: 3 nums: 2 nums: 1 nums: 0
+- INFO:9-176543210 slots :  0i_bef: -1  i_lat 8
+- INFO:non consecutive..::::::::::::::::::::::::::::::::
+- INFO:i_bef: 7  i_lat -2
+- INFO:non consecutive..::::::::::::::::::::::::::::::::
+- INFO:i_bef: 6  i_lat 6
+- INFO:i_bef: 5  i_lat 5
+- INFO:i_bef: 4  i_lat 4
+- INFO:i_bef: 3  i_lat 3
+- INFO:i_bef: 2  i_lat 2
+- INFO:i_bef: 1  i_lat 1
+- INFO:i_bef: 0  i_lat 0
+- INFO:vec box split size : 3
+- INFO:ii : 0 nums: 9
+- INFO:ii : 1 nums: -1
+- INFO:ii : 2 nums: 7 nums: 6 nums: 5 nums: 4 nums: 3 nums: 2 nums: 1 nums: 0
 DM id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n "Optical Message Path" pe 5
 BS id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 5
 SD sm 103 dm 60 dg 0
 ES t 0
 CL id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 5 cid 3
+- INFO:9-176543210
 
 E # 6 t 0 m 60 ce 5 msg 2
 - INFO:0,1
