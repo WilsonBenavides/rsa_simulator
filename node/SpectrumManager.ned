@@ -11,6 +11,7 @@ simple SpectrumManager
     parameters:
         double slotBandwidth;
         double channelBandwidth;
+        string assignmentAlgorithm;
     gates:
         input in @directIn;
 }

@@ -27,6 +27,7 @@ module Node
     submodules:
         app: App {
             parameters:
+                address = address;
                 @display("p=185,43");
         }
         bvwxc: BVWXC {

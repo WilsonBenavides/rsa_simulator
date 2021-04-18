@@ -16,8 +16,8 @@ using namespace omnetpp;
 class BVWXC : public cSimpleModule
 {
 private:
+    int myAddress;
     typedef std::map<int, int> RoutingTable;  // destaddr -> gateindex
-    std::map<int, int> rtable;
 
 protected:
     virtual void forwardMessage(cMessage *msg);
@@ -29,6 +29,7 @@ Define_Module(BVWXC);
 
 void BVWXC::initialize()
 {
+    myAddress = getParentModule()->par("address");
 }
 
 void BVWXC::handleMessage(cMessage *msg)
@@ -40,8 +41,8 @@ void BVWXC::handleMessage(cMessage *msg)
     if (opmsg->getDestAddr() == ss) {
         //Message arrived
         bubble("message arrived!");
-        EV << "Message : " << msg << "  arrived!\n";
-        delete msg;
+        send(msg, "localOut");
+//        delete msg;
     }
     else {
         forwardMessage(msg);
@@ -68,7 +69,7 @@ void BVWXC::forwardMessage(cMessage *msg)
         std::ifstream ifs("./node/TableRouting.csv");
         if (ifs.is_open()) {
             while (std::getline(ifs, line)) {
-                EV << line << endl;
+//                EV << line << endl;
                 int index = line.find(',');
                 int node = std::stoi(line.substr(0, index++));
                 int gate = std::stoi(line.substr(index, line.size()));

@@ -1,5 +1,5 @@
 E # 0 t 0 m 1 ce -1 msg -1
-SB v 1286 rid General-0-20210413-14:11:44-3316 b 1000
+SB v 1286 rid General-0-20210418-00:35:18-13912 b 1000
 KF p -1 c "" s ""
 MC id 1 c omnetpp::cModule t networks.Nsfnet n Nsfnet cm 1
 MS id 1 d bgb=786,562;bgi=maps/usa;bgu=km
@@ -636,24 +636,21 @@ CC sm 15 sg 1048577 dm 99 dg 2097153
 CC sm 99 sg 3670017 dm 15 dg 2621441
 CC sm 15 sg 1048578 dm 99 dg 2097154
 CC sm 99 sg 3670018 dm 15 dg 2621442
-MC id 101 c DisplayManager t node.DisplayManager pid 16 n display
+MC id 101 c TopologyManager t node.TopologyManager pid 16 n topology
+GC m 101 g 0 n in o 0
+GC m 101 g 3 n directTopoOut o 1
 MS id 101 d ""
-MC id 102 c TopologyManager t node.TopologyManager pid 16 n topology
+MC id 102 c SpectrumManager t node.SpectrumManager pid 16 n spectrum
 GC m 102 g 0 n in o 0
-GC m 102 g 3 n directTopoOut o 1
-MS id 102 d ""
-MC id 103 c SpectrumManager t node.SpectrumManager pid 16 n spectrum
-GC m 103 g 0 n in o 0
-MS id 103 d p=379,83
-CC sm 16 sg 0 dm 102 dg 0
-CC sm 102 sg 3 dm 103 dg 0
+MS id 102 d p=379,83
+CC sm 16 sg 0 dm 101 dg 0
+CC sm 101 sg 3 dm 102 dg 0
 MB sm 1 tm 2 m initialize(0)
 ME
 MB sm 1 tm 59 m initialize(0)
-- INFO (App)Nsfnet.node[0].app:only one message created, id :  59
-CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n opt-0-to-7-numSlot-3 pe -1
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 0
-ES t 0
+CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n nextPacket pe -1
+BS id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.487304628734
 ME
 MB sm 1 tm 60 m initialize(0)
 ME
@@ -662,6 +659,9 @@ ME
 MB sm 1 tm 3 m initialize(0)
 ME
 MB sm 1 tm 62 m initialize(0)
+CM id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n nextPacket pe -1
+BS id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.421103001293
 ME
 MB sm 1 tm 63 m initialize(0)
 ME
@@ -670,6 +670,9 @@ ME
 MB sm 1 tm 4 m initialize(0)
 ME
 MB sm 1 tm 65 m initialize(0)
+CM id 2 tid 2 eid 2 etid 2 c omnetpp::cMessage n nextPacket pe -1
+BS id 2 tid 2 eid 2 etid 2 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.225369673874
 ME
 MB sm 1 tm 66 m initialize(0)
 ME
@@ -678,6 +681,9 @@ ME
 MB sm 1 tm 5 m initialize(0)
 ME
 MB sm 1 tm 68 m initialize(0)
+CM id 3 tid 3 eid 3 etid 3 c omnetpp::cMessage n nextPacket pe -1
+BS id 3 tid 3 eid 3 etid 3 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.137120324094
 ME
 MB sm 1 tm 69 m initialize(0)
 ME
@@ -686,6 +692,9 @@ ME
 MB sm 1 tm 6 m initialize(0)
 ME
 MB sm 1 tm 71 m initialize(0)
+CM id 4 tid 4 eid 4 etid 4 c omnetpp::cMessage n nextPacket pe -1
+BS id 4 tid 4 eid 4 etid 4 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.376929046772
 ME
 MB sm 1 tm 72 m initialize(0)
 ME
@@ -694,6 +703,9 @@ ME
 MB sm 1 tm 7 m initialize(0)
 ME
 MB sm 1 tm 74 m initialize(0)
+CM id 5 tid 5 eid 5 etid 5 c omnetpp::cMessage n nextPacket pe -1
+BS id 5 tid 5 eid 5 etid 5 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.307261019293
 ME
 MB sm 1 tm 75 m initialize(0)
 ME
@@ -702,6 +714,9 @@ ME
 MB sm 1 tm 8 m initialize(0)
 ME
 MB sm 1 tm 77 m initialize(0)
+CM id 6 tid 6 eid 6 etid 6 c omnetpp::cMessage n nextPacket pe -1
+BS id 6 tid 6 eid 6 etid 6 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.450555658434
 ME
 MB sm 1 tm 78 m initialize(0)
 ME
@@ -710,6 +725,9 @@ ME
 MB sm 1 tm 9 m initialize(0)
 ME
 MB sm 1 tm 80 m initialize(0)
+CM id 7 tid 7 eid 7 etid 7 c omnetpp::cMessage n nextPacket pe -1
+BS id 7 tid 7 eid 7 etid 7 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.446008098125
 ME
 MB sm 1 tm 81 m initialize(0)
 ME
@@ -718,6 +736,9 @@ ME
 MB sm 1 tm 10 m initialize(0)
 ME
 MB sm 1 tm 83 m initialize(0)
+CM id 8 tid 8 eid 8 etid 8 c omnetpp::cMessage n nextPacket pe -1
+BS id 8 tid 8 eid 8 etid 8 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.457842665538
 ME
 MB sm 1 tm 84 m initialize(0)
 ME
@@ -726,6 +747,9 @@ ME
 MB sm 1 tm 11 m initialize(0)
 ME
 MB sm 1 tm 86 m initialize(0)
+CM id 9 tid 9 eid 9 etid 9 c omnetpp::cMessage n nextPacket pe -1
+BS id 9 tid 9 eid 9 etid 9 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.431658764277
 ME
 MB sm 1 tm 87 m initialize(0)
 ME
@@ -734,6 +758,9 @@ ME
 MB sm 1 tm 12 m initialize(0)
 ME
 MB sm 1 tm 89 m initialize(0)
+CM id 10 tid 10 eid 10 etid 10 c omnetpp::cMessage n nextPacket pe -1
+BS id 10 tid 10 eid 10 etid 10 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.134017682821
 ME
 MB sm 1 tm 90 m initialize(0)
 ME
@@ -742,6 +769,9 @@ ME
 MB sm 1 tm 13 m initialize(0)
 ME
 MB sm 1 tm 92 m initialize(0)
+CM id 11 tid 11 eid 11 etid 11 c omnetpp::cMessage n nextPacket pe -1
+BS id 11 tid 11 eid 11 etid 11 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.431841345876
 ME
 MB sm 1 tm 93 m initialize(0)
 ME
@@ -750,6 +780,9 @@ ME
 MB sm 1 tm 14 m initialize(0)
 ME
 MB sm 1 tm 95 m initialize(0)
+CM id 12 tid 12 eid 12 etid 12 c omnetpp::cMessage n nextPacket pe -1
+BS id 12 tid 12 eid 12 etid 12 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.11562191369
 ME
 MB sm 1 tm 96 m initialize(0)
 ME
@@ -758,6 +791,9 @@ ME
 MB sm 1 tm 15 m initialize(0)
 ME
 MB sm 1 tm 98 m initialize(0)
+CM id 13 tid 13 eid 13 etid 13 c omnetpp::cMessage n nextPacket pe -1
+BS id 13 tid 13 eid 13 etid 13 c omnetpp::cMessage n nextPacket pe 0
+ES t 0.20921999095
 ME
 MB sm 1 tm 99 m initialize(0)
 ME
@@ -769,119 +805,231 @@ MB sm 1 tm 101 m initialize(0)
 ME
 MB sm 1 tm 102 m initialize(0)
 ME
-MB sm 1 tm 103 m initialize(0)
+MB sm 1 tm 102 m initialize(1)
 ME
-MB sm 1 tm 101 m initialize(1)
+MB sm 1 tm 102 m initialize(2)
 ME
-MB sm 1 tm 103 m initialize(1)
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 0  :  value  : 9
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 1  :  value  : 8
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 2  :  value  : 7
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 3  :  value  : 6
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 4  :  value  : 5
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 5  :  value  : 4
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 6  :  value  : 3
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 7  :  value  : 2
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 8  :  value  : 1
-- INFO (SpectrumManager)Nsfnet.controller.spectrum: index : 9  :  value  : 0
-ME
-MB sm 1 tm 101 m initialize(2)
-ME
-MB sm 1 tm 103 m initialize(2)
-ME
-- INFO: : 9 : 8 : 7 : 6 : 5 : 4 : 3 : 2 : 1 : 0
 
-E # 1 t 0 m 59 ce 0 msg 0
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 1
-SH sm 59 sg 3
-ES t 0
-CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 1 cid 1
+E # 1 t 0.11562191369 m 95 ce 0 msg 12
+CM id 14 tid 14 eid 14 etid 14 c omnetpp::cMessage n 12-10-ns2 pe -1
+BS id 14 tid 14 eid 14 etid 14 c OpticalMsg n 12-10-ns2 pe 1
+SH sm 95 sg 3
+ES t 0.11562191369
+CL id 14 tid 14 eid 14 etid 14 c OpticalMsg n 12-10-ns2 pe 1 cid 15
+BS id 12 tid 12 eid 12 etid 12 c omnetpp::cMessage n nextPacket pe 1
+ES t 0.38406496197
+BU id 14 txt "Generating packet..."
 
-E # 2 t 0 m 61 ce 1 msg 0
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 2
-SH sm 61 sg 7
-ES t 0
-CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 2 cid 1
+E # 2 t 0.11562191369 m 97 ce 1 msg 14
+BS id 14 tid 14 eid 14 etid 14 c OpticalMsg n 12-10-ns2 pe 2
+SH sm 97 sg 7
+ES t 0.11562191369
+CL id 14 tid 14 eid 14 etid 14 c OpticalMsg n 12-10-ns2 pe 2 cid 15
 
-E # 3 t 0 m 60 ce 2 msg 0
-BS id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 3
-SD sm 60 dm 16 dg 0
+E # 3 t 0.11562191369 m 96 ce 2 msg 14
+BS id 14 tid 14 eid 14 etid 14 c OpticalMsg n 12-10-ns2 pe 3
+SD sm 96 dm 16 dg 0
 SH sm 16 sg 0
-ES t 0
-CL id 0 tid 0 eid 0 etid 0 c OpticalMsg n opt-0-to-7-numSlot-3 pe 3 cid 1
+ES t 0.11562191369
+CL id 14 tid 14 eid 14 etid 14 c OpticalMsg n 12-10-ns2 pe 3 cid 15
 
-E # 4 t 0 m 102 ce 3 msg 0
-CM id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n "Optical Message Path" pe -1
-CS sm 2 sg 2621441 d ls=#ea1769,8
-CS sm 4 sg 2621442 d ls=#ea1769,8
-DM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n opt-0-to-7-numSlot-3 pe 4
-BS id 1 tid 1 eid 1 etid 1 c OpticalMsgPath n "Optical Message Path" pe 4
-SD sm 102 dm 102 dg 3
-SH sm 102 sg 3
-ES t 0
-CL id 1 tid 1 eid 1 etid 1 c OpticalMsgPath n "Optical Message Path" pe 4 cid 2
+E # 4 t 0.11562191369 m 101 ce 3 msg 14
+CS sm 2 sg 2621440 d ls=#939393,1
+CS sm 2 sg 2621441 d ls=#939393,1
+CS sm 2 sg 2621442 d ls=#939393,1
+CS sm 3 sg 2621440 d ls=#939393,1
+CS sm 3 sg 2621441 d ls=#939393,1
+CS sm 3 sg 2621442 d ls=#939393,1
+CS sm 4 sg 2621440 d ls=#939393,1
+CS sm 4 sg 2621441 d ls=#939393,1
+CS sm 4 sg 2621442 d ls=#939393,1
+CS sm 5 sg 2621440 d ls=#939393,1
+CS sm 5 sg 2621441 d ls=#939393,1
+CS sm 5 sg 2621442 d ls=#939393,1
+CS sm 6 sg 2621440 d ls=#939393,1
+CS sm 6 sg 2621441 d ls=#939393,1
+CS sm 6 sg 2621442 d ls=#939393,1
+CS sm 7 sg 2621440 d ls=#939393,1
+CS sm 7 sg 2621441 d ls=#939393,1
+CS sm 8 sg 2621440 d ls=#939393,1
+CS sm 8 sg 2621441 d ls=#939393,1
+CS sm 8 sg 2621442 d ls=#939393,1
+CS sm 9 sg 2621440 d ls=#939393,1
+CS sm 9 sg 2621441 d ls=#939393,1
+CS sm 9 sg 2621442 d ls=#939393,1
+CS sm 9 sg 2621443 d ls=#939393,1
+CS sm 10 sg 2621440 d ls=#939393,1
+CS sm 10 sg 2621441 d ls=#939393,1
+CS sm 10 sg 2621442 d ls=#939393,1
+CS sm 11 sg 2621440 d ls=#939393,1
+CS sm 11 sg 2621441 d ls=#939393,1
+CS sm 11 sg 2621442 d ls=#939393,1
+CS sm 11 sg 2621443 d ls=#939393,1
+CS sm 12 sg 2621440 d ls=#939393,1
+CS sm 12 sg 2621441 d ls=#939393,1
+CS sm 12 sg 2621442 d ls=#939393,1
+CS sm 13 sg 2621440 d ls=#939393,1
+CS sm 13 sg 2621441 d ls=#939393,1
+CS sm 14 sg 2621440 d ls=#939393,1
+CS sm 14 sg 2621441 d ls=#939393,1
+CS sm 14 sg 2621442 d ls=#939393,1
+CS sm 15 sg 2621440 d ls=#939393,1
+CS sm 15 sg 2621441 d ls=#939393,1
+CS sm 15 sg 2621442 d ls=#939393,1
+- INFO:path list size : 1
+- INFO:src node found node[12]
+CS sm 14 sg 2621442 d ls=#ffffff,5
+CM id 15 tid 15 eid 15 etid 15 c omnetpp::cMessage n "Optical Message Path" pe -1
+CS sm 14 sg 2621442 d ls=#c81e47,5
+DM id 14 tid 14 eid 14 etid 14 c omnetpp::cMessage n 12-10-ns2 pe 4
+BS id 15 tid 15 eid 15 etid 15 c OpticalMsgPath n "Optical Message Path" pe 4
+SD sm 101 dm 101 dg 3
+SH sm 101 sg 3
+ES t 0.11562191369
+CL id 15 tid 15 eid 15 etid 15 c OpticalMsgPath n "Optical Message Path" pe 4 cid 16
 
-E # 5 t 0 m 103 ce 4 msg 1
-CM id 2 tid 2 eid 2 etid 2 c omnetpp::cMessage n opt-0-to-7-ns-3 pe -1
-- INFO: slots :  0i_bef: -1  i_lat 8
-- INFO:non consecutive..::::::::::::::::::::::::::::::::
-- INFO:i_bef: 7  i_lat -2
-- INFO:non consecutive..::::::::::::::::::::::::::::::::
-- INFO:i_bef: 6  i_lat 6
-- INFO:i_bef: 5  i_lat 5
-- INFO:i_bef: 4  i_lat 4
-- INFO:i_bef: 3  i_lat 3
-- INFO:i_bef: 2  i_lat 2
-- INFO:i_bef: 1  i_lat 1
-- INFO:i_bef: 0  i_lat 0
-- INFO:vec box split size : 3
-- INFO:ii : 0 nums: 9
-- INFO:ii : 1 nums: -1
-- INFO:ii : 2 nums: 7 nums: 6 nums: 5 nums: 4 nums: 3 nums: 2 nums: 1 nums: 0
-- INFO:9-176543210 slots :  0i_bef: -1  i_lat 8
-- INFO:non consecutive..::::::::::::::::::::::::::::::::
-- INFO:i_bef: 7  i_lat -2
-- INFO:non consecutive..::::::::::::::::::::::::::::::::
-- INFO:i_bef: 6  i_lat 6
-- INFO:i_bef: 5  i_lat 5
-- INFO:i_bef: 4  i_lat 4
-- INFO:i_bef: 3  i_lat 3
-- INFO:i_bef: 2  i_lat 2
-- INFO:i_bef: 1  i_lat 1
-- INFO:i_bef: 0  i_lat 0
-- INFO:vec box split size : 3
-- INFO:ii : 0 nums: 9
-- INFO:ii : 1 nums: -1
-- INFO:ii : 2 nums: 7 nums: 6 nums: 5 nums: 4 nums: 3 nums: 2 nums: 1 nums: 0
-DM id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n "Optical Message Path" pe 5
-BS id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 5
-SD sm 103 dm 60 dg 0
-ES t 0
-CL id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 5 cid 3
-- INFO:9-176543210
+E # 5 t 0.11562191369 m 102 ce 4 msg 15
+CM id 16 tid 16 eid 16 etid 16 c omnetpp::cMessage n 12-10-ns-2 pe -1
+BS id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 5
+SD sm 102 dm 96 dg 0
+ES t 0.11562191369
+CL id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 5 cid 17
+DM id 15 tid 15 eid 15 etid 15 c omnetpp::cMessage n "Optical Message Path" pe 5
 
-E # 6 t 0 m 60 ce 5 msg 2
-- INFO:0,1
-BS id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 6
-SH sm 60 sg 3670017
-SH sm 2 sg 2621441 pd 0.000533512953
-SH sm 4 sg 1048576
-ES t 0.000533512953
-CL id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 6 cid 3
-- INFO:2,2
+E # 6 t 0.11562191369 m 96 ce 5 msg 16
+BS id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 6
+SH sm 96 sg 3670018
+SH sm 14 sg 2621442 pd 0.00082067011
+SH sm 12 sg 1048578
+ES t 0.1164425838
+CL id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 6 cid 17
 
-E # 7 t 0.000533512953 m 66 ce 6 msg 2
-- INFO:0,1
-- INFO:2,2
-BS id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 7
-SH sm 66 sg 3670018
-SH sm 4 sg 2621442 pd 0.000404977565
-SH sm 9 sg 1048576
-ES t 0.000938490518
-CL id 2 tid 2 eid 2 etid 2 c OpticalMsg n opt-0-to-7-ns-3 pe 7 cid 3
+E # 7 t 0.1164425838 m 90 ce 6 msg 16
+BU id 90 txt "message arrived!"
+BS id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 7
+SH sm 90 sg 9
+ES t 0.1164425838
+CL id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 7 cid 17
 
-E # 8 t 0.000938490518 m 81 ce 7 msg 2
-BU id 81 txt "message arrived!"
-- INFO:Message : (OpticalMsg)opt-0-to-7-ns-3  arrived!
-DM id 2 tid 2 eid 2 etid 2 c omnetpp::cMessage n opt-0-to-7-ns-3 pe 8
-SE e 0 c 13 m "No more events, simulation completed -- at t=0.000938490518s, event #8"
+E # 8 t 0.1164425838 m 91 ce 7 msg 16
+BS id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 8
+SH sm 91 sg 3
+ES t 0.1164425838
+CL id 16 tid 16 eid 16 etid 16 c OpticalMsg n 12-10-ns-2 pe 8 cid 17
+
+E # 9 t 0.1164425838 m 89 ce 8 msg 16
+DM id 16 tid 16 eid 16 etid 16 c omnetpp::cMessage n 12-10-ns-2 pe 9
+BU id 12 txt Arrived!
+- INFO:end to end delay : 0.00082067011
+
+E # 10 t 0.134017682821 m 89 ce 0 msg 10
+CM id 17 tid 17 eid 17 etid 17 c omnetpp::cMessage n 10-6-ns2 pe -1
+BS id 17 tid 17 eid 17 etid 17 c OpticalMsg n 10-6-ns2 pe 10
+SH sm 89 sg 3
+ES t 0.134017682821
+CL id 17 tid 17 eid 17 etid 17 c OpticalMsg n 10-6-ns2 pe 10 cid 18
+BS id 10 tid 10 eid 10 etid 10 c omnetpp::cMessage n nextPacket pe 10
+ES t 0.510768527911
+BU id 12 txt "Generating packet..."
+
+E # 11 t 0.134017682821 m 91 ce 10 msg 17
+BS id 17 tid 17 eid 17 etid 17 c OpticalMsg n 10-6-ns2 pe 11
+SH sm 91 sg 7
+ES t 0.134017682821
+CL id 17 tid 17 eid 17 etid 17 c OpticalMsg n 10-6-ns2 pe 11 cid 18
+
+E # 12 t 0.134017682821 m 90 ce 11 msg 17
+BS id 17 tid 17 eid 17 etid 17 c OpticalMsg n 10-6-ns2 pe 12
+SD sm 90 dm 16 dg 0
+SH sm 16 sg 0
+ES t 0.134017682821
+CL id 17 tid 17 eid 17 etid 17 c OpticalMsg n 10-6-ns2 pe 12 cid 18
+
+E # 13 t 0.134017682821 m 101 ce 12 msg 17
+CS sm 2 sg 2621440 d ls=#939393,1
+CS sm 2 sg 2621441 d ls=#939393,1
+CS sm 2 sg 2621442 d ls=#939393,1
+CS sm 3 sg 2621440 d ls=#939393,1
+CS sm 3 sg 2621441 d ls=#939393,1
+CS sm 3 sg 2621442 d ls=#939393,1
+CS sm 4 sg 2621440 d ls=#939393,1
+CS sm 4 sg 2621441 d ls=#939393,1
+CS sm 4 sg 2621442 d ls=#939393,1
+CS sm 5 sg 2621440 d ls=#939393,1
+CS sm 5 sg 2621441 d ls=#939393,1
+CS sm 5 sg 2621442 d ls=#939393,1
+CS sm 6 sg 2621440 d ls=#939393,1
+CS sm 6 sg 2621441 d ls=#939393,1
+CS sm 6 sg 2621442 d ls=#939393,1
+CS sm 7 sg 2621440 d ls=#939393,1
+CS sm 7 sg 2621441 d ls=#939393,1
+CS sm 8 sg 2621440 d ls=#939393,1
+CS sm 8 sg 2621441 d ls=#939393,1
+CS sm 8 sg 2621442 d ls=#939393,1
+CS sm 9 sg 2621440 d ls=#939393,1
+CS sm 9 sg 2621441 d ls=#939393,1
+CS sm 9 sg 2621442 d ls=#939393,1
+CS sm 9 sg 2621443 d ls=#939393,1
+CS sm 10 sg 2621440 d ls=#939393,1
+CS sm 10 sg 2621441 d ls=#939393,1
+CS sm 10 sg 2621442 d ls=#939393,1
+CS sm 11 sg 2621440 d ls=#939393,1
+CS sm 11 sg 2621441 d ls=#939393,1
+CS sm 11 sg 2621442 d ls=#939393,1
+CS sm 11 sg 2621443 d ls=#939393,1
+CS sm 12 sg 2621440 d ls=#939393,1
+CS sm 12 sg 2621441 d ls=#939393,1
+CS sm 12 sg 2621442 d ls=#939393,1
+CS sm 13 sg 2621440 d ls=#939393,1
+CS sm 13 sg 2621441 d ls=#939393,1
+CS sm 14 sg 2621440 d ls=#939393,1
+CS sm 14 sg 2621441 d ls=#939393,1
+CS sm 14 sg 2621442 d ls=#939393,1
+CS sm 15 sg 2621440 d ls=#939393,1
+CS sm 15 sg 2621441 d ls=#939393,1
+CS sm 15 sg 2621442 d ls=#939393,1
+- INFO:path list size : 1
+- INFO:src node found node[10]
+- INFO:src node found node[9]
+CS sm 12 sg 2621441 d ls=#ffffff,5
+CS sm 11 sg 2621440 d ls=#ffffff,5
+CM id 18 tid 18 eid 18 etid 18 c omnetpp::cMessage n "Optical Message Path" pe -1
+CS sm 12 sg 2621441 d ls=#31393,5
+CS sm 11 sg 2621440 d ls=#31393,5
+DM id 17 tid 17 eid 17 etid 17 c omnetpp::cMessage n 10-6-ns2 pe 13
+BS id 18 tid 18 eid 18 etid 18 c OpticalMsgPath n "Optical Message Path" pe 13
+SD sm 101 dm 101 dg 3
+SH sm 101 sg 3
+ES t 0.134017682821
+CL id 18 tid 18 eid 18 etid 18 c OpticalMsgPath n "Optical Message Path" pe 13 cid 19
+
+E # 14 t 0.134017682821 m 102 ce 13 msg 18
+CM id 19 tid 19 eid 19 etid 19 c omnetpp::cMessage n 10-6-ns-2 pe -1
+BS id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 14
+SD sm 102 dm 90 dg 0
+ES t 0.134017682821
+CL id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 14 cid 20
+DM id 18 tid 18 eid 18 etid 18 c omnetpp::cMessage n "Optical Message Path" pe 14
+
+E # 15 t 0.134017682821 m 90 ce 14 msg 19
+BS id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 15
+SH sm 90 sg 3670017
+SH sm 12 sg 2621441 pd 0.000511484328
+SH sm 11 sg 1048577
+ES t 0.134529167149
+CL id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 15 cid 20
+
+E # 16 t 0.134529167149 m 87 ce 15 msg 19
+BS id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 16
+SH sm 87 sg 3670016
+SH sm 11 sg 2621440 pd 0.000572093346
+SH sm 8 sg 1048578
+ES t 0.135101260495
+CL id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 16 cid 20
+
+E # 17 t 0.135101260495 m 78 ce 16 msg 19
+BU id 78 txt "message arrived!"
+BS id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 17
+SH sm 78 sg 9
+ES t 0.135101260495
+CL id 19 tid 19 eid 19 etid 19 c OpticalMsg n 10-6-ns-2 pe 17 cid 20

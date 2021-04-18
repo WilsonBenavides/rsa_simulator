@@ -8,19 +8,40 @@
 
 using namespace omnetpp;
 
+class Link
+{
+private:
+    std::string m_Name;
+    int m_id;
+public:
+    Link(const std::string &name, int id)
+    {
+        m_Name = name;
+        m_id = id;
+    }
+
+    std::string GetName()
+    {
+        return m_Name;
+    }
+};
+
 /**
  *
  */
 class SpectrumManager : public cSimpleModule
 {
-    cCanvas *canvas;
+    cCanvas *canvas = new cCanvas();
     int slotSize = 10, linkSize = 21;
     int numLinks;
     double slotBandwidth;
     double channelBandwidth;
+    const char *assignmentAlgorithm;
+
 public:
     SpectrumManager() = default;
     virtual ~SpectrumManager();
+
     struct SlotItem
     {
         int index;
@@ -46,8 +67,10 @@ public:
     std::vector<LinkData> LinkTable;
 
 protected:
+
     virtual void initialize(int stage) override;
     virtual int numInitStages() const override; // NOTE THE const MODIFIER!!!
+    virtual void finish() override;
     virtual void handleMessage(cMessage *msg) override;
     void drawSlotGrid(int slotSize, int linkSize, cFigure::Color color);
     void drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFigure::Color color);
@@ -68,7 +91,8 @@ void SpectrumManager::initialize(int stage)
 {
     slotBandwidth = par("slotBandwidth");
     channelBandwidth = par("channelBandwidth");
-    canvas = getParentModule()->getParentModule()->getCanvas();
+    assignmentAlgorithm = par("assignmentAlgorithm");
+    canvas = getSystemModule()->getCanvas(); // toplevel canvas
 
     slotSize = (channelBandwidth / slotBandwidth);
     std::vector<SlotBox> vec_box;
@@ -77,6 +101,10 @@ void SpectrumManager::initialize(int stage)
     std::vector<int> sl_av(slotSize, 0);
 
     if (stage == 1) {
+
+        Link *l = new Link(assignmentAlgorithm, 0);
+//        EV << "name link : " << l->GetName() << endl;
+
         for (int i = 0; i < sl_rg.size(); i++) {
             int sl_right = static_cast<int>(sl_rg.size() - i - 1);
             SlotItem si = { i, sl_right };
@@ -86,7 +114,7 @@ void SpectrumManager::initialize(int stage)
         vec_box.push_back(box);
 
         for (SlotItem sb : vec_box.back().slot_box) {
-            EV << " index : " << sb.index << "  :  value  : " << sb.slt_right << endl;
+//            EV << " index : " << sb.index << "  :  value  : " << sb.slt_right << endl;
         }
 
         cTopology *topo = new cTopology("topo");
@@ -107,7 +135,7 @@ void SpectrumManager::initialize(int stage)
         }
 
         for (int it : sl_rg) {
-            EV << " : " << it;
+//            EV << " : " << it;
         }
         drawSlotGrid(numLinks, slotSize, cFigure::Color("#ffffff"));
         delete topo;
@@ -127,7 +155,7 @@ void SpectrumManager::handleMessage(cMessage *msg)
     int blue = msgPath->getBlue();
     cFigure::Color col = cFigure::Color(red, green, blue);
 
-    sprintf(msgname, "opt-%i-to-%i-ns-%i", src, dst, slreq);
+    sprintf(msgname, "%i-%i-ns-%i", src, dst, slreq);
     OpticalMsg *msgNode = new OpticalMsg(msgname);
     msgNode->setSrcAddr(src);
     msgNode->setDestAddr(dst);
@@ -142,7 +170,7 @@ void SpectrumManager::handleMessage(cMessage *msg)
             if (lnk.id == lnkId) {
                 result.clear();
                 lnk.vec_box.clear();
-                EV << " slots :  " << lnk.vec_box.size();
+//                EV << " slots :  " << lnk.vec_box.size();
                 int sl_as = 1;
                 lnk.slots_right.at(sl_as) = -1;
                 lnk.slots_availability.at(sl_as) = 1;
@@ -151,7 +179,7 @@ void SpectrumManager::handleMessage(cMessage *msg)
                 lnk.vec_box.resize(1);
 
                 result.back().push_back(lnk.slots_right.at(0));
-                SlotItem slit = {0, lnk.slots_right.at(0)};
+                SlotItem slit = { 0, lnk.slots_right.at(0) };
                 lnk.vec_box.back().slot_box.push_back(slit);
 //                lnk.vec_box.back().slot_box.push_back(lnk.slots_right.at(0));
 //                lnk.vec_box.back().slot_box.at(0).slt_right;
@@ -162,31 +190,31 @@ void SpectrumManager::handleMessage(cMessage *msg)
                     int i_lat = lnk.slots_right.at(i - 1) - 1;
 //                    int i_bef = lnk.vec_box.back().slot_box.at(i).slt_right;
 //                    int i_lat = lnk.vec_box.back().slot_box.at(i - 1).slt_right - 1;
-                    EV << "i_bef: " << i_bef << "  i_lat " << i_lat << endl;
+//                    EV << "i_bef: " << i_bef << "  i_lat " << i_lat << endl;
                     if (i_bef != i_lat) {
-                        EV << "non consecutive..::::::::::::::::::::::::::::::::" << endl;
+//                        EV << "non consecutive..::::::::::::::::::::::::::::::::" << endl;
                         result.push_back(std::vector<int>());
                         lnk.vec_box.push_back(SlotBox());
 //                        lnk.vec_box.push_back(std::vector<SlotBox>());
                     }
                     result.back().push_back(i_bef);
-                    SlotItem slt_it = {i, i_bef};
+                    SlotItem slt_it = { i, i_bef };
                     lnk.vec_box.back().slot_box.push_back(slt_it);
                 }
 
-                EV << "vec box split size : " << lnk.vec_box.size() << endl;
+//                EV << "vec box split size : " << lnk.vec_box.size() << endl;
 
                 for (int ii = 0; ii < lnk.vec_box.size(); ii++) {
-                    EV << "ii : " << ii;
+//                    EV << "ii : " << ii;
                     for (int jj = 0; jj < result.at(ii).size(); jj++) {
 //                        EV << " nums: " << result.at(ii).at(jj);
-                        EV << " nums: " << lnk.vec_box.at(ii).slot_box.at(jj).slt_right;
+//                        EV << " nums: " << lnk.vec_box.at(ii).slot_box.at(jj).slt_right;
                     }
-                    EV << endl;
+//                    EV << endl;
                 }
 
-                for (int tile : lnk.slots_right)
-                    EV << tile;
+//                for (int tile : lnk.slots_right)
+//                    EV << tile;
 //                for (SlotItem si : lnk.vec_box.back().slot_box) {
 //                    EV << " i:  " << si.index << " sl_right: " << si.slt_right << endl;
 //                }
@@ -207,8 +235,9 @@ void SpectrumManager::handleMessage(cMessage *msg)
     }
 
     cModule *srcNode = getParentModule()->getParentModule()->getSubmodule("node", src)->getSubmodule("bvwxc");
-    delete msgPath;
     sendDirect(msgNode, srcNode, "directIn");
+    delete msgPath;
+//
 
 //
 //    for (LinkData tmp : LinkTable) {
@@ -219,20 +248,45 @@ void SpectrumManager::handleMessage(cMessage *msg)
 
 void SpectrumManager::drawSlotGrid(int linkSize, int slotSize, cFigure::Color color)
 {
+    int width = 12 + 9, height = 12;
+    int x = 840, y = 0;
     for (int lnk = 0; lnk < linkSize; lnk++) {
+        char txt[15];
+        sprintf(txt, "Link %2d", lnk + 1);  //(link, slot) format
+        cTextFigure *textFigure = new cTextFigure();
+        textFigure->setText(txt);
+        textFigure->setPosition(cFigure::Point(x - 45, y + ((height + 2) * lnk)));
+        canvas->addFigure(textFigure);
+
         for (int slt = 0; slt < slotSize; slt++) {
-            int x = 800, y = 0;
             char name[15];
             sprintf(name, "%d,%d", lnk, slt);  //(link, slot) format
 //            EV << name << endl;
             cRectangleFigure *rect = new cRectangleFigure(name);
-            rect->setBounds(cFigure::Rectangle(x + (12 * slt), y + (14 * lnk), 12, 12));
+
+            if (lnk == linkSize - 1) {
+                char text[15];
+                sprintf(text, " %2d", slt + 1);  //(link, slot) format
+                cTextFigure *txtFig = new cTextFigure();
+                txtFig->setText(text);
+                txtFig->setPosition(cFigure::Point(x + (width * slt), y + 15 + ((height + 2) * lnk)));
+                canvas->addFigure(txtFig);
+            }
+
+            if (lnk == linkSize - 1 && slt == 0) {
+                char text2[] = "Slots:";
+                cTextFigure *txtFig2 = new cTextFigure();
+                txtFig2->setText(text2);
+                txtFig2->setPosition(cFigure::Point(x - 40, y + 15 + ((height + 2) * lnk)));
+                canvas->addFigure(txtFig2);
+            }
+
+            rect->setBounds(cFigure::Rectangle(x + (width * slt), y + ((height + 2) * lnk), width, height));
             rect->setCornerRadius(1);
             rect->setLineColor(cFigure::Color("#000000"));
             rect->setLineWidth(1);
             rect->setFilled(true);
             rect->setFillColor(color);
-
             canvas->addFigure(rect);
         }
     }
@@ -247,5 +301,9 @@ void SpectrumManager::drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFig
         cRectangleFigure *rct = static_cast<cRectangleFigure*>(canvas->getFigure(name));
         rct->setFillColor(color);
     }
+}
+
+void SpectrumManager::finish()
+{
 }
 

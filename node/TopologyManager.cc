@@ -48,7 +48,6 @@ void TopologyManager::initialize()
 void TopologyManager::handleMessage(cMessage *msg)
 {
 //    int numPaths = 1;
-    int counter = 0;
     int pathFound = 0;
 
     OpticalMsg *rcvMsg = check_and_cast<OpticalMsg*>(msg);
@@ -67,18 +66,31 @@ void TopologyManager::handleMessage(cMessage *msg)
     stream << std::hex << red;
     stream << std::hex << green;
     stream << std::hex << blue;
-    stream << ",8";
+    stream << ",5";
     std::string result(stream.str());
 //    EV << "stream string.............. : " << result << endl;
 
     cTopology *topo = new cTopology("topo");
-    topo->extractByModulePath(cStringTokenizer("**.node[*]").asVector());
+    std::vector<std::string> nedTypes;
+    nedTypes.push_back(getParentModule()->getParentModule()->getSubmodule("node", 0)->getNedTypeName());
+    topo->extractByNedTypeName(nedTypes);
+
+    for (int i = 0; i < topo->getNumNodes(); i++) {
+        cTopology::Node *srcN = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", i));
+        int numOutLinks = srcN->getNumOutLinks();
+        for (int j = 0; j < numOutLinks; j++) {
+            cDisplayString &dStr = srcN->getLinkOut(j)->getLocalGate()->getDisplayString();
+            dStr.parse("ls=#939393,1");
+        }
+    }
 
     cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", src));
     cTopology::Node *targetNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", dst));
 
-    std::vector<cTopology::LinkIn*> routeOne;
+    std::vector<cTopology::LinkIn*> route;
     std::vector<cTopology::LinkIn*> path;
+    std::vector<std::vector<cTopology::LinkIn*>> pathList;
+    std::vector<std::vector<cTopology::LinkIn*>> routeList;
     std::vector<int> nodeDis;
     for (int i = 0; i < topo->getNumNodes(); i++) {
         nodeDis.push_back(MAXIMUM);
@@ -91,7 +103,6 @@ void TopologyManager::handleMessage(cMessage *msg)
     while (!q.empty()) {
         cTopology::Node *v = q.front();
         q.pop_front();
-        counter++;
         for (int i = 0; i < v->getNumInLinks(); i++) {
             cTopology::Node *w;
             w = v->getLinkIn(i)->getRemoteNode();
@@ -102,6 +113,7 @@ void TopologyManager::handleMessage(cMessage *msg)
                 pathFound++;
                 nodeDis.at(w->getModule()->getIndex()) = 1 + nodeDis.at(v->getModule()->getIndex());
                 path.at(w->getModule()->getIndex()) = v->getLinkIn(i);
+                pathList.push_back(path);
 //                EV << " ::::::::::::::::::::::::::::::::::::::::::::..found!!!!!!:::::::::::::::::::::::" << endl;
                 break;
             }
@@ -126,15 +138,12 @@ void TopologyManager::handleMessage(cMessage *msg)
         if (pathFound == numPaths)
             break;
     }
-    for (int i : nodeDis) {
-//        EV << "index : " << i << endl;
-    }
 
     while (srcNode != targetNode) {
         for (int i = 0; i < topo->getNumNodes(); i++) {
             if (path[i] != nullptr) {
                 if (srcNode == path[i]->getRemoteNode()) {
-                    routeOne.push_back(path[i]);
+                    route.push_back(path[i]);
 //                    EV << "srcNode = path_i_getRemoteNode  :  " << path[i]->getRemoteNode()->getModule()->getFullName() << endl;
                     srcNode = path[i]->getLocalNode();
 //                    EV << "getLocalNode  :  " << path[i]->getLocalNode()->getModule()->getFullName() << endl;
@@ -143,12 +152,37 @@ void TopologyManager::handleMessage(cMessage *msg)
             }
         }
     }
+    for (int i = 0; i < pathList.size(); i++) {
+        srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", src));
+        EV << "path list size : " << pathList.size() << endl;
+        routeList.push_back(std::vector<cTopology::LinkIn*>());
+        while (srcNode != targetNode) {
+            for (int j = 0; j < pathList[i].size(); j++) {
+                if (pathList[i][j] != nullptr) {
+                    if (srcNode == pathList[i][j]->getRemoteNode()) {
+                        EV << "src node found " << pathList[i][j]->getRemoteNode()->getModule()->getFullName() << endl;
+                        routeList[i].push_back(pathList[i][j]);
+                        srcNode = pathList[i][j]->getLocalNode();
+                    }
+                }
+            }
+        }
+    }
+
+    std::vector<const char*> cols = { "ls=#ffffff,5", "ls=#ffffff,5", "ls=#999999,5", "ls=#666666,5", "ls=#333333,5" };
+    for (int i = 0; i < routeList.size(); i++) {
+        for (int j = 0; j < routeList[i].size(); j++) {
+            cDisplayString &dispStr = routeList[i][j]->getRemoteGate()->getDisplayString();
+            dispStr.parse(cols[i]);
+        }
+    }
+
     OpticalMsgPath *opticalPath = new OpticalMsgPath("Optical Message Path");
     opticalPath->setSrcAddr(src);
     opticalPath->setDestAddr(dst);
     opticalPath->setSlotReq(numSlots);
     opticalPath->setMsgState(LIGHTPATH_PROCESSING);
-    opticalPath->setOpticalPathArraySize(routeOne.size());
+    opticalPath->setOpticalPathArraySize(route.size());
     opticalPath->setRed(red);
     opticalPath->setGreen(green);
     opticalPath->setBlue(blue);
@@ -156,7 +190,8 @@ void TopologyManager::handleMessage(cMessage *msg)
     int index = 0;
     std::string fileName = "./node/TableRouting.csv";
     std::ofstream routingTable(fileName);
-    for (cTopology::LinkIn *tmp : routeOne) {
+
+    for (cTopology::LinkIn *tmp : routeList[0]) {
         cDisplayString &dispStr = tmp->getRemoteGate()->getDisplayString();
         dispStr.parse(result.c_str());
         int gate = tmp->getRemoteGate()->getIndex();

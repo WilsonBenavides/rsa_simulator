@@ -34,7 +34,6 @@ OBJS = \
     $O/node/App.o \
     $O/node/BVT.o \
     $O/node/BVWXC.o \
-    $O/node/DisplayManager.o \
     $O/node/SpectrumManager.o \
     $O/node/TopologyManager.o \
     $O/node/OpticalMsg_m.o

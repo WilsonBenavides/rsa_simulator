@@ -14,7 +14,6 @@ module Controller
         input in @directIn;
 
     submodules:
-        display: DisplayManager;
         topology: TopologyManager;
         spectrum: SpectrumManager {
 

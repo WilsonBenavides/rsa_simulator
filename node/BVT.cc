@@ -19,13 +19,13 @@ using namespace omnetpp;
  */
 class BVT : public cSimpleModule
 {
-  private:
+private:
 
-  public:
+public:
     BVT();
     virtual ~BVT();
 
-  protected:
+protected:
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
     virtual void refreshDisplay() const override;
@@ -53,7 +53,13 @@ void BVT::startTransmitting(cMessage *msg)
 void BVT::handleMessage(cMessage *msg)
 {
 //    EV << "send out from BVT " << endl;
-    send(msg, "localOut");
+    if (msg->arrivedOn("localIn")) {
+//        EV << "local in, send to app : " << endl;
+        send(msg, "out");
+    }
+    else {
+        send(msg, "localOut");
+    }
 }
 
 void BVT::refreshDisplay() const

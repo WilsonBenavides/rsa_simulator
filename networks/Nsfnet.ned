@@ -24,7 +24,9 @@ network Nsfnet
         }
     submodules:
         node[14]: Node {
-            @display("i=abstract/opticalswitch;p=$xpos,$ypos;is=s");
+            parameters:
+                @display("i=abstract/opticalswitch;p=$xpos,$ypos;is=s");
+                address = index;
         }
 
         controller: Controller;
@@ -63,7 +65,7 @@ network Nsfnet
         node[5].portOut++ --> OpticalChannel --> node[6].portIn++; //11
         node[5].portIn++ <-- OpticalChannel <-- node[6].portOut++;
 
-        node[6].portOut++ -->  OpticalChannel--> node[9].portIn++; //12
+        node[6].portOut++ --> OpticalChannel --> node[9].portIn++; //12
         node[6].portIn++ <-- OpticalChannel <-- node[9].portOut++;
 
         node[7].portOut++ --> OpticalChannel --> node[12].portIn++; //13
