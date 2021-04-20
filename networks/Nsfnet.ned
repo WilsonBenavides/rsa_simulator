@@ -20,7 +20,7 @@ network Nsfnet
     types:
         channel OpticalChannel extends DelayChannel
         {
-            delay = default(uniform(0.1ms, 1ms));
+            delay = default(uniform(10us, 20us));
         }
     submodules:
         node[14]: Node {

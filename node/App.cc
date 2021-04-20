@@ -69,7 +69,7 @@ void App::handleMessage(cMessage *msg)
         int size = getParentModule()->getVectorSize() - 1;
         int rdst = intuniform(0, size);
         int dst = rdst != src ? rdst : intuniform(0, size);
-        int ns = intuniform(1, slotRandomSize);
+        int ns = slotRandomSize;
 
         sprintf(msgname, "%i-%i-ns%i", src, dst, ns);
         OpticalMsg *opmsg = new OpticalMsg(msgname);

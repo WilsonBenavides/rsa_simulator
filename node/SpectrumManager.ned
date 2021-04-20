@@ -9,8 +9,8 @@ package node;
 simple SpectrumManager
 {
     parameters:
-        double slotBandwidth;
-        double channelBandwidth;
+        double slotBandwidth @unit(Hz);
+        double channelBandwidth @unit(Hz);
         string assignmentAlgorithm;
     gates:
         input in @directIn;

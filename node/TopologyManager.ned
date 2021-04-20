@@ -10,6 +10,7 @@ simple TopologyManager
 {
     parameters:
         int numPaths;
+        int assignedRoute;
     gates:
         input in @directIn;
         output directTopoOut @directOut;
