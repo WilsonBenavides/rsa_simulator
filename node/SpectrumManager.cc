@@ -85,9 +85,10 @@ protected:
     virtual void finish() override;
     virtual void handleMessage(cMessage *msg) override;
     virtual void refreshDisplay() const override;
-    void drawSlotGrid(int slotSize, int linkSize, cFigure::Color color);
+    void drawSlotGrid(int linkSize, int slotSize, cFigure::Color color);
     void drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFigure::Color color);
     void drawSingleSlotOnGrid(int lnkPos, int sltPos, cFigure::Color color);
+    void updateSlotGrid(int linkSize, int slotSize, double opacity);
     std::vector<int> contiguousSpectrum(std::vector<Link*> lnk);
     std::vector<std::vector<int>> continuousSpectrum(std::vector<int> slots);
     Link* searchLink(int id);
@@ -98,7 +99,7 @@ Define_Module(SpectrumManager);
 
 int SpectrumManager::numInitStages() const
 {
-    return 3;
+    return 2;
 }
 
 SpectrumManager::~SpectrumManager()
@@ -137,13 +138,13 @@ void SpectrumManager::initialize(int stage)
             }
         }
         drawSlotGrid(numLinks, slotSize, cFigure::Color("#ffffff"));
-
         delete topo;
     }
 }
 
 void SpectrumManager::handleMessage(cMessage *msg)
 {
+    updateSlotGrid(numLinks, slotSize, 0);
     numProcessed++;
     char msgname[20];
     OpticalMsgPath *msgPath = check_and_cast<OpticalMsgPath*>(msg);
@@ -180,7 +181,8 @@ void SpectrumManager::handleMessage(cMessage *msg)
         cModule *srcNode = getParentModule()->getParentModule()->getSubmodule("node", src)->getSubmodule("bvwxc");
         sendDirect(msgNode, srcNode, "directIn");
         delete msgPath;
-    } else {
+    }
+    else {
         numLost++;
         getParentModule()->bubble("lost packet");
         delete msgPath;
@@ -239,6 +241,7 @@ void SpectrumManager::drawSingleSlotOnGrid(int lnkPos, int sltPos, cFigure::Colo
     sprintf(name, "%d,%d", lnkPos, sltPos);
     cRectangleFigure *rct = static_cast<cRectangleFigure*>(canvas->getFigure(name));
     rct->setFillColor(color);
+    rct->setLineWidth(4);
 }
 void SpectrumManager::drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFigure::Color color)
 {
@@ -247,6 +250,21 @@ void SpectrumManager::drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFig
         sprintf(name, "%d,%d", lnkPos, sltPos + i);
         cRectangleFigure *rct = static_cast<cRectangleFigure*>(canvas->getFigure(name));
         rct->setFillColor(color);
+    }
+}
+
+void SpectrumManager::updateSlotGrid(int linkSize, int slotSize, double opacity)
+{
+    for (int lnk = 0; lnk < linkSize; lnk++) {
+        for (int slt = 0; slt < slotSize; slt++) {
+            char name[10];
+            sprintf(name, "%d,%d", lnk, slt);
+            cRectangleFigure *rct = static_cast<cRectangleFigure*>(canvas->getFigure(name));
+            if (std::string("#ffffff") != rct->getFillColor().str()) {
+                rct->setFillOpacity(opacity);
+                rct->setLineWidth(1);
+            }
+        }
     }
 }
 
@@ -305,6 +323,7 @@ bool SpectrumManager::algorithmFirstFit(std::vector<std::vector<int>> continuous
     if (flag == 0) {
         return false;
     }
+    return false;
 }
 Link* SpectrumManager::searchLink(int id)
 {

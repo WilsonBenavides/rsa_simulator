@@ -3,7 +3,7 @@ last-configname=General
 last-runnumber=0
 
 [RunModeProfiles]
-run-playback-speed=100
+run-playback-speed=1
 run-min-playback-speed=0.01
 run-max-playback-speed=100
 run-min-animation-speed=nan
@@ -13,11 +13,3 @@ fast-min-playback-speed=1
 fast-max-playback-speed=1e+6
 fast-min-animation-speed=nan
 fast-max-animation-speed=nan
-
-[Inspector-0]
-object=Nsfnet.controller
-classname=Controller
-id=@Variant(\0\0\0\x81\0\0\0\0\0\0\0\x10)
-type=2
-geom=@Rect(7 548 203 294)
-fullscreen=false

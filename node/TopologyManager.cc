@@ -151,41 +151,41 @@ void TopologyManager::handleMessage(cMessage *msg)
         }
     }
     if (assignedRoute == 1) {
-            if (routeList.size() > 1) {
-                assignedRoute = 1;
-            }
-            else {
-                assignedRoute = 0;
-            }
-        }
-        else if (assignedRoute == 2) {
-            if (routeList.size() > 2) {
-                assignedRoute = 2;
-            }
-            else if (routeList.size() > 1) {
-                assignedRoute = 1;
-            }
-            else {
-                assignedRoute = 0;
-            }
-        }
-        else if (assignedRoute == 3) {
-            if (routeList.size() > 3) {
-                assignedRoute = 3;
-            }
-            else if (routeList.size() > 2) {
-                assignedRoute = 2;
-            }
-            else if (routeList.size() > 1) {
-                assignedRoute = 1;
-            }
-            else {
-                assignedRoute = 0;
-            }
+        if (routeList.size() > 1) {
+            assignedRoute = 1;
         }
         else {
             assignedRoute = 0;
         }
+    }
+    else if (assignedRoute == 2) {
+        if (routeList.size() > 2) {
+            assignedRoute = 2;
+        }
+        else if (routeList.size() > 1) {
+            assignedRoute = 1;
+        }
+        else {
+            assignedRoute = 0;
+        }
+    }
+    else if (assignedRoute == 3) {
+        if (routeList.size() > 3) {
+            assignedRoute = 3;
+        }
+        else if (routeList.size() > 2) {
+            assignedRoute = 2;
+        }
+        else if (routeList.size() > 1) {
+            assignedRoute = 1;
+        }
+        else {
+            assignedRoute = 0;
+        }
+    }
+    else {
+        assignedRoute = 0;
+    }
 
     std::vector<const char*> cols = { "ls=#ffffff,5", "ls=#ffffff,5", "ls=#999999,5", "ls=#666666,5", "ls=#333333,5" };
     for (int i = 0; i < routeList.size(); i++) {
@@ -205,14 +205,18 @@ void TopologyManager::handleMessage(cMessage *msg)
     opticalPath->setGreen(green);
     opticalPath->setBlue(blue);
 
-
     int index = 0;
     std::string fileName = "./node/TableRouting.csv";
     std::ofstream routingTable(fileName);
 
     for (cTopology::LinkIn *tmp : routeList[assignedRoute]) {
         cDisplayString &dispStr = tmp->getRemoteGate()->getDisplayString();
+        char conn_id[25];
+        int lnk_id = tmp->getRemoteGate()->getConnectionId() + 1;
+        sprintf(conn_id, "lnk: %d", lnk_id);
         dispStr.parse(result.c_str());
+        dispStr.setTagArg("t", 0, conn_id);
+
         int gate = tmp->getRemoteGate()->getIndex();
         int node = tmp->getRemoteNode()->getModule()->getIndex();
         int id = tmp->getRemoteGate()->getConnectionId();
@@ -228,5 +232,4 @@ void TopologyManager::handleMessage(cMessage *msg)
     sendDirect(opticalPath, spec, "directTopoOut");
 
 }
-
 

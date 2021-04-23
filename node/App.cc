@@ -84,9 +84,9 @@ void App::handleMessage(cMessage *msg)
         opmsg->setDestAddr(dst);
         opmsg->setSlotReq(ns);
         opmsg->setMsgState(LIGHTPATH_REQUEST);
-        opmsg->setRed(intuniform(0, 255));
-        opmsg->setGreen(intuniform(0, 255));
-        opmsg->setBlue(intuniform(0, 255));
+        opmsg->setRed(intuniform(0, 254));
+        opmsg->setGreen(intuniform(0, 254));
+        opmsg->setBlue(intuniform(0, 254));
 
         send(opmsg, "out");
         numSent++;
