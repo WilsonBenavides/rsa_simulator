@@ -29,6 +29,7 @@ public:
 protected:
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
+
 };
 
 Define_Module(TopologyManager);
@@ -44,11 +45,13 @@ TopologyManager::~TopologyManager()
 void TopologyManager::initialize()
 {
     numPaths = par("numPaths");
+
 }
 
 void TopologyManager::handleMessage(cMessage *msg)
 {
     int pathFound = 0;
+
     assignedRoute = par("assignedRoute");
 
     OpticalMsg *rcvMsg = check_and_cast<OpticalMsg*>(msg);
@@ -225,4 +228,5 @@ void TopologyManager::handleMessage(cMessage *msg)
     sendDirect(opticalPath, spec, "directTopoOut");
 
 }
+
 

@@ -68,6 +68,8 @@ class SpectrumManager : public cSimpleModule
     int numLinks;
     double slotBandwidth;
     double channelBandwidth;
+    long numProcessed;
+    long numLost;
     const char *assignmentAlgorithm;
     std::vector<Link*> routeLinks;
     std::vector<Link*> linkMatrix;
@@ -76,43 +78,20 @@ public:
     SpectrumManager() = default;
     virtual ~SpectrumManager();
 
-    struct SlotItem
-    {
-        int index;
-        int slt_right;
-    };
-    struct SlotBox
-    {
-        std::vector<SlotItem> slot_box;
-    };
-    struct LinkData
-    {
-        int id;
-        int source;
-        int destination;
-        int gate;
-        bool availability;
-        int available_slots;
-        int used_slots;
-        std::vector<int> slots_availability;
-        std::vector<int> slots_right;
-        std::vector<SlotBox> vec_box;
-    };
-    std::vector<LinkData> LinkTable;
-
 protected:
 
     virtual void initialize(int stage) override;
     virtual int numInitStages() const override; // NOTE THE const MODIFIER!!!
     virtual void finish() override;
     virtual void handleMessage(cMessage *msg) override;
+    virtual void refreshDisplay() const override;
     void drawSlotGrid(int slotSize, int linkSize, cFigure::Color color);
     void drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFigure::Color color);
     void drawSingleSlotOnGrid(int lnkPos, int sltPos, cFigure::Color color);
     std::vector<int> contiguousSpectrum(std::vector<Link*> lnk);
     std::vector<std::vector<int>> continuousSpectrum(std::vector<int> slots);
     Link* searchLink(int id);
-    void algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color);
+    bool algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color);
 };
 
 Define_Module(SpectrumManager);
@@ -134,19 +113,12 @@ void SpectrumManager::initialize(int stage)
     slotSize = (channelBandwidth / slotBandwidth);
     canvas = getParentModule()->getParentModule()->getCanvas(); // toplevel canvas
 
-    std::vector<SlotBox> vec_box;
-    SlotBox box;
-    std::vector<int> sl_rg(slotSize, 0);
-    std::vector<int> sl_av(slotSize, 0);
+    numProcessed = 0;
+    numLost = 0;
+    WATCH(numProcessed);
+    WATCH(numLost);
 
     if (stage == 1) {
-        for (int i = 0; i < sl_rg.size(); i++) {
-            int sl_right = static_cast<int>(sl_rg.size() - i - 1);
-            SlotItem si = { i, sl_right };
-            sl_rg.at(i) = sl_right;
-            box.slot_box.push_back(si);
-        }
-        vec_box.push_back(box);
 
         cTopology *topo = new cTopology("topo");
         topo->extractByModulePath(cStringTokenizer("**.node[*]").asVector());
@@ -161,9 +133,6 @@ void SpectrumManager::initialize(int stage)
                 int linkId = srcNode->getLinkOut(j)->getLocalGate()->getConnectionId();
                 Link *l = new Link(linkId, true, slotSize);
                 linkMatrix.push_back(l);
-
-                LinkData data = { linkId, src, dst, gate, true, slotSize, 0, sl_av, sl_rg, vec_box };
-                LinkTable.push_back(data);
                 numLinks++;
             }
         }
@@ -175,12 +144,13 @@ void SpectrumManager::initialize(int stage)
 
 void SpectrumManager::handleMessage(cMessage *msg)
 {
+    numProcessed++;
     char msgname[20];
     OpticalMsgPath *msgPath = check_and_cast<OpticalMsgPath*>(msg);
     int src = msgPath->getSrcAddr();
     int dst = msgPath->getDestAddr();
     int slreq = msgPath->getSlotReq();
-    int state = msgPath->getMsgState();
+//    int state = msgPath->getMsgState();
     int red = msgPath->getRed();
     int green = msgPath->getGreen();
     int blue = msgPath->getBlue();
@@ -204,12 +174,17 @@ void SpectrumManager::handleMessage(cMessage *msg)
 
     std::vector<std::vector<int>> slts = continuousSpectrum(temporal);
 
-    algorithmFirstFit(slts, routeLinks, slreq, col);
+    bool linkState = algorithmFirstFit(slts, routeLinks, slreq, col);
 
-
-    cModule *srcNode = getParentModule()->getParentModule()->getSubmodule("node", src)->getSubmodule("bvwxc");
-    sendDirect(msgNode, srcNode, "directIn");
-    delete msgPath;
+    if (linkState) {
+        cModule *srcNode = getParentModule()->getParentModule()->getSubmodule("node", src)->getSubmodule("bvwxc");
+        sendDirect(msgNode, srcNode, "directIn");
+        delete msgPath;
+    } else {
+        numLost++;
+        getParentModule()->bubble("lost packet");
+        delete msgPath;
+    }
 }
 
 void SpectrumManager::drawSlotGrid(int linkSize, int slotSize, cFigure::Color color)
@@ -229,20 +204,20 @@ void SpectrumManager::drawSlotGrid(int linkSize, int slotSize, cFigure::Color co
             sprintf(name, "%d,%d", lnk, slt);  //(link, slot) format
             cRectangleFigure *rect = new cRectangleFigure(name);
 
-            if (lnk == linkSize - 1) {
+            if (lnk == 0) {
                 char text[15];
                 sprintf(text, " %2d", slt + 1);  //(link, slot) format
                 cTextFigure *txtFig = new cTextFigure();
                 txtFig->setText(text);
-                txtFig->setPosition(cFigure::Point(x + (width * slt), y + 15 + ((height + 2) * lnk)));
+                txtFig->setPosition(cFigure::Point(x + (width * slt), y - 20 + ((height + 2) * lnk)));
                 canvas->addFigure(txtFig);
             }
 
-            if (lnk == linkSize - 1 && slt == 0) {
+            if (lnk == 0 && slt == 0) {
                 char text2[] = "Slots:";
                 cTextFigure *txtFig2 = new cTextFigure();
                 txtFig2->setText(text2);
-                txtFig2->setPosition(cFigure::Point(x - 40, y + 15 + ((height + 2) * lnk)));
+                txtFig2->setPosition(cFigure::Point(x - 40, y - 20 + ((height + 2) * lnk)));
                 canvas->addFigure(txtFig2);
             }
 
@@ -309,7 +284,7 @@ std::vector<std::vector<int>> SpectrumManager::continuousSpectrum(std::vector<in
     return result;
 }
 
-void SpectrumManager::algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color)
+bool SpectrumManager::algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color)
 {
     int flag = 0;
     for (int i = 0; i < continuous.size(); i++) {
@@ -322,8 +297,13 @@ void SpectrumManager::algorithmFirstFit(std::vector<std::vector<int>> continuous
                 }
             }
         }
-        if (flag == 1)
-            break;
+        if (flag == 1) {
+            return true;
+//            break;
+        }
+    }
+    if (flag == 0) {
+        return false;
     }
 }
 Link* SpectrumManager::searchLink(int id)
@@ -333,9 +313,16 @@ Link* SpectrumManager::searchLink(int id)
             return ln;
         }
     }
+    return nullptr;
 }
 
 void SpectrumManager::finish()
 {
 }
 
+void SpectrumManager::refreshDisplay() const
+{
+    char buf[40];
+    sprintf(buf, "p: %ld  l: %ld", numProcessed, numLost);
+    getParentModule()->getDisplayString().setTagArg("t", 0, buf);
+}

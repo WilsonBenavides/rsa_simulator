@@ -9,6 +9,7 @@ package node;
 simple TopologyManager
 {
     parameters:
+        @display("p=73,174;i=block/topo_l");
         int numPaths;
         int assignedRoute;
     gates:

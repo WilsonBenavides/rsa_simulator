@@ -25,11 +25,13 @@ network Nsfnet
     submodules:
         node[14]: Node {
             parameters:
-                @display("i=abstract/opticalswitch;p=$xpos,$ypos;is=s");
+                @display("i=block/optical_s;p=$xpos,$ypos");
                 address = index;
         }
 
-        controller: Controller;
+        controller: Controller {
+            @display("p=402.992,80.372");
+        }
     connections allowunconnected:
 
         node[0].portOut++ --> OpticalChannel --> node[1].portIn++; //1

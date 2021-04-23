@@ -8,17 +8,14 @@ package node;
 //
 module Controller
 {
-    @display("p=400,40;i=block/star");
+    @display("p=400,40;i=block/eye_vl;bgb=144,231");
 
     gates:
         input in @directIn;
 
     submodules:
         topology: TopologyManager;
-        spectrum: SpectrumManager {
-
-            @display("p=379,83");
-        }
+        spectrum: SpectrumManager;
     connections allowunconnected:
         in --> topology.in;
         topology.directTopoOut --> spectrum.in;
