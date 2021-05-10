@@ -59,17 +59,10 @@ void TopologyManager::handleMessage(cMessage *msg)
     int dst = rcvMsg->getDestAddr();
     int state = rcvMsg->getMsgState();
     int numSlots = rcvMsg->getSlotReq();
-    int red = rcvMsg->getRed();
-    int green = rcvMsg->getGreen();
-    int blue = rcvMsg->getBlue();
-
-    std::stringstream stream;
-    stream << "ls=#";
-    stream << std::hex << red;
-    stream << std::hex << green;
-    stream << std::hex << blue;
-    stream << ",5";
-    std::string result(stream.str());
+    int blue = rcvMsg->getColor() / 65536;
+    int green = (rcvMsg->getColor() - blue * 65536) / 256;
+    int red = rcvMsg->getColor() - blue * 65536 - green * 256;
+    long pack_id = rcvMsg->getId();
 
     cTopology *topo = new cTopology("topo");
     std::vector<std::string> nedTypes;
@@ -110,7 +103,8 @@ void TopologyManager::handleMessage(cMessage *msg)
                 nodeDis.at(w->getModule()->getIndex()) = 1 + nodeDis.at(v->getModule()->getIndex());
                 path.at(w->getModule()->getIndex()) = v->getLinkIn(i);
                 pathList.push_back(path);
-                break;
+                continue;
+//                break;
             }
             int dist = nodeDis.at(w->getModule()->getIndex());
             if (dist == MAXIMUM) {
@@ -190,8 +184,8 @@ void TopologyManager::handleMessage(cMessage *msg)
     std::vector<const char*> cols = { "ls=#ffffff,5", "ls=#ffffff,5", "ls=#999999,5", "ls=#666666,5", "ls=#333333,5" };
     for (int i = 0; i < routeList.size(); i++) {
         for (int j = 0; j < routeList[i].size(); j++) {
-            cDisplayString &dispStr = routeList[i][j]->getRemoteGate()->getDisplayString();
-            dispStr.parse(cols[i]);
+//            cDisplayString &dispStr = routeList[i][j]->getRemoteGate()->getDisplayString();
+//            dispStr.parse(cols[i]);
         }
     }
 
@@ -201,9 +195,8 @@ void TopologyManager::handleMessage(cMessage *msg)
     opticalPath->setSlotReq(numSlots);
     opticalPath->setMsgState(LIGHTPATH_PROCESSING);
     opticalPath->setOpticalPathArraySize(routeList[assignedRoute].size());
-    opticalPath->setRed(red);
-    opticalPath->setGreen(green);
-    opticalPath->setBlue(blue);
+    opticalPath->setColor(rcvMsg->getColor());
+    opticalPath->setByteLength(rcvMsg->getByteLength());
 
     int index = 0;
     std::string fileName = "./node/TableRouting.csv";
@@ -214,14 +207,18 @@ void TopologyManager::handleMessage(cMessage *msg)
         char conn_id[25];
         int lnk_id = tmp->getRemoteGate()->getConnectionId() + 1;
         sprintf(conn_id, "lnk: %d", lnk_id);
-        dispStr.parse(result.c_str());
-        dispStr.setTagArg("t", 0, conn_id);
+        char tcol[30];
+        sprintf(tcol, "ls=#%X%X%X,5", red, green, blue);
+//        dispStr.parse(tcol);
+//        dispStr.setTagArg("t", 0, conn_id);
+//        dispStr.setTagArg("t", 2, "#000000");
 
         int gate = tmp->getRemoteGate()->getIndex();
         int node = tmp->getRemoteNode()->getModule()->getIndex();
         int id = tmp->getRemoteGate()->getConnectionId();
         opticalPath->setOpticalPath(index, id);
         routingTable << node << "," << gate << endl;
+//        EV << "message id: " << pack_id << endl;
         index++;
     }
     routingTable.close();

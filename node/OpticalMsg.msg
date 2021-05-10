@@ -18,9 +18,7 @@ packet OpticalMsg
     int destAddr;
     int slotReq;
     int msgState;
-    int red;
-    int green;
-    int blue;
+    long color;
 }
 
 packet OpticalMsgPath
@@ -30,8 +28,6 @@ packet OpticalMsgPath
     int slotReq;
     int msgState;
     int opticalPath[];
-    int red;
-    int green;
-    int blue;
+    long color;
 }
 

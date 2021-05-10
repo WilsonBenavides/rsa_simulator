@@ -20,7 +20,7 @@ simple BVWXC
         input directIn @directIn;
         input in[];
         output out[];
-        
+
         input localIn;
         output localOut;
 }

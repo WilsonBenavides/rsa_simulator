@@ -235,9 +235,7 @@ void OpticalMsg::copy(const OpticalMsg& other)
     this->destAddr = other.destAddr;
     this->slotReq = other.slotReq;
     this->msgState = other.msgState;
-    this->red = other.red;
-    this->green = other.green;
-    this->blue = other.blue;
+    this->color = other.color;
 }
 
 void OpticalMsg::parsimPack(omnetpp::cCommBuffer *b) const
@@ -247,9 +245,7 @@ void OpticalMsg::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->destAddr);
     doParsimPacking(b,this->slotReq);
     doParsimPacking(b,this->msgState);
-    doParsimPacking(b,this->red);
-    doParsimPacking(b,this->green);
-    doParsimPacking(b,this->blue);
+    doParsimPacking(b,this->color);
 }
 
 void OpticalMsg::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -259,9 +255,7 @@ void OpticalMsg::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->destAddr);
     doParsimUnpacking(b,this->slotReq);
     doParsimUnpacking(b,this->msgState);
-    doParsimUnpacking(b,this->red);
-    doParsimUnpacking(b,this->green);
-    doParsimUnpacking(b,this->blue);
+    doParsimUnpacking(b,this->color);
 }
 
 int OpticalMsg::getSrcAddr() const
@@ -304,34 +298,14 @@ void OpticalMsg::setMsgState(int msgState)
     this->msgState = msgState;
 }
 
-int OpticalMsg::getRed() const
+long OpticalMsg::getColor() const
 {
-    return this->red;
+    return this->color;
 }
 
-void OpticalMsg::setRed(int red)
+void OpticalMsg::setColor(long color)
 {
-    this->red = red;
-}
-
-int OpticalMsg::getGreen() const
-{
-    return this->green;
-}
-
-void OpticalMsg::setGreen(int green)
-{
-    this->green = green;
-}
-
-int OpticalMsg::getBlue() const
-{
-    return this->blue;
-}
-
-void OpticalMsg::setBlue(int blue)
-{
-    this->blue = blue;
+    this->color = color;
 }
 
 class OpticalMsgDescriptor : public omnetpp::cClassDescriptor
@@ -343,9 +317,7 @@ class OpticalMsgDescriptor : public omnetpp::cClassDescriptor
         FIELD_destAddr,
         FIELD_slotReq,
         FIELD_msgState,
-        FIELD_red,
-        FIELD_green,
-        FIELD_blue,
+        FIELD_color,
     };
   public:
     OpticalMsgDescriptor();
@@ -408,7 +380,7 @@ const char *OpticalMsgDescriptor::getProperty(const char *propertyname) const
 int OpticalMsgDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    return basedesc ? 5+basedesc->getFieldCount() : 5;
 }
 
 unsigned int OpticalMsgDescriptor::getFieldTypeFlags(int field) const
@@ -424,11 +396,9 @@ unsigned int OpticalMsgDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_destAddr
         FD_ISEDITABLE,    // FIELD_slotReq
         FD_ISEDITABLE,    // FIELD_msgState
-        FD_ISEDITABLE,    // FIELD_red
-        FD_ISEDITABLE,    // FIELD_green
-        FD_ISEDITABLE,    // FIELD_blue
+        FD_ISEDITABLE,    // FIELD_color
     };
-    return (field >= 0 && field < 7) ? fieldTypeFlags[field] : 0;
+    return (field >= 0 && field < 5) ? fieldTypeFlags[field] : 0;
 }
 
 const char *OpticalMsgDescriptor::getFieldName(int field) const
@@ -444,11 +414,9 @@ const char *OpticalMsgDescriptor::getFieldName(int field) const
         "destAddr",
         "slotReq",
         "msgState",
-        "red",
-        "green",
-        "blue",
+        "color",
     };
-    return (field >= 0 && field < 7) ? fieldNames[field] : nullptr;
+    return (field >= 0 && field < 5) ? fieldNames[field] : nullptr;
 }
 
 int OpticalMsgDescriptor::findField(const char *fieldName) const
@@ -459,9 +427,7 @@ int OpticalMsgDescriptor::findField(const char *fieldName) const
     if (fieldName[0] == 'd' && strcmp(fieldName, "destAddr") == 0) return base+1;
     if (fieldName[0] == 's' && strcmp(fieldName, "slotReq") == 0) return base+2;
     if (fieldName[0] == 'm' && strcmp(fieldName, "msgState") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "red") == 0) return base+4;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "green") == 0) return base+5;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blue") == 0) return base+6;
+    if (fieldName[0] == 'c' && strcmp(fieldName, "color") == 0) return base+4;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -478,11 +444,9 @@ const char *OpticalMsgDescriptor::getFieldTypeString(int field) const
         "int",    // FIELD_destAddr
         "int",    // FIELD_slotReq
         "int",    // FIELD_msgState
-        "int",    // FIELD_red
-        "int",    // FIELD_green
-        "int",    // FIELD_blue
+        "long",    // FIELD_color
     };
-    return (field >= 0 && field < 7) ? fieldTypeStrings[field] : nullptr;
+    return (field >= 0 && field < 5) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **OpticalMsgDescriptor::getFieldPropertyNames(int field) const
@@ -553,9 +517,7 @@ std::string OpticalMsgDescriptor::getFieldValueAsString(void *object, int field,
         case FIELD_destAddr: return long2string(pp->getDestAddr());
         case FIELD_slotReq: return long2string(pp->getSlotReq());
         case FIELD_msgState: return long2string(pp->getMsgState());
-        case FIELD_red: return long2string(pp->getRed());
-        case FIELD_green: return long2string(pp->getGreen());
-        case FIELD_blue: return long2string(pp->getBlue());
+        case FIELD_color: return long2string(pp->getColor());
         default: return "";
     }
 }
@@ -574,9 +536,7 @@ bool OpticalMsgDescriptor::setFieldValueAsString(void *object, int field, int i,
         case FIELD_destAddr: pp->setDestAddr(string2long(value)); return true;
         case FIELD_slotReq: pp->setSlotReq(string2long(value)); return true;
         case FIELD_msgState: pp->setMsgState(string2long(value)); return true;
-        case FIELD_red: pp->setRed(string2long(value)); return true;
-        case FIELD_green: pp->setGreen(string2long(value)); return true;
-        case FIELD_blue: pp->setBlue(string2long(value)); return true;
+        case FIELD_color: pp->setColor(string2long(value)); return true;
         default: return false;
     }
 }
@@ -644,9 +604,7 @@ void OpticalMsgPath::copy(const OpticalMsgPath& other)
     for (size_t i = 0; i < opticalPath_arraysize; i++) {
         this->opticalPath[i] = other.opticalPath[i];
     }
-    this->red = other.red;
-    this->green = other.green;
-    this->blue = other.blue;
+    this->color = other.color;
 }
 
 void OpticalMsgPath::parsimPack(omnetpp::cCommBuffer *b) const
@@ -658,9 +616,7 @@ void OpticalMsgPath::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->msgState);
     b->pack(opticalPath_arraysize);
     doParsimArrayPacking(b,this->opticalPath,opticalPath_arraysize);
-    doParsimPacking(b,this->red);
-    doParsimPacking(b,this->green);
-    doParsimPacking(b,this->blue);
+    doParsimPacking(b,this->color);
 }
 
 void OpticalMsgPath::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -678,9 +634,7 @@ void OpticalMsgPath::parsimUnpack(omnetpp::cCommBuffer *b)
         this->opticalPath = new int[opticalPath_arraysize];
         doParsimArrayUnpacking(b,this->opticalPath,opticalPath_arraysize);
     }
-    doParsimUnpacking(b,this->red);
-    doParsimUnpacking(b,this->green);
-    doParsimUnpacking(b,this->blue);
+    doParsimUnpacking(b,this->color);
 }
 
 int OpticalMsgPath::getSrcAddr() const
@@ -789,34 +743,14 @@ void OpticalMsgPath::eraseOpticalPath(size_t k)
     opticalPath_arraysize = newSize;
 }
 
-int OpticalMsgPath::getRed() const
+long OpticalMsgPath::getColor() const
 {
-    return this->red;
+    return this->color;
 }
 
-void OpticalMsgPath::setRed(int red)
+void OpticalMsgPath::setColor(long color)
 {
-    this->red = red;
-}
-
-int OpticalMsgPath::getGreen() const
-{
-    return this->green;
-}
-
-void OpticalMsgPath::setGreen(int green)
-{
-    this->green = green;
-}
-
-int OpticalMsgPath::getBlue() const
-{
-    return this->blue;
-}
-
-void OpticalMsgPath::setBlue(int blue)
-{
-    this->blue = blue;
+    this->color = color;
 }
 
 class OpticalMsgPathDescriptor : public omnetpp::cClassDescriptor
@@ -829,9 +763,7 @@ class OpticalMsgPathDescriptor : public omnetpp::cClassDescriptor
         FIELD_slotReq,
         FIELD_msgState,
         FIELD_opticalPath,
-        FIELD_red,
-        FIELD_green,
-        FIELD_blue,
+        FIELD_color,
     };
   public:
     OpticalMsgPathDescriptor();
@@ -894,7 +826,7 @@ const char *OpticalMsgPathDescriptor::getProperty(const char *propertyname) cons
 int OpticalMsgPathDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 8+basedesc->getFieldCount() : 8;
+    return basedesc ? 6+basedesc->getFieldCount() : 6;
 }
 
 unsigned int OpticalMsgPathDescriptor::getFieldTypeFlags(int field) const
@@ -911,11 +843,9 @@ unsigned int OpticalMsgPathDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_slotReq
         FD_ISEDITABLE,    // FIELD_msgState
         FD_ISARRAY | FD_ISEDITABLE,    // FIELD_opticalPath
-        FD_ISEDITABLE,    // FIELD_red
-        FD_ISEDITABLE,    // FIELD_green
-        FD_ISEDITABLE,    // FIELD_blue
+        FD_ISEDITABLE,    // FIELD_color
     };
-    return (field >= 0 && field < 8) ? fieldTypeFlags[field] : 0;
+    return (field >= 0 && field < 6) ? fieldTypeFlags[field] : 0;
 }
 
 const char *OpticalMsgPathDescriptor::getFieldName(int field) const
@@ -932,11 +862,9 @@ const char *OpticalMsgPathDescriptor::getFieldName(int field) const
         "slotReq",
         "msgState",
         "opticalPath",
-        "red",
-        "green",
-        "blue",
+        "color",
     };
-    return (field >= 0 && field < 8) ? fieldNames[field] : nullptr;
+    return (field >= 0 && field < 6) ? fieldNames[field] : nullptr;
 }
 
 int OpticalMsgPathDescriptor::findField(const char *fieldName) const
@@ -948,9 +876,7 @@ int OpticalMsgPathDescriptor::findField(const char *fieldName) const
     if (fieldName[0] == 's' && strcmp(fieldName, "slotReq") == 0) return base+2;
     if (fieldName[0] == 'm' && strcmp(fieldName, "msgState") == 0) return base+3;
     if (fieldName[0] == 'o' && strcmp(fieldName, "opticalPath") == 0) return base+4;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "red") == 0) return base+5;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "green") == 0) return base+6;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blue") == 0) return base+7;
+    if (fieldName[0] == 'c' && strcmp(fieldName, "color") == 0) return base+5;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -968,11 +894,9 @@ const char *OpticalMsgPathDescriptor::getFieldTypeString(int field) const
         "int",    // FIELD_slotReq
         "int",    // FIELD_msgState
         "int",    // FIELD_opticalPath
-        "int",    // FIELD_red
-        "int",    // FIELD_green
-        "int",    // FIELD_blue
+        "long",    // FIELD_color
     };
-    return (field >= 0 && field < 8) ? fieldTypeStrings[field] : nullptr;
+    return (field >= 0 && field < 6) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **OpticalMsgPathDescriptor::getFieldPropertyNames(int field) const
@@ -1045,9 +969,7 @@ std::string OpticalMsgPathDescriptor::getFieldValueAsString(void *object, int fi
         case FIELD_slotReq: return long2string(pp->getSlotReq());
         case FIELD_msgState: return long2string(pp->getMsgState());
         case FIELD_opticalPath: return long2string(pp->getOpticalPath(i));
-        case FIELD_red: return long2string(pp->getRed());
-        case FIELD_green: return long2string(pp->getGreen());
-        case FIELD_blue: return long2string(pp->getBlue());
+        case FIELD_color: return long2string(pp->getColor());
         default: return "";
     }
 }
@@ -1067,9 +989,7 @@ bool OpticalMsgPathDescriptor::setFieldValueAsString(void *object, int field, in
         case FIELD_slotReq: pp->setSlotReq(string2long(value)); return true;
         case FIELD_msgState: pp->setMsgState(string2long(value)); return true;
         case FIELD_opticalPath: pp->setOpticalPath(i,string2long(value)); return true;
-        case FIELD_red: pp->setRed(string2long(value)); return true;
-        case FIELD_green: pp->setGreen(string2long(value)); return true;
-        case FIELD_blue: pp->setBlue(string2long(value)); return true;
+        case FIELD_color: pp->setColor(string2long(value)); return true;
         default: return false;
     }
 }

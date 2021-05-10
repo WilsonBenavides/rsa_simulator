@@ -17,7 +17,6 @@ class BVWXC : public cSimpleModule
 {
 private:
     int myAddress;
-    typedef std::map<int, int> RoutingTable;  // destaddr -> gateindex
 
 protected:
     virtual void forwardMessage(cMessage *msg);
@@ -40,9 +39,7 @@ void BVWXC::handleMessage(cMessage *msg)
 //    EV << "address : " << ss << endl;
     if (opmsg->getDestAddr() == ss) {
         //Message arrived
-        bubble("message arrived!");
         send(msg, "localOut");
-//        delete msg;
     }
     else {
         forwardMessage(msg);
@@ -57,6 +54,7 @@ void BVWXC::forwardMessage(cMessage *msg)
     int src = rcvMsg->getSrcAddr();
     int dst = rcvMsg->getDestAddr();
     int state = rcvMsg->getMsgState();
+    EV << "getDuration :  " << rcvMsg->getDuration() << endl;
 
     if (state == LIGHTPATH_REQUEST) {
 //        EV << "LIGHTPATH_REQUEST " << endl;

@@ -22,6 +22,7 @@ private:
     int address;
     int slotRandomSize;
     cPar *sendIATime;
+    int64_t packetLength;
 
     cMessage *generatePacket;
     long numSent;
@@ -51,6 +52,8 @@ void App::initialize()
     address = par("address");
     slotRandomSize = par("slotRandomSize");
     sendIATime = &par("sendIaTime");
+    packetLength = par("packetLength");
+
 
     numSent = 0;
     numReceived = 0;
@@ -70,7 +73,7 @@ void App::handleMessage(cMessage *msg)
 //        sprintf(pkname, "%d-to-%d", address, destAddress, pkCounter++);
 //        EV << "generating packet " << pkname << endl;
 
-        char msgname[20];
+        char msgname[40];
         int src = getParentModule()->getIndex(); // our module index
         int size = getParentModule()->getVectorSize() - 2;
         int dst = intuniform(0, size);
@@ -84,27 +87,27 @@ void App::handleMessage(cMessage *msg)
         opmsg->setDestAddr(dst);
         opmsg->setSlotReq(ns);
         opmsg->setMsgState(LIGHTPATH_REQUEST);
-        opmsg->setRed(intuniform(0, 254));
-        opmsg->setGreen(intuniform(0, 254));
-        opmsg->setBlue(intuniform(0, 254));
+        opmsg->setColor(intrand(16777213));
+        opmsg->setByteLength(packetLength);
+        EV << "packet length : " << opmsg->getByteLength() << endl;
 
         send(opmsg, "out");
         numSent++;
 
         scheduleAt(simTime() + sendIATime->doubleValue(), generatePacket);
-        if (hasGUI())
-            getParentModule()->bubble("Generating packet...");
+//        if (hasGUI())
+//            getParentModule()->bubble("Generating packet...");
     }
     else {
         // Handle incoming packet
         OpticalMsg *pk = check_and_cast<OpticalMsg*>(msg);
 //        EV << "received packet " << pk->getName() << endl;
-        EV << "end to end delay : " << simTime() - pk->getCreationTime();
+        EV << "end to end delay : " << simTime() - pk->getCreationTime() << endl;
         numReceived++;
         delete pk;
 
-        if (hasGUI())
-            getParentModule()->bubble("Arrived!");
+//        if (hasGUI())
+//            getParentModule()->bubble("Arrived!");
     }
 }
 

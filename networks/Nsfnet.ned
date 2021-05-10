@@ -18,9 +18,10 @@ network Nsfnet
 
         @display("bgb=786,562;bgi=maps/usa;bgu=km");
     types:
-        channel OpticalChannel extends DelayChannel
+        channel OpticalChannel extends ned.DatarateChannel
         {
             delay = default(uniform(10us, 20us));
+            datarate = 12.5Gbps;
         }
     submodules:
         node[14]: Node {

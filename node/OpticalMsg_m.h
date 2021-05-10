@@ -29,9 +29,7 @@ class OpticalMsgPath;
  *     int destAddr;
  *     int slotReq;
  *     int msgState;
- *     int red;
- *     int green;
- *     int blue;
+ *     long color;
  * }
  * </pre>
  */
@@ -42,9 +40,7 @@ class OpticalMsg : public ::omnetpp::cPacket
     int destAddr = 0;
     int slotReq = 0;
     int msgState = 0;
-    int red = 0;
-    int green = 0;
-    int blue = 0;
+    long color = 0;
 
   private:
     void copy(const OpticalMsg& other);
@@ -71,19 +67,15 @@ class OpticalMsg : public ::omnetpp::cPacket
     virtual void setSlotReq(int slotReq);
     virtual int getMsgState() const;
     virtual void setMsgState(int msgState);
-    virtual int getRed() const;
-    virtual void setRed(int red);
-    virtual int getGreen() const;
-    virtual void setGreen(int green);
-    virtual int getBlue() const;
-    virtual void setBlue(int blue);
+    virtual long getColor() const;
+    virtual void setColor(long color);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const OpticalMsg& obj) {obj.parsimPack(b);}
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, OpticalMsg& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>node/OpticalMsg.msg:27</tt> by nedtool.
+ * Class generated from <tt>node/OpticalMsg.msg:25</tt> by nedtool.
  * <pre>
  * packet OpticalMsgPath
  * {
@@ -92,9 +84,7 @@ inline void doParsimUnpacking(omnetpp::cCommBuffer *b, OpticalMsg& obj) {obj.par
  *     int slotReq;
  *     int msgState;
  *     int opticalPath[];
- *     int red;
- *     int green;
- *     int blue;
+ *     long color;
  * }
  * </pre>
  */
@@ -107,9 +97,7 @@ class OpticalMsgPath : public ::omnetpp::cPacket
     int msgState = 0;
     int *opticalPath = nullptr;
     size_t opticalPath_arraysize = 0;
-    int red = 0;
-    int green = 0;
-    int blue = 0;
+    long color = 0;
 
   private:
     void copy(const OpticalMsgPath& other);
@@ -143,12 +131,8 @@ class OpticalMsgPath : public ::omnetpp::cPacket
     virtual void insertOpticalPath(int opticalPath);
     virtual void insertOpticalPath(size_t k, int opticalPath);
     virtual void eraseOpticalPath(size_t k);
-    virtual int getRed() const;
-    virtual void setRed(int red);
-    virtual int getGreen() const;
-    virtual void setGreen(int green);
-    virtual int getBlue() const;
-    virtual void setBlue(int blue);
+    virtual long getColor() const;
+    virtual void setColor(long color);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const OpticalMsgPath& obj) {obj.parsimPack(b);}

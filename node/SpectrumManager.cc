@@ -1,10 +1,15 @@
 //
 //
+#include <iostream>
+#include <sstream>
+#include <fstream>
 #include <vector>
 #include <string>
+#include <deque>
+#include <iomanip>
 #include <omnetpp.h>
-#include "Utils.h"
 #include "OpticalMsg_m.h"
+#include "Utils.h"
 
 #define BUSY -10
 
@@ -146,15 +151,37 @@ void SpectrumManager::handleMessage(cMessage *msg)
 {
     updateSlotGrid(numLinks, slotSize, 0);
     numProcessed++;
+
+    cTopology *topo = new cTopology("topo");
+    std::vector<std::string> nedTypes;
+    nedTypes.push_back(getParentModule()->getParentModule()->getSubmodule("node", 0)->getNedTypeName());
+    topo->extractByNedTypeName(nedTypes);
+
+    std::string line;
+    std::ifstream ifs("./node/TableRouting.csv");
+    if (ifs.is_open()) {
+        while (std::getline(ifs, line)) {
+            //                EV << line << endl;
+            int index = line.find(',');
+            int node = std::stoi(line.substr(0, index++));
+            int gate = std::stoi(line.substr(index, line.size()));
+
+            cTopology::Node *tmpNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", node));
+            cDisplayString &dispStr = tmpNode->getLinkOut(gate)->getLocalGate()->getDisplayString();
+//            dispStr.parse("ls=#000000,5");
+        }
+        ifs.close();
+    }
+
     char msgname[20];
     OpticalMsgPath *msgPath = check_and_cast<OpticalMsgPath*>(msg);
     int src = msgPath->getSrcAddr();
     int dst = msgPath->getDestAddr();
     int slreq = msgPath->getSlotReq();
 //    int state = msgPath->getMsgState();
-    int red = msgPath->getRed();
-    int green = msgPath->getGreen();
-    int blue = msgPath->getBlue();
+    int blue = msgPath->getColor() / 65536;
+    int green = (msgPath->getColor() - blue * 65536) / 256;
+    int red = msgPath->getColor() - blue * 65536 - green * 256;
     cFigure::Color col = cFigure::Color(red, green, blue);
 
     sprintf(msgname, "%i-%i-ns-%i", src, dst, slreq);
@@ -163,6 +190,8 @@ void SpectrumManager::handleMessage(cMessage *msg)
     msgNode->setDestAddr(dst);
     msgNode->setSlotReq(slreq);
     msgNode->setMsgState(LIGHTPATH_ASSIGNMENT);
+//    EV << "spec byte length" << msgPath->getByteLength() << endl;
+    msgNode->setByteLength(msgPath->getByteLength());
 
     routeLinks.clear();
 
