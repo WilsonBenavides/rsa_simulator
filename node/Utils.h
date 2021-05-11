@@ -13,7 +13,7 @@
 #include <omnetpp.h>
 
 #define LIGHTPATH_REQUEST 0
-#define LIGHTPATH_PROCESSING 1
+#define LIGHTPATH_ROUTING 1
 #define LIGHTPATH_ASSIGNMENT 2
 #define MAXIMUM 1000
 #define STR_LEN 7

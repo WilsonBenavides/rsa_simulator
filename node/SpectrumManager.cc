@@ -149,71 +149,120 @@ void SpectrumManager::initialize(int stage)
 
 void SpectrumManager::handleMessage(cMessage *msg)
 {
-    updateSlotGrid(numLinks, slotSize, 0);
+//    updateSlotGrid(numLinks, slotSize, 0);
     numProcessed++;
+    routeLinks.clear();
+
+    char msgname[20];
+    OpticalMsg *msgPath = check_and_cast<OpticalMsg*>(msg);
+    int src = msgPath->getSrcAddr();
+    int dst = msgPath->getDestAddr();
+    int slreq = msgPath->getSlotReq();
+    int id = msgPath->getId();
+    //    int state = msgPath->getMsgState();
+    int blue = msgPath->getColor() / 65536;
+    int green = (msgPath->getColor() - blue * 65536) / 256;
+    int red = msgPath->getColor() - blue * 65536 - green * 256;
+    msgPath->setMsgState(LIGHTPATH_ASSIGNMENT);
+    cFigure::Color col = cFigure::Color(red, green, blue);
 
     cTopology *topo = new cTopology("topo");
     std::vector<std::string> nedTypes;
     nedTypes.push_back(getParentModule()->getParentModule()->getSubmodule("node", 0)->getNedTypeName());
     topo->extractByNedTypeName(nedTypes);
 
-    std::string line;
     std::ifstream ifs("./node/TableRouting.csv");
     if (ifs.is_open()) {
-        while (std::getline(ifs, line)) {
-            //                EV << line << endl;
-            int index = line.find(',');
-            int node = std::stoi(line.substr(0, index++));
-            int gate = std::stoi(line.substr(index, line.size()));
+        std::string node;
+        std::string gate;
+        std::string msgid;
 
-            cTopology::Node *tmpNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", node));
-            cDisplayString &dispStr = tmpNode->getLinkOut(gate)->getLocalGate()->getDisplayString();
-//            dispStr.parse("ls=#000000,5");
+        while (ifs.good()) {
+            std::getline(ifs, node, ',');
+            std::getline(ifs, gate, ',');
+            std::getline(ifs, msgid, '\n');
+
+            if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
+
+                if (id == std::stoi(msgid)) {
+//                if (true) {
+                    cTopology::Node *tmpNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", std::stoi(node)));
+                    int lnkId = tmpNode->getLinkOut(std::stoi(gate))->getLocalGate()->getConnectionId();
+                    routeLinks.push_back(searchLink(lnkId));
+
+//                    cDisplayString &dispStr = tmpNode->getLinkOut(std::stoi(gate))->getLocalGate()->getDisplayString();
+//                    char tcol[30];
+//                    sprintf(tcol, "ls=#%X%X%X,5", red, green, blue);
+//                    dispStr.parse(tcol);
+                }
+            }
         }
         ifs.close();
     }
 
-    char msgname[20];
-    OpticalMsgPath *msgPath = check_and_cast<OpticalMsgPath*>(msg);
-    int src = msgPath->getSrcAddr();
-    int dst = msgPath->getDestAddr();
-    int slreq = msgPath->getSlotReq();
-//    int state = msgPath->getMsgState();
-    int blue = msgPath->getColor() / 65536;
-    int green = (msgPath->getColor() - blue * 65536) / 256;
-    int red = msgPath->getColor() - blue * 65536 - green * 256;
-    cFigure::Color col = cFigure::Color(red, green, blue);
+    ifs.open("./node/TableRouting.csv");
+    if (ifs.is_open()) {
+        std::string node;
+        std::string gate;
+        std::string msgid;
 
-    sprintf(msgname, "%i-%i-ns-%i", src, dst, slreq);
-    OpticalMsg *msgNode = new OpticalMsg(msgname);
-    msgNode->setSrcAddr(src);
-    msgNode->setDestAddr(dst);
-    msgNode->setSlotReq(slreq);
-    msgNode->setMsgState(LIGHTPATH_ASSIGNMENT);
-//    EV << "spec byte length" << msgPath->getByteLength() << endl;
-    msgNode->setByteLength(msgPath->getByteLength());
+        while (ifs.good()) {
+            std::getline(ifs, node, ',');
+            std::getline(ifs, gate, ',');
+            std::getline(ifs, msgid, '\n');
 
-    routeLinks.clear();
+            if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
 
-    for (int id = 0; id < msgPath->getOpticalPathArraySize(); id++) {
-        int lnkId = msgPath->getOpticalPath(id);
-        routeLinks.push_back(searchLink(lnkId));
+//                if (id == std::stoi(msgid)) {
+                if (true) {
+                    cTopology::Node *tmpNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", std::stoi(node)));
+                    cDisplayString &dispStr = tmpNode->getLinkOut(std::stoi(gate))->getLocalGate()->getDisplayString();
+                    char tcol[30];
+                    sprintf(tcol, "ls=#%X%X%X,5", red, green, blue);
+                    dispStr.parse(tcol);
+                }
+            }
+        }
+        ifs.close();
     }
-
     std::vector<int> temporal = contiguousSpectrum(routeLinks);
-
     std::vector<std::vector<int>> slts = continuousSpectrum(temporal);
-
     bool linkState = algorithmFirstFit(slts, routeLinks, slreq, col);
 
     if (linkState) {
         cModule *srcNode = getParentModule()->getParentModule()->getSubmodule("node", src)->getSubmodule("bvwxc");
-        sendDirect(msgNode, srcNode, "directIn");
-        delete msgPath;
+        sendDirect(msgPath, srcNode, "directIn");
+//        delete msgPath;
     }
     else {
         numLost++;
         getParentModule()->bubble("lost packet");
+        int pkid = msgPath->getId();
+        std::ifstream ifs("./node/TableRouting.csv");
+        std::ofstream tmp;
+        if (ifs.is_open()) {
+            tmp.open("./node/lost.csv");
+            //            tmp.open("./node/tmp.csv", std::ios_base::app);
+            std::string node;
+            std::string gate;
+            std::string msgid;
+
+            while (ifs.good()) {
+                std::getline(ifs, node, ',');
+                std::getline(ifs, gate, ',');
+                std::getline(ifs, msgid, '\n');
+
+                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
+                    if (pkid != std::stoi(msgid)) {
+                        tmp << node << "," << gate << "," << msgid << endl;
+                    }
+                }
+            }
+            tmp.close();
+            ifs.close();
+        }
+        std::remove("./node/TableRouting.csv");
+        std::rename("./node/lost.csv", "./node/TableRouting.csv");
         delete msgPath;
     }
 }

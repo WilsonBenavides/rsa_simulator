@@ -1,8 +1,8 @@
 //
 //
-#define FSM_DEBUG    // enables debug output from FSMs
-#include <vector>
-#include <string>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 #include <omnetpp.h>
 #include "OpticalMsg_m.h"
 #include "Utils.h"
@@ -54,7 +54,6 @@ void App::initialize()
     sendIATime = &par("sendIaTime");
     packetLength = par("packetLength");
 
-
     numSent = 0;
     numReceived = 0;
     WATCH(numSent);
@@ -71,7 +70,6 @@ void App::handleMessage(cMessage *msg)
         // Sending packet
 //        char pkname[40];
 //        sprintf(pkname, "%d-to-%d", address, destAddress, pkCounter++);
-//        EV << "generating packet " << pkname << endl;
 
         char msgname[40];
         int src = getParentModule()->getIndex(); // our module index
@@ -89,7 +87,7 @@ void App::handleMessage(cMessage *msg)
         opmsg->setMsgState(LIGHTPATH_REQUEST);
         opmsg->setColor(intrand(16777213));
         opmsg->setByteLength(packetLength);
-        EV << "packet length : " << opmsg->getByteLength() << endl;
+        opmsg->setKind(intuniform(0, 7));
 
         send(opmsg, "out");
         numSent++;
@@ -101,8 +99,35 @@ void App::handleMessage(cMessage *msg)
     else {
         // Handle incoming packet
         OpticalMsg *pk = check_and_cast<OpticalMsg*>(msg);
-//        EV << "received packet " << pk->getName() << endl;
-        EV << "end to end delay : " << simTime() - pk->getCreationTime() << endl;
+        int pkid = pk->getId();
+        EV << "end to end delay : " << simTime() - pk->getCreationTime() << " | packid : " << pkid << endl;
+        getParentModule()->bubble("received");
+        std::ifstream ifs("./node/TableRouting.csv");
+        std::ofstream tmp;
+        if (ifs.is_open()) {
+        tmp.open("./node/tmp.csv");
+//            tmp.open("./node/tmp.csv", std::ios_base::app);
+            std::string node;
+            std::string gate;
+            std::string msgid;
+
+            while (ifs.good()) {
+                std::getline(ifs, node, ',');
+                std::getline(ifs, gate, ',');
+                std::getline(ifs, msgid, '\n');
+
+                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
+                    if (pkid != std::stoi(msgid)) {
+                        tmp << node << "," << gate << "," << msgid << endl;
+
+                    }
+                }
+            }
+            tmp.close();
+            ifs.close();
+        }
+        std::remove("./node/TableRouting.csv");
+        std::rename("./node/tmp.csv", "./node/TableRouting.csv");
         numReceived++;
         delete pk;
 

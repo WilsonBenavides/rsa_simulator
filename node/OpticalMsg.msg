@@ -21,13 +21,4 @@ packet OpticalMsg
     long color;
 }
 
-packet OpticalMsgPath
-{
-    int srcAddr;
-    int destAddr;
-    int slotReq;
-    int msgState;
-    int opticalPath[];
-    long color;
-}
 

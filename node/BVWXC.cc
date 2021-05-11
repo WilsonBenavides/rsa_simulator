@@ -36,7 +36,6 @@ void BVWXC::handleMessage(cMessage *msg)
     OpticalMsg *opmsg = check_and_cast<OpticalMsg*>(msg);
     int ss = getParentModule()->par("address");
 
-//    EV << "address : " << ss << endl;
     if (opmsg->getDestAddr() == ss) {
         //Message arrived
         send(msg, "localOut");
@@ -49,32 +48,34 @@ void BVWXC::handleMessage(cMessage *msg)
 void BVWXC::forwardMessage(cMessage *msg)
 {
 
-//    EV << "msg send to controller : " << getParentModule()->getParentModule()->getSubmodule("controller")->getName() << endl;
     OpticalMsg *rcvMsg = check_and_cast<OpticalMsg*>(msg);
     int src = rcvMsg->getSrcAddr();
     int dst = rcvMsg->getDestAddr();
+    int id = rcvMsg->getId();
     int state = rcvMsg->getMsgState();
-    EV << "getDuration :  " << rcvMsg->getDuration() << endl;
 
     if (state == LIGHTPATH_REQUEST) {
-//        EV << "LIGHTPATH_REQUEST " << endl;
         cModule *control = getParentModule()->getParentModule()->getSubmodule("controller");
         sendDirect(msg, control, "in");
     }
     if (state == LIGHTPATH_ASSIGNMENT) {
-//        EV << "LIGHTPATH_ASSIGNMENT " << endl;
-        std::string line;
         std::ifstream ifs("./node/TableRouting.csv");
         if (ifs.is_open()) {
-            while (std::getline(ifs, line)) {
-//                EV << line << endl;
-                int index = line.find(',');
-                int node = std::stoi(line.substr(0, index++));
-                int gate = std::stoi(line.substr(index, line.size()));
+            std::string node;
+            std::string gate;
+            std::string msgid;
 
-                if (getParentModule()->getIndex() == node) {
-                    send(msg, "out", gate);
-//                    EV << "message sent.." << endl;
+            while (ifs.good()) {
+                std::getline(ifs, node, ',');
+                std::getline(ifs, gate, ',');
+                std::getline(ifs, msgid, '\n');
+
+//                EV << "node : " << node << " | gate : " << gate << " | msgid : " << msgid << endl;
+
+                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
+                    if (getParentModule()->getIndex() == std::stoi(node) && std::stoi(msgid) == id) {
+                        send(msg, "out", std::stoi(gate));
+                    }
                 }
             }
             ifs.close();

@@ -62,7 +62,9 @@ void TopologyManager::handleMessage(cMessage *msg)
     int blue = rcvMsg->getColor() / 65536;
     int green = (rcvMsg->getColor() - blue * 65536) / 256;
     int red = rcvMsg->getColor() - blue * 65536 - green * 256;
-    long pack_id = rcvMsg->getId();
+    int pack_id = rcvMsg->getId();
+    rcvMsg->setMsgState(LIGHTPATH_ROUTING);
+//    EV << "rcv Mesg id " << rcvMsg->getId() << endl;
 
     cTopology *topo = new cTopology("topo");
     std::vector<std::string> nedTypes;
@@ -181,7 +183,7 @@ void TopologyManager::handleMessage(cMessage *msg)
         assignedRoute = 0;
     }
 
-    std::vector<const char*> cols = { "ls=#ffffff,5", "ls=#ffffff,5", "ls=#999999,5", "ls=#666666,5", "ls=#333333,5" };
+    std::vector<const char*> cols = { "ls=#ffffff,5", "ls=#dddddd,5", "ls=#999999,5", "ls=#666666,5", "ls=#333333,5" };
     for (int i = 0; i < routeList.size(); i++) {
         for (int j = 0; j < routeList[i].size(); j++) {
 //            cDisplayString &dispStr = routeList[i][j]->getRemoteGate()->getDisplayString();
@@ -189,18 +191,9 @@ void TopologyManager::handleMessage(cMessage *msg)
         }
     }
 
-    OpticalMsgPath *opticalPath = new OpticalMsgPath("Optical Message Path");
-    opticalPath->setSrcAddr(src);
-    opticalPath->setDestAddr(dst);
-    opticalPath->setSlotReq(numSlots);
-    opticalPath->setMsgState(LIGHTPATH_PROCESSING);
-    opticalPath->setOpticalPathArraySize(routeList[assignedRoute].size());
-    opticalPath->setColor(rcvMsg->getColor());
-    opticalPath->setByteLength(rcvMsg->getByteLength());
-
     int index = 0;
-    std::string fileName = "./node/TableRouting.csv";
-    std::ofstream routingTable(fileName);
+    std::string fileName("./node/TableRouting.csv");
+    std::ofstream routingTable;
 
     for (cTopology::LinkIn *tmp : routeList[assignedRoute]) {
         cDisplayString &dispStr = tmp->getRemoteGate()->getDisplayString();
@@ -216,17 +209,20 @@ void TopologyManager::handleMessage(cMessage *msg)
         int gate = tmp->getRemoteGate()->getIndex();
         int node = tmp->getRemoteNode()->getModule()->getIndex();
         int id = tmp->getRemoteGate()->getConnectionId();
-        opticalPath->setOpticalPath(index, id);
-        routingTable << node << "," << gate << endl;
-//        EV << "message id: " << pack_id << endl;
-        index++;
-    }
-    routingTable.close();
+//        EV << "routeList size : " << routeList[assignedRoute].size() << " | index : " << index << endl;
+//        EV << "node : " << node << ", gate : " << gate << ", id :" << pack_id << endl;
 
-    delete rcvMsg;
+        routingTable.open(fileName, std::ios_base::app);
+//        (index < routeList[assignedRoute].size()) ? routingTable << node << "," << gate << "," << pack_id << endl : routingTable << node << "," << gate << "," << pack_id;
+        routingTable << node << "," << gate << "," << pack_id << endl;
+        index++;
+        routingTable.close();
+    }
+
+//    delete rcvMsg;
     delete topo;
     cModule *spec = getParentModule()->getSubmodule("topology");
-    sendDirect(opticalPath, spec, "directTopoOut");
+    sendDirect(rcvMsg, spec, "directTopoOut");
 
 }
 
