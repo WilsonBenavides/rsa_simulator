@@ -21,7 +21,7 @@ network Nsfnet
         channel OpticalChannel extends ned.DatarateChannel
         {
             delay = default(uniform(10us, 20us));
-            datarate = 12.5Gbps;
+            datarate = default(uniform(11Gbps, 12Gbps));
         }
     submodules:
         node[14]: Node {

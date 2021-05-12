@@ -63,6 +63,7 @@ void TopologyManager::handleMessage(cMessage *msg)
     int green = (rcvMsg->getColor() - blue * 65536) / 256;
     int red = rcvMsg->getColor() - blue * 65536 - green * 256;
     int pack_id = rcvMsg->getId();
+    int slot = 0;
     rcvMsg->setMsgState(LIGHTPATH_ROUTING);
 //    EV << "rcv Mesg id " << rcvMsg->getId() << endl;
 
@@ -209,12 +210,14 @@ void TopologyManager::handleMessage(cMessage *msg)
         int gate = tmp->getRemoteGate()->getIndex();
         int node = tmp->getRemoteNode()->getModule()->getIndex();
         int id = tmp->getRemoteGate()->getConnectionId();
+        char color[30];
+        sprintf(color, "#%.2X%.2X%.2X", red, green, blue);
 //        EV << "routeList size : " << routeList[assignedRoute].size() << " | index : " << index << endl;
 //        EV << "node : " << node << ", gate : " << gate << ", id :" << pack_id << endl;
 
         routingTable.open(fileName, std::ios_base::app);
 //        (index < routeList[assignedRoute].size()) ? routingTable << node << "," << gate << "," << pack_id << endl : routingTable << node << "," << gate << "," << pack_id;
-        routingTable << node << "," << gate << "," << pack_id << endl;
+        routingTable << node << "," << gate << "," << pack_id << "," << id << "," << color << "," << slot << endl;
         index++;
         routingTable.close();
     }

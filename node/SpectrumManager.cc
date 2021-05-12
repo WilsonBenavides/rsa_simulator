@@ -22,15 +22,15 @@ public:
     int m_available;  //1 busy, 0 available
     int m_right;
     int m_left;
-    double m_time;
+    std::string m_color;
 
-    Slot(int index, int available, int right, int left, double time)
+    Slot(int index, int available, int right, int left, std::string color)
     {
         m_index = index;
         m_available = available;
         m_right = right;
         m_left = left;
-        m_time = time;
+        m_color = color;
     }
 };
 
@@ -40,25 +40,29 @@ public:
     int m_id;
     bool m_availability;
     int m_slotSize;
-    std::vector<Slot> slots;
+    std::vector<Slot*> slots;
 
     Link(int id, bool availability, int slotSize)
     {
         m_id = id;
         m_availability = availability;
         m_slotSize = slotSize;
+        std::string whiteColor("#ffffff");
 
         for (int i = 0; i < slotSize; i++) {
-            Slot sl(i, 0, slotSize - i - 1, i, 0.0);
+            Slot *sl = new Slot(i, 0, slotSize - i - 1, i, whiteColor);
             slots.push_back(sl);
         }
     }
 
     void PrintAvailableSlots()
     {
-        EV << "id : " << m_id << endl;
-        for (Slot sl : slots) {
-            EV << "slots : " << sl.m_available << endl;
+        for (Slot *sl : slots) {
+            if (sl->m_available == 1) {
+                EV << "id : " << m_id << " , ";
+                EV << sl->m_index << '\t';
+                EV << '\n';
+            }
         }
     }
 };
@@ -93,11 +97,13 @@ protected:
     void drawSlotGrid(int linkSize, int slotSize, cFigure::Color color);
     void drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFigure::Color color);
     void drawSingleSlotOnGrid(int lnkPos, int sltPos, cFigure::Color color);
-    void updateSlotGrid(int linkSize, int slotSize, double opacity);
+    void updateSlotGrid();
     std::vector<int> contiguousSpectrum(std::vector<Link*> lnk);
     std::vector<std::vector<int>> continuousSpectrum(std::vector<int> slots);
     Link* searchLink(int id);
-    bool algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color);
+    std::vector<int> algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color);
+    void printLinkMatrix();
+    void clearLinkMatrix();
 };
 
 Define_Module(SpectrumManager);
@@ -150,6 +156,8 @@ void SpectrumManager::initialize(int stage)
 void SpectrumManager::handleMessage(cMessage *msg)
 {
 //    updateSlotGrid(numLinks, slotSize, 0);
+    updateSlotGrid();
+    clearLinkMatrix();
     numProcessed++;
     routeLinks.clear();
 
@@ -159,10 +167,10 @@ void SpectrumManager::handleMessage(cMessage *msg)
     int dst = msgPath->getDestAddr();
     int slreq = msgPath->getSlotReq();
     int id = msgPath->getId();
-    //    int state = msgPath->getMsgState();
     int blue = msgPath->getColor() / 65536;
     int green = (msgPath->getColor() - blue * 65536) / 256;
     int red = msgPath->getColor() - blue * 65536 - green * 256;
+
     msgPath->setMsgState(LIGHTPATH_ASSIGNMENT);
     cFigure::Color col = cFigure::Color(red, green, blue);
 
@@ -176,60 +184,82 @@ void SpectrumManager::handleMessage(cMessage *msg)
         std::string node;
         std::string gate;
         std::string msgid;
+        std::string lnkid;
+        std::string color;
+        std::string slot;
 
         while (ifs.good()) {
             std::getline(ifs, node, ',');
             std::getline(ifs, gate, ',');
-            std::getline(ifs, msgid, '\n');
+            std::getline(ifs, msgid, ',');
+            std::getline(ifs, lnkid, ',');
+            std::getline(ifs, color, ',');
+            std::getline(ifs, slot, '\n');
 
-            if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
+            if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0 && lnkid.length() != 0 && color.length() != 0 && slot.length() != 0) {
 
                 if (id == std::stoi(msgid)) {
-//                if (true) {
                     cTopology::Node *tmpNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", std::stoi(node)));
-                    int lnkId = tmpNode->getLinkOut(std::stoi(gate))->getLocalGate()->getConnectionId();
-                    routeLinks.push_back(searchLink(lnkId));
-
-//                    cDisplayString &dispStr = tmpNode->getLinkOut(std::stoi(gate))->getLocalGate()->getDisplayString();
-//                    char tcol[30];
-//                    sprintf(tcol, "ls=#%X%X%X,5", red, green, blue);
-//                    dispStr.parse(tcol);
+                    routeLinks.push_back(searchLink(std::stoi(lnkid)));
                 }
             }
         }
         ifs.close();
     }
 
-    ifs.open("./node/TableRouting.csv");
-    if (ifs.is_open()) {
-        std::string node;
-        std::string gate;
-        std::string msgid;
-
-        while (ifs.good()) {
-            std::getline(ifs, node, ',');
-            std::getline(ifs, gate, ',');
-            std::getline(ifs, msgid, '\n');
-
-            if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
-
-//                if (id == std::stoi(msgid)) {
-                if (true) {
-                    cTopology::Node *tmpNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", std::stoi(node)));
-                    cDisplayString &dispStr = tmpNode->getLinkOut(std::stoi(gate))->getLocalGate()->getDisplayString();
-                    char tcol[30];
-                    sprintf(tcol, "ls=#%X%X%X,5", red, green, blue);
-                    dispStr.parse(tcol);
-                }
-            }
-        }
-        ifs.close();
-    }
     std::vector<int> temporal = contiguousSpectrum(routeLinks);
     std::vector<std::vector<int>> slts = continuousSpectrum(temporal);
-    bool linkState = algorithmFirstFit(slts, routeLinks, slreq, col);
+    std::vector<int> slotFF = algorithmFirstFit(slts, routeLinks, slreq, col);
 
-    if (linkState) {
+    if (slotFF.size() > 0) {
+
+//        printLinkMatrix();
+
+        ifs.open("./node/TableRouting.csv");
+        if (ifs.is_open()) {
+            std::string node;
+            std::string gate;
+            std::string msgid;
+            std::string lnkid;
+            std::string color;
+            std::string slot;
+
+            while (ifs.good()) {
+                std::getline(ifs, node, ',');
+                std::getline(ifs, gate, ',');
+                std::getline(ifs, msgid, ',');
+                std::getline(ifs, lnkid, ',');
+                std::getline(ifs, color, ',');
+                std::getline(ifs, slot, '\n');
+
+                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0 && lnkid.length() != 0 && color.length() != 0 && slot.length() != 0) {
+
+                    // pinta las rutas que se estan escritas en la tabla de enrutamiento
+                    if (true) {
+                        cTopology::Node *tmpNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", std::stoi(node)));
+                        cDisplayString &dispStr = tmpNode->getLinkOut(std::stoi(gate))->getLocalGate()->getDisplayString();
+                        char tcol[30];
+                        sprintf(tcol, "ls=%s,5", color.c_str());
+                        dispStr.parse(tcol);
+//                        EV << "lnk id : " << lnkid << " 1 " << " slot : " << slotFF << endl;
+                        for (Link *tlnk : linkMatrix) {
+                            for (Slot *tsl : tlnk->slots) {
+//                                if (tlnk->m_id == std::stoi(lnkid) && tsl->m_index == slotFF) {
+                                if (tlnk->m_id == std::stoi(lnkid)) {
+//                                    tsl->m_available = 1;
+//                                    EV << "lnk id : " << tlnk->m_id << "  slot : " << tsl->m_index << endl;
+//                                    drawSingleSlotOnGrid(tlnk->m_id, tsl->m_index, cFigure::Color(color.c_str()) );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            ifs.close();
+        }
+//        printLinkMatrix();
+//        updateSlotGrid();
+
         cModule *srcNode = getParentModule()->getParentModule()->getSubmodule("node", src)->getSubmodule("bvwxc");
         sendDirect(msgPath, srcNode, "directIn");
 //        delete msgPath;
@@ -246,15 +276,21 @@ void SpectrumManager::handleMessage(cMessage *msg)
             std::string node;
             std::string gate;
             std::string msgid;
+            std::string lnkid;
+            std::string color;
+            std::string slot;
 
             while (ifs.good()) {
                 std::getline(ifs, node, ',');
                 std::getline(ifs, gate, ',');
-                std::getline(ifs, msgid, '\n');
+                std::getline(ifs, msgid, ',');
+                std::getline(ifs, lnkid, ',');
+                std::getline(ifs, color, ',');
+                std::getline(ifs, slot, '\n');
 
-                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
+                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0 && lnkid.length() != 0 && color.length() != 0 && slot.length() != 0) {
                     if (pkid != std::stoi(msgid)) {
-                        tmp << node << "," << gate << "," << msgid << endl;
+                        tmp << node << "," << gate << "," << msgid << "," << lnkid << "," << color << "," << slot << endl;
                     }
                 }
             }
@@ -315,6 +351,7 @@ void SpectrumManager::drawSlotGrid(int linkSize, int slotSize, cFigure::Color co
 
 void SpectrumManager::drawSingleSlotOnGrid(int lnkPos, int sltPos, cFigure::Color color)
 {
+
     char name[10];
     sprintf(name, "%d,%d", lnkPos, sltPos);
     cRectangleFigure *rct = static_cast<cRectangleFigure*>(canvas->getFigure(name));
@@ -331,17 +368,28 @@ void SpectrumManager::drawSlotsOnGrid(int lnkPos, int sltPos, int numSlots, cFig
     }
 }
 
-void SpectrumManager::updateSlotGrid(int linkSize, int slotSize, double opacity)
+void SpectrumManager::updateSlotGrid()
 {
-    for (int lnk = 0; lnk < linkSize; lnk++) {
-        for (int slt = 0; slt < slotSize; slt++) {
+//    for (int lnk = 0; lnk < linkSize; lnk++) {
+//        for (int slt = 0; slt < slotSize; slt++) {
+//            char name[10];
+//            sprintf(name, "%d,%d", lnk, slt);
+//            cRectangleFigure *rct = static_cast<cRectangleFigure*>(canvas->getFigure(name));
+////            if (std::string("#ffffff") != rct->getFillColor().str()) {
+//            rct->setFillColor("#ffffff");
+////                rct->setFillOpacity(opacity);
+//            rct->setLineWidth(1);
+////            }
+//        }
+//    }
+
+    for (Link *lnk : linkMatrix) {
+        for (Slot *sl : lnk->slots) {
             char name[10];
-            sprintf(name, "%d,%d", lnk, slt);
+            sprintf(name, "%d,%d", lnk->m_id, sl->m_index);
             cRectangleFigure *rct = static_cast<cRectangleFigure*>(canvas->getFigure(name));
-            if (std::string("#ffffff") != rct->getFillColor().str()) {
-                rct->setFillOpacity(opacity);
-                rct->setLineWidth(1);
-            }
+            rct->setFillColor("#ffffff");
+            rct->setLineWidth(1);
         }
     }
 }
@@ -352,7 +400,8 @@ std::vector<int> SpectrumManager::contiguousSpectrum(std::vector<Link*> lnk)
     std::vector<int> t(size, 0);
     for (Link *l : lnk) {
         for (int i = 0; i < size; i++) {
-            t[i] = (t[i] + l->slots[i].m_available) >= 1 ? 1 : 0;
+
+            t[i] = (t[i] + l->slots[i]->m_available) >= 1 ? 1 : 0;
         }
     }
     std::vector<int> c(size, 0);
@@ -380,28 +429,33 @@ std::vector<std::vector<int>> SpectrumManager::continuousSpectrum(std::vector<in
     return result;
 }
 
-bool SpectrumManager::algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color)
+std::vector<int> SpectrumManager::algorithmFirstFit(std::vector<std::vector<int>> continuous, std::vector<Link*> lnk, int slrequest, cFigure::Color color)
 {
+    std::vector<int> tmp;
     int flag = 0;
+    int slot = -1;
     for (int i = 0; i < continuous.size(); i++) {
         if (continuous[i].size() >= slrequest && continuous[i][0] != BUSY) {
             flag++;
             for (Link *l : lnk) {
                 for (int j = continuous[i][0]; j < continuous[i][0] + slrequest; j++) {
-                    l->slots[j].m_available = 1;
+                    l->slots[j]->m_available = 1;
+//                    EV << "first fit : index " << l->slots[j]->m_index << " value : " << l->slots[j]->m_available << endl;
                     drawSingleSlotOnGrid(l->m_id, j, color);
+                    slot = j;
+                    tmp.push_back(j);
                 }
             }
         }
         if (flag == 1) {
-            return true;
+            return tmp;
 //            break;
         }
     }
     if (flag == 0) {
-        return false;
+        return tmp; //enlace congestionado
     }
-    return false;
+    return tmp;
 }
 Link* SpectrumManager::searchLink(int id)
 {
@@ -422,4 +476,22 @@ void SpectrumManager::refreshDisplay() const
     char buf[40];
     sprintf(buf, "p: %ld  l: %ld", numProcessed, numLost);
     getParentModule()->getDisplayString().setTagArg("t", 0, buf);
+}
+
+void SpectrumManager::printLinkMatrix()
+{
+    EV << "link Matrix : " << endl;
+    for (Link *ln : linkMatrix) {
+        ln->PrintAvailableSlots();
+//        EV << endl;
+    }
+}
+void SpectrumManager::clearLinkMatrix()
+{
+//    EV << "clear Matrix : " << endl;
+    for (Link *ln : linkMatrix) {
+        for (Slot *sl : ln->slots) {
+            sl->m_available = 0;
+        }
+    }
 }

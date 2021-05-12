@@ -105,20 +105,26 @@ void App::handleMessage(cMessage *msg)
         std::ifstream ifs("./node/TableRouting.csv");
         std::ofstream tmp;
         if (ifs.is_open()) {
-        tmp.open("./node/tmp.csv");
+            tmp.open("./node/tmp.csv");
 //            tmp.open("./node/tmp.csv", std::ios_base::app);
             std::string node;
             std::string gate;
             std::string msgid;
+            std::string lnkid;
+            std::string color;
+            std::string slot;
 
             while (ifs.good()) {
                 std::getline(ifs, node, ',');
                 std::getline(ifs, gate, ',');
-                std::getline(ifs, msgid, '\n');
+                std::getline(ifs, msgid, ',');
+                std::getline(ifs, lnkid, ',');
+                std::getline(ifs, color, ',');
+                std::getline(ifs, slot, '\n');
 
-                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0) {
+                if (node.length() != 0 && gate.length() != 0 && msgid.length() != 0 && lnkid.length() != 0 && color.length() != 0 && slot.length() != 0) {
                     if (pkid != std::stoi(msgid)) {
-                        tmp << node << "," << gate << "," << msgid << endl;
+                        tmp << node << "," << gate << "," << msgid << "," << lnkid << "," << color << "," << slot << endl;
 
                     }
                 }
