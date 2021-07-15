@@ -21,11 +21,3 @@ id=@Variant(\0\0\0\x81\0\0\0\0\0\0\0\x10)
 type=2
 geom=@Rect(1372 141 203 294)
 fullscreen=false
-
-[Inspector-1]
-object=Nsfnet.controller
-classname=Controller
-id=@Variant(\0\0\0\x81\0\0\0\0\0\0\0\x10)
-type=2
-geom=@Rect(-512 355 267 327)
-fullscreen=false

@@ -8,14 +8,20 @@ package node;
 //
 module Controller
 {
-    @display("p=400,40;i=block/eye_vl;bgb=144,231");
+    parameters:
+        @display("p=400,40;i=block/eye_vl;bgb=144,231");
+        double slotBandwidth @unit(Hz);
+        double channelBandwidth @unit(Hz);
 
     gates:
         input in @directIn;
 
     submodules:
         topology: TopologyManager;
-        spectrum: SpectrumManager;
+        spectrum: SpectrumManager {
+        	slotBandwidth = slotBandwidth;
+        	channelBandwidth = channelBandwidth;
+        }
     connections allowunconnected:
         in --> topology.in;
         topology.directTopoOut --> spectrum.in;

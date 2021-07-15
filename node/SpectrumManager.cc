@@ -137,7 +137,7 @@ void SpectrumManager::initialize(int stage)
         numLinks = 0;
         for (int i = 0; i < topo->getNumNodes(); i++) {
             cTopology::Node *srcNode = topo->getNodeFor(getParentModule()->getParentModule()->getSubmodule("node", i));
-            int numOutLinks = srcNode->getNumOutLinks();
+            int numOutLinks = srcNode->getNumOutLinks() / slotSize;
             for (int j = 0; j < numOutLinks; j++) {
                 int src = srcNode->getModule()->par("address");
                 int dst = topo->getNode(i)->getLinkOut(j)->getRemoteNode()->getModule()->par("address");
